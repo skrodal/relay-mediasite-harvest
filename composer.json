@@ -1,0 +1,11 @@
+{
+  "require": {
+    "monolog/monolog": "1.12.*@dev",
+    "nesbot/Carbon": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Uninett\\": "App"
+    }
+  }
+}
