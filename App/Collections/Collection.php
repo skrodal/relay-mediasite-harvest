@@ -50,8 +50,4 @@ abstract class Collection
 	{
 		return basename($this->logger->getName()) . " | " . $this->collectionName. ": " . $message;
 	}
-
-
-
-
 }
