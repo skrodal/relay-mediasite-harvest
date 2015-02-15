@@ -1,4 +1,6 @@
 <?php namespace Uninett\Collections\Users;
+use Uninett\Schemas\UserMediasiteSchema;
+
 require_once '../../Constants/UserMediasiteNames.php';
 require_once '../../Constants/UsersNames.php';
 require_once '../../Support/Logging/Logging.php';

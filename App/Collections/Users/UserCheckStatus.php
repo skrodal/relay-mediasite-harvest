@@ -90,7 +90,7 @@ class UserCheckStatus extends Collection implements CollectionUpdateInterface
                      $statusTo = 4;
 
              } else {
-                 $this->_log->logError("None matched when checking statuses. Should never happen.");
+                 $this->LogError("None matched when checking statuses. Should never happen.");
                  continue;
              }
 

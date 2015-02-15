@@ -3,6 +3,7 @@
 
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\Helpers\Convert;
 use Uninett\Collections\Helpers\UserHelper;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
@@ -30,15 +31,14 @@ class UserSetAffiliation extends Collection implements CollectionUpdateInterface
         foreach ($directories as $directory) {
             $users =  $u->findUsersInDatabaseInDirectoryOnDisk($directory);
 
-            $this->_validateUsersInDirectory($users);
+            $this->validateUsersInDirectory($users);
         }
 
         $this->LogNotice("Affiliation was set for " . $this->numberOfUsersInserted .  " users");
     }
 
-    private function _validateUsersInDirectory($users)
+    private function validateUsersInDirectory($users)
     {
-        //TODO: Fix Convert class
         $diskOperation = new Convert();
 
         foreach($users as $feideUsername => $userArrays)  {
@@ -55,10 +55,10 @@ class UserSetAffiliation extends Collection implements CollectionUpdateInterface
 
                     $cursor = $this->_mongoDatabaseConnection->collection->find($criteria)->limit(1);
 
-                    if ($this->_resultExists($cursor->count())) {
+                    if ($this->resultExists($cursor->count())) {
                         $affiliation = $diskOperation->getAffiliationFromPath($userPath);
 
-                        $success = $this->_updateAffiliationInMongoDb($criteria, $affiliation);
+                        $success = $this->updateAffiliationInMongoDb($criteria, $affiliation);
 
                         if(!$success)
                             $this->LogError("Could not update affiliation for " . $userPath);
@@ -72,12 +72,12 @@ class UserSetAffiliation extends Collection implements CollectionUpdateInterface
         }
     }
 
-    private function _resultExists($count)
+    private function resultExists($count)
     {
         return $count != 0 ? true : false;
     }
 
-    private function _updateAffiliationInMongoDb($criteria, $affiliation)
+    private function updateAffiliationInMongoDb($criteria, $affiliation)
     {
         return $this->_mongoDatabaseConnection->update
             ($criteria, '$set', UsersSchema::AFFILIATION, $affiliation, 0);
