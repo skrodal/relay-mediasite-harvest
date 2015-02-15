@@ -30,7 +30,7 @@ class OrgAggregateSizeUsed extends Collection implements CollectionUpdateInterfa
         $allOrgsInIOrgsCollection = $u->findUsersInOrganisationsInDatabase();
 
         if(count($allOrgsInIOrgsCollection) == 0)
-            $this->LogError("Did not find any orgs to aggregate size used for");
+            $this->LogError("Did not find any organisations to aggregate size used for");
 
         $aggregatedSize = 0.0;
 

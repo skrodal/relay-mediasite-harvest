@@ -15,8 +15,8 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
 	private $currentPresentationId;
     private $shouldUpdateDailyVideosCollection;
 
-	private $numberInserted;
-	private $numberFound;
+	private $numberInserted = 0;
+	private $numberFound = 0;
 
     public function __construct($shouldUpdateDailyVideosCollection = false)
     {
@@ -29,7 +29,6 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
         $this->insert = new PresentationInsert();
 
         $this->shouldUpdateDailyVideosCollection = $shouldUpdateDailyVideosCollection;
-
     }
 
     private function getLargestInsertedFileId()
