@@ -36,7 +36,7 @@ class UserImport extends Collection
 
         $this->LogInfo("Found " . mssql_num_rows($query) . " results");
 
-        if ($this->_queryContainsNewUsers($query))
+        if ($this->queryContainsNewUsers($query))
         {
             while ($result = mssql_fetch_assoc($query))
             {
@@ -55,7 +55,7 @@ class UserImport extends Collection
                         continue;
                     }
 
-                    $this->_insertUserToDb($user, $result[UserMediasiteSchema::USER_ID]);
+                    $this->insertUserToDb($user, $result[UserMediasiteSchema::USER_ID]);
 
                 } else
                     $this->LogInfo("Tried to insert user: " .
@@ -65,14 +65,14 @@ class UserImport extends Collection
 
         if($this->usersInserted > 0)
         {
-	        $this->_updateLargestInsertedUserIdInMongoDb();
+	        $this->updateLargestInsertedUserIdInMongoDb();
 
 	        $this->LogInfo("Inserted " . $this->usersInserted . " new users");
         }
 
     }
 
-    private function _queryContainsNewUsers($query)
+    private function queryContainsNewUsers($query)
     {
         if($query == false)
             return false;
@@ -87,17 +87,18 @@ class UserImport extends Collection
         return empty($cursor) ? true : false;
     }
 
-    private function _insertUserToDb(User $user, $userId)
+    private function insertUserToDb(User $user, $userId)
     {
         $success = $this->insert->insertUserToMongoDb($user);
 
         if ($success) {
-            $this->_keepLargestUserId($userId);
+            $this->keepLargestUserId($userId);
+	        $this->usersInserted = $this->usersInserted + 1;
         } else
             $this->LogError("Something went wrong when inserting new user: " . $user->getUsername());
     }
 
-    private function _keepLargestUserId($newUserId)
+    private function keepLargestUserId($newUserId)
     {
         if($newUserId > $this->latestUserId)
             $this->latestUserId = $newUserId;
@@ -108,7 +109,7 @@ class UserImport extends Collection
         return (new LastUpdates)->findUserId();
     }
 
-    private function _updateLargestInsertedUserIdInMongoDb()
+    private function updateLargestInsertedUserIdInMongoDb()
     {
         $last = new LastUpdates();
         $last->updateUserId($this->latestUserId);

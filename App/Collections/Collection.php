@@ -10,7 +10,6 @@ abstract class Collection
     protected $reflect;
     protected $collectionName;
 
-
     function __construct($collectionName)
     {
         $this->collectionName =
@@ -37,7 +36,6 @@ abstract class Collection
 		$this->logger->pushHandler($stream);
 	}
 
-
     public function LogError($message)
     {
         $this->logger->error($this->logMessageFormat($message));
@@ -50,7 +48,7 @@ abstract class Collection
 
 	private function logMessageFormat($message)
 	{
-		return $this->logger->getName() .":" . $this->collectionName. ": " . $message;
+		return basename($this->logger->getName()) . " | " . $this->collectionName. ": " . $message;
 	}
 
 
