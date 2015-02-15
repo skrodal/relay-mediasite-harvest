@@ -1,6 +1,7 @@
 <?php namespace Uninett\Models;
 //This is a model class for one presentation.
 use JsonSerializable;
+use MongoDate;
 use Uninett\Schemas\PresentationSchema;
 
 class PresentationModel implements JsonSerializable
@@ -241,12 +242,8 @@ class PresentationModel implements JsonSerializable
         return $arr;
     }
 
-
-
-
     public function jsonSerialize()
     {
-
         return [
             PresentationSchema::PRESENTATION_ID => $this->getPresentationId(),
             PresentationSchema::TITLE => $this->getTitle(),
