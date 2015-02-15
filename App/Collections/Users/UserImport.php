@@ -28,8 +28,9 @@ class UserImport extends Collection
 
     public function update()
     {
-        $this->latestUserId = $this->_lastInsertedUserIdInMongoDb();
+        $this->latestUserId = $this->lastInsertedUserIdInMongoDb();
 
+	    echo "Last userId was " . $this->latestUserId . PHP_EOL;
         $newUsersInDatabase = new UserFind($this->latestUserId, new EcampusSQLConnection);
 
         $query = $newUsersInDatabase->findNewUsersInDatabase();
@@ -69,7 +70,6 @@ class UserImport extends Collection
 
 	        $this->LogInfo("Inserted " . $this->usersInserted . " new users");
         }
-
     }
 
     private function queryContainsNewUsers($query)
@@ -104,9 +104,10 @@ class UserImport extends Collection
             $this->latestUserId = $newUserId;
     }
 
-    private function _lastInsertedUserIdInMongoDb()
+    private function lastInsertedUserIdInMongoDb()
     {
-        return (new LastUpdates)->findUserId();
+	    $lastUpdates = new LastUpdates;
+	    return $lastUpdates->findUserId();
     }
 
     private function updateLargestInsertedUserIdInMongoDb()
