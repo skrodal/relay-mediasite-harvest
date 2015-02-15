@@ -2,8 +2,9 @@
 //This class creates a presentation object after reading its xmlfiles
 use Uninett\Collections\Collection;
 
-use Uninett\Collections\Helpers\Arithmetic;
-use Uninett\Collections\Helpers\Convert;
+
+use Uninett\Helpers\Arithmetic;
+use Uninett\Helpers\Convert;
 use Uninett\Models\PresentationFilesModel;
 use Uninett\Models\PresentationModel;
 use Uninett\Schemas\PresentationSchema;

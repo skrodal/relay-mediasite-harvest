@@ -3,7 +3,7 @@
 //Queries Perseus DB for new files based on largest fileId in MongoDB and inserts to MongoDB
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
-use Uninett\Collections\Helpers\Convert;
+use Uninett\Helpers\Convert;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Schemas\PresentationSchema;
 

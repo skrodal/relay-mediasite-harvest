@@ -2,7 +2,7 @@
 
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
-use Uninett\Collections\Helpers\UserHelper;
+use Uninett\Helpers\UserHelper;
 use Uninett\Config;
 use Uninett\Database\EcampusSQLConnection;
 use Uninett\Database\MongoConnection;

@@ -1,4 +1,4 @@
-<?php namespace Uninett\Collections\Helpers;
+<?php namespace Uninett\Helpers;
 
 use Uninett\Config;
 

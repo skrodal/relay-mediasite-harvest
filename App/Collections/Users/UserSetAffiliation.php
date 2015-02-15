@@ -3,8 +3,8 @@
 
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
-use Uninett\Collections\Helpers\Convert;
-use Uninett\Collections\Helpers\UserHelper;
+use Uninett\Helpers\Convert;
+use Uninett\Helpers\UserHelper;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\UsersSchema;
