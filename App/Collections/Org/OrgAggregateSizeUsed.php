@@ -50,7 +50,7 @@ class OrgAggregateSizeUsed extends Collection implements CollectionUpdateInterfa
                 $dbSize = $this->hasProducedMoreSinceLastSave($orgName);
 
                 if($math->consideredToBeEqual($diskSize, $dbSize)) {
-                    $this->LogInfo(0, "No change in size used by " . $orgName);
+                    $this->LogInfo("No change in size used by " . $orgName);
                     continue;
                 } else {
                     $storage = array
@@ -70,7 +70,7 @@ class OrgAggregateSizeUsed extends Collection implements CollectionUpdateInterfa
 
                 $this->LogInfo("Aggregated " . $orgName." (". $math->subtract($diskSize, $dbSize) . "MiB diff). Last size was " . $dbSize . "MiB");
             } else
-                $this->LogError(0, "Did not find " . $orgName . " in db");
+                $this->LogError("Did not find " . $orgName . " in db");
 
         }
 
