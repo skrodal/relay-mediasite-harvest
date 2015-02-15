@@ -11,6 +11,7 @@ $collections = [
 	new \Uninett\Collections\UserDiskusage\UserDiskUsageImport,
 	new \Uninett\Collections\Presentations\PresentationImport(false),
 	new \Uninett\Collections\Org\OrgImport,
+	new \Uninett\Collections\Org\OrgAggregateSizeUsed(),
 
 ];
 
