@@ -4,6 +4,7 @@ use Uninett\Collections\CollectionUpdateInterface;
 require 'start/bootstrap.php';
 
 
+
 $collections = [
 	new \Uninett\Collections\Users\UserImport(),
 	new \Uninett\Collections\Users\UserCheckStatus(),
