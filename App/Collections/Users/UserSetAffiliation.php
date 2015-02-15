@@ -3,6 +3,7 @@
 
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\Helpers\UserHelper;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\UsersSchema;
@@ -22,7 +23,7 @@ class UserSetAffiliation extends Collection implements CollectionUpdateInterface
 
     public function update()
     {
-        $u = new UserSupport();
+        $u = new UserHelper();
 
         $directories = Config::get('folders_to_scan_for_files');
 

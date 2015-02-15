@@ -1,11 +1,10 @@
 <?php namespace Uninett\Collections\Users;
 // Prerequisites: None. This class manages user finding from a source database and inserting to mongodb
-use Carbon\Carbon;
-use Monolog\Logger;
 use Uninett\Collections\Collection;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Database\EcampussqlMSSQLDatabaseConnection;
 use Uninett\Database\MongoConnection;
+use Uninett\Models\User;
 use Uninett\Schemas\UserMediasiteSchema;
 use Uninett\Schemas\UsersSchema;
 
@@ -83,7 +82,7 @@ class UserImport extends Collection
         return empty($cursor) ? true : false;
     }
 
-    private function _insertUserToDb($user, $userId)
+    private function _insertUserToDb(User $user, $userId)
     {
         $success = $this->insert->insertUserToMongoDb($user);
 

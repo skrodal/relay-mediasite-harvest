@@ -1,6 +1,7 @@
 <?php namespace Uninett\Models;
 use JsonSerializable;
 use MongoDate;
+use Uninett\Schemas\UsersSchema;
 
 /**
  * status, see UsersCheckStatus.php
@@ -14,9 +15,7 @@ class User implements JsonSerializable
     private $_date = "";
     private $_org = "";
     private $_status = "";
-
     private $_affiliation = "";
-
 
     public function jsonSerialize()
     {
@@ -31,7 +30,6 @@ class User implements JsonSerializable
             UsersSchema::STATUS => $this->getStatus(),
         ];
     }
-
 
     public function setUsernameOnDisk($u)
     {

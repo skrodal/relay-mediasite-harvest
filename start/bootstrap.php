@@ -5,3 +5,4 @@ use Monolog\Logger;
  */
 require 'vendor/autoload.php';
 require 'config.php';
+require 'global.php';

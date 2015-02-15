@@ -2,10 +2,10 @@
 use Monolog\Logger;
 use ReflectionClass;
 
-abstract class Collection {
+abstract class Collection
+{
     protected $logger;
     protected $reflect;
-
     protected $collectionName;
 
     function __construct($collectionName)

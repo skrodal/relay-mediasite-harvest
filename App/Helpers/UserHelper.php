@@ -1,10 +1,10 @@
-<?php namespace Uninett\Collections\Users;
+<?php namespace Uninett\Collections\Helpers;
 use Uninett\Collections\Collection;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\UsersSchema;
 
-class UserSupport extends Collection {
+class UserHelper extends Collection {
     private $mongo;
 
     function __construct()

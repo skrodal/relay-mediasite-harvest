@@ -1,6 +1,6 @@
 <?php namespace Uninett\Collections;
 
-
-interface CollectionUpdateInterface {
+interface CollectionUpdateInterface
+{
     public function update();
 }

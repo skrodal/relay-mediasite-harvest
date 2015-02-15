@@ -2,6 +2,7 @@
 
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\Helpers\UserHelper;
 use Uninett\Config;
 use Uninett\Database\EcampussqlMSSQLDatabaseConnection;
 use Uninett\Database\MongoConnection;
@@ -48,7 +49,7 @@ class UserCheckStatus extends Collection implements CollectionUpdateInterface
     private function _updateStatusForUsers()
     {
         $userStatus = Config::get('userStatus');
-        $u = new UserSupport();
+        $u = new UserHelper();
 
         $users = $u->findUsersInDatabase();
 

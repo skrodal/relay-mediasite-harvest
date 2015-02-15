@@ -3,10 +3,12 @@
 
 use Carbon\Carbon;
 use Monolog\Logger;
+use Uninett\Collections\Collection;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
+use Uninett\Schemas\LastUpdatesSchema;
 
-class LastUpdates
+class LastUpdates extends Collection
 {
     private $_mongo;
     private $_criteria;
@@ -15,29 +17,28 @@ class LastUpdates
 
     public function __construct()
     {
+	    parent::__construct(LastUpdatesSchema::COLLECTION_NAME);
+
         $this->_log = new Logger('import');
 
-        $this->_mongo = new MongoConnection(
-            LastUpdatesSchema::COLLECTION_NAME
-        );
+        $this->_mongo = new MongoConnection(LastUpdatesSchema::COLLECTION_NAME);
 
         $this->_criteria = array(LastUpdatesSchema::DOCUMENT_KEY => Config::get('settings')['lastupdates_doc_key']);
 
         if($this->_collectionDoesNotExist())
-            $this->_createCollection();
+            $this->createCollection();
     }
 
     private function _collectionDoesNotExist()
     {
         $cursor = $this->_mongo->collection->find($this->_criteria)->limit(1)->count();
         if(empty($cursor))
-
             return true;
 
         return false;
     }
 
-    private function _createCollection()
+    private function createCollection()
     {
         $cursor = $this->_mongo->findLimitOneCount($this->_criteria);
 
@@ -55,10 +56,8 @@ class LastUpdates
             if($success)
                 $this->_log->addNotice(Carbon::now()->toDateTimeString() . ": Created collection");
 
-
             return $success;
         }
-
         return false;
     }
 
@@ -89,14 +88,13 @@ class LastUpdates
         return $this->_updateFieldInCollection(LastUpdatesSchema::PRESENTATION_ID, $id);
     }
 
-    private function _find($field)
+    private function find($field)
     {
         //Finds the one document that matches the criteria, which depends on MONGO_LASTUPDATES_DOCUMENT_KEY
         $cursor = $this->_mongo->collection->find($this->_criteria)->limit(1);
 
         //Returns the field. It will be found only one field.
         foreach($cursor as $obj)
-
             return $obj[$field];
 
         return null;
@@ -104,11 +102,11 @@ class LastUpdates
 
     public function findUserId()
     {
-        return $this->_find(LastUpdatesSchema::USER_ID);
+        return $this->find(LastUpdatesSchema::USER_ID);
     }
 
     public function findLargestPresentationId()
     {
-        return $this->_find(LastUpdatesSchema::PRESENTATION_ID);
+        return $this->find(LastUpdatesSchema::PRESENTATION_ID);
     }
 }
