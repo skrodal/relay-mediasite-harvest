@@ -9,6 +9,7 @@ abstract class Collection
     protected $logger;
     protected $reflect;
     protected $collectionName;
+	protected fileName
 
     function __construct($collectionName)
     {
@@ -20,16 +21,6 @@ abstract class Collection
 	    $this->logger = new Logger($this->reflect->getFileName());
 
 	    $this->setLogHandler();
-    }
-
-    public function LogError($message)
-    {
-        $this->logger->error($this->collectionName. ": " . $message);
-    }
-
-    public function LogInfo($message)
-    {
-        $this->logger->info($this->collectionName . ": " .  $message);
     }
 
 	private function setLogHandler()
@@ -45,4 +36,24 @@ abstract class Collection
 
 		$this->logger->pushHandler($stream);
 	}
+
+	
+    public function LogError($message)
+    {
+        $this->logger->error($this->logMessageFormat($message));
+    }
+
+    public function LogInfo($message)
+    {
+        $this->logger->info($this->logMessageFormat($message));
+    }
+
+	private function logMessageFormat($message)
+	{
+		return $this->logger->getName() .":" . $this->collectionName. ": " . $message;
+	}
+
+
+
+
 }
