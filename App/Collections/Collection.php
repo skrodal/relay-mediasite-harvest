@@ -10,10 +10,10 @@ abstract class Collection
     protected $reflect;
     protected $collectionName;
 
-    function __construct($collectionName)
+    function __construct($dailyVideosCollectionName)
     {
         $this->collectionName =
-            !empty($collectionName) ? $collectionName : "Seems like you forgot to set the collectionName";
+            !empty($dailyVideosCollectionName) ? $dailyVideosCollectionName : "Seems like you forgot to set the collectionName";
 
         $this->reflect = new ReflectionClass($this);
 
