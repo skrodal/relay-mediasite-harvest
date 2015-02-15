@@ -30,7 +30,6 @@ class UserImport extends Collection
     {
         $this->latestUserId = $this->lastInsertedUserIdInMongoDb();
 
-	    echo "Last userId was " . $this->latestUserId . PHP_EOL;
         $newUsersInDatabase = new UserFind($this->latestUserId, new EcampusSQLConnection);
 
         $query = $newUsersInDatabase->findNewUsersInDatabase();

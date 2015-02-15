@@ -8,7 +8,6 @@ class UserFind
 
     private $connection;
 
-
     public function __construct($largestInsertedFileIdInMongoDb, MSSQLDatabaseConnectionInterface $connection)
     {
         $this->largestInsertedFileIdInMongoDb = $largestInsertedFileIdInMongoDb;

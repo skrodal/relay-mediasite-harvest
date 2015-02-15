@@ -38,7 +38,8 @@ class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 
 			//! Query could also be true if no rows was returned, but query succeeded
 
-			return false;
+			//TODO: Funker dette?
+			return $result;
 		}
 
 		return $result;
