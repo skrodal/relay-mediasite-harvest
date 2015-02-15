@@ -1,8 +1,12 @@
 <?php
 use Monolog\Logger;
+
+require 'global.php';
+
+
 /**
  * Autoload third party modules
  */
-require 'vendor/autoload.php';
-require 'config.php';
-require 'global.php';
+require $root . '/vendor/autoload.php';
+require $root . '/config.php';
+
