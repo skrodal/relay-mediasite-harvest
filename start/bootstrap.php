@@ -1,12 +1,11 @@
 <?php
-use Monolog\Logger;
-
 require 'global.php';
 
+$basePath = dirname('../'. __FILE__);
 
 /**
  * Autoload third party modules
  */
-require 'vendor/autoload.php';
-require 'config.php';
+require dirname(__FILE__) . '/../vendor/autoload.php';
+require dirname(__FILE__) . '/../config.php';
 
