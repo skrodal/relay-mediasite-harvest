@@ -3,7 +3,7 @@
 use Exception;
 use Uninett\Config;
 
-class EcampussqlMSSQLDatabaseConnection extends MSSQLMSSQLDatabaseConnection {
+class EcampusSQLConnection extends MSSQLMSSQLDatabaseConnection {
 	public function __construct()
 	{
 		$this->host = Config::get('ecampussql')['host'];

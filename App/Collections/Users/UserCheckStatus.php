@@ -4,7 +4,7 @@ use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
 use Uninett\Collections\Helpers\UserHelper;
 use Uninett\Config;
-use Uninett\Database\EcampussqlMSSQLDatabaseConnection;
+use Uninett\Database\EcampusSQLConnection;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\UsersSchema;
 
@@ -33,7 +33,7 @@ class UserCheckStatus extends Collection implements CollectionUpdateInterface
         parent::__construct(UsersSchema::COLLECTION_NAME);
 
         $this->mongo = new MongoConnection(UsersSchema::COLLECTION_NAME);
-        $this->ecampussql =  new EcampussqlMSSQLDatabaseConnection();
+        $this->ecampussql = new EcampusSQLConnection();
     }
 
     public function update()
