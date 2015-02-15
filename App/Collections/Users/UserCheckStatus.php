@@ -26,7 +26,7 @@ class UserCheckStatus extends Collection implements CollectionUpdateInterface
     private $mongo;
     private $ecampussql;
 
-    private $numberOfStatusChanges;
+    private $numberOfStatusChanges = 0;
 
     public function __construct()
     {

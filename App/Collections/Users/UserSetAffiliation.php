@@ -13,7 +13,7 @@ class UserSetAffiliation extends Collection implements CollectionUpdateInterface
 {
     private $_mongoDatabaseConnection;
 
-    private $numberOfUsersInserted;
+    private $numberOfUsersInserted = 0;
 
     public function __construct()
     {

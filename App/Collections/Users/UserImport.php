@@ -19,7 +19,6 @@ class UserImport extends Collection
 
     public function __construct()
     {
-
         parent::__construct(UsersSchema::COLLECTION_NAME);
 
         $this->mongo = new MongoConnection(UsersSchema::COLLECTION_NAME);
@@ -31,7 +30,7 @@ class UserImport extends Collection
     {
         $this->latestUserId = $this->_lastInsertedUserIdInMongoDb();
 
-        $newUsersInDatabase = new UserFind(0, new EcampusSQLConnection);
+        $newUsersInDatabase = new UserFind($this->latestUserId, new EcampusSQLConnection);
 
         $query = $newUsersInDatabase->findNewUsersInDatabase();
 
