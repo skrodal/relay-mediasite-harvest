@@ -4,14 +4,14 @@ use Uninett\Database\MSSQLDatabaseConnectionInterface;
 
 class UserFind
 {
-    private $_largestInsertedFileIdInMongoDb;
+    private $largestInsertedFileIdInMongoDb;
 
     private $connection;
 
 
     public function __construct($largestInsertedFileIdInMongoDb, MSSQLDatabaseConnectionInterface $connection)
     {
-        $this->_largestInsertedFileIdInMongoDb = $largestInsertedFileIdInMongoDb;
+        $this->largestInsertedFileIdInMongoDb = $largestInsertedFileIdInMongoDb;
 
         $this->connection = $connection;
     }
@@ -21,7 +21,7 @@ class UserFind
         $query = "
         SELECT userId, userName, userEmail, userDisplayName, createdOn
         FROM tblUser
-        WHERE userId > " . $this->_largestInsertedFileIdInMongoDb;
+        WHERE userId > " . $this->largestInsertedFileIdInMongoDb;
 
         return $this->connection->query($query);
     }

@@ -1,17 +1,18 @@
 <?php namespace Uninett\Collections\Users;
 //Creates an User object with by using the result from UserFind
-use Carbon\Carbon;
-use Monolog\Logger;
 
-class UserCreate
+use Uninett\Collections\Collection;
+use Uninett\Models\User;
+use Uninett\Schemas\UserMediasiteSchema;
+use Uninett\Schemas\UsersSchema;
+
+class UserCreate extends Collection
 {
     const StatusNotSet = -1;
 
-    private $_log;
-
     function __construct()
     {
-        $this->_log = new Logger('import');
+        parent::__construct(UsersSchema::COLLECTION_NAME);
     }
 
     public function create($res)
@@ -28,7 +29,7 @@ class UserCreate
             $emailValid = $user->setEmail($res[UserMediasiteSchema::USER_EMAIL]);
 
             if (!$emailValid) {
-                $this->_log->addError("Could not add " .
+                $this->LogError("Could not add " .
                     $res[UserMediasiteSchema::USERNAME] . ". because userEmail did not look like an email. Ignored");
 
                 return null;
@@ -47,7 +48,7 @@ class UserCreate
 
             $user->setAffiliation("willBeSetIfFolderExistsAndUserSetAffiliationHaveDoneItsThing");
         } else {
-            $this->_log->addWarning("Found user: " . $res[UserMediasiteSchema::USERNAME]  . ", but could not create it" . ". Ignored");
+            $this->LogError("Found user: " . $res[UserMediasiteSchema::USERNAME]  . ", but could not create it" . ". Ignored");
 
             return null;
         }

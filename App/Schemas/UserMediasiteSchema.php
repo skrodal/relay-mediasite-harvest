@@ -1,4 +1,4 @@
-<?php namespace Uninett\Collections\Users;
+<?php namespace Uninett\Schemas;
 class UserMediasiteSchema
 {
     const USERNAME = "userName";

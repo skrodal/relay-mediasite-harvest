@@ -1,4 +1,4 @@
-<?php namespace Uninett\Collections\Users;
+<?php namespace Uninett\Models;
 use JsonSerializable;
 use MongoDate;
 
@@ -16,6 +16,22 @@ class User implements JsonSerializable
     private $_status = "";
 
     private $_affiliation = "";
+
+
+    public function jsonSerialize()
+    {
+        return [
+            UsersSchema::NAME => $this->getName(),
+            UsersSchema::USERNAME => $this->getUsername(),
+            UsersSchema::USERNAME_ON_DISK => $this->getUsernameDisk(),
+            UsersSchema::ORG => $this->getOrg(),
+            UsersSchema::EMAIL => $this->getEmail(),
+            UsersSchema::AFFILIATION => $this->getAffiliation(),
+            UsersSchema::CREATED => $this->getDate(),
+            UsersSchema::STATUS => $this->getStatus(),
+        ];
+    }
+
 
     public function setUsernameOnDisk($u)
     {
@@ -144,19 +160,5 @@ class User implements JsonSerializable
     public function getStatus()
     {
         return $this->_status;
-    }
-
-    public function jsonSerialize()
-    {
-        return [
-            UsersSchema::NAME => $this->getName(),
-            UsersSchema::USERNAME => $this->getUsername(),
-            UsersSchema::USERNAME_ON_DISK => $this->getUsernameDisk(),
-            UsersSchema::ORG => $this->getOrg(),
-            UsersSchema::EMAIL => $this->getEmail(),
-            UsersSchema::AFFILIATION => $this->getAffiliation(),
-            UsersSchema::CREATED => $this->getDate(),
-            UsersSchema::STATUS => $this->getStatus(),
-        ];
     }
 }

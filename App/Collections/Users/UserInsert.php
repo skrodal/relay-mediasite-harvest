@@ -1,6 +1,7 @@
 <?php namespace Uninett\Collections\Users;
 //This class inserts users to mongodb
 use Uninett\Database\MongoConnection;
+use Uninett\Models\User;
 
 class UserInsert
 {

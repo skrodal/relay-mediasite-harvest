@@ -11,7 +11,7 @@ class UserCreateTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         require_once 'UserCreate.php';
-        require_once 'User.php';
+        require_once 'UserModel.php';
         $this->_user = new User();
         $this->_users = new UserCreate();
     }

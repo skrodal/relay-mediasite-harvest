@@ -1,4 +1,4 @@
-<?php namespace Uninett\Collections\LastUpdates;
+<?php namespace Uninett\Schemas;
 /**
  * Names for a certain collection.
  * Used to make it easier to do changes of names in mongo, and to avoid typos in code

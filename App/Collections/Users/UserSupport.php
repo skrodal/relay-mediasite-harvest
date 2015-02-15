@@ -1,20 +1,22 @@
 <?php namespace Uninett\Collections\Users;
-class UserSupport {
-    private $_mongoDatabaseConnection;
+use Uninett\Collections\Collection;
+use Uninett\Config;
+use Uninett\Database\MongoConnection;
+use Uninett\Schemas\UsersSchema;
+
+class UserSupport extends Collection {
+    private $mongo;
 
     function __construct()
     {
-        $this->_mongoDatabaseConnection = new MongoConnection(
-        Config::Instance()['mongoDatabase']['username'],
-        Config::Instance()['mongoDatabase']['password'],
-        Config::Instance()['mongoDatabase']['host'],
-        Config::Instance()['mongoDatabase']['db'],
-        UsersSchema::COLLECTION_NAME);
+        parent::__construct(UsersSchema::COLLECTION_NAME);
+
+        $this->mongo = new MongoConnection(UsersSchema::COLLECTION_NAME);
     }
 
     public function findUsersInDatabaseInDirectoryOnDisk($directory)
     {
-        $cursor = $this->_mongoDatabaseConnection->find();
+        $cursor = $this->mongo->find();
 
         $users = array();
 
@@ -40,7 +42,7 @@ class UserSupport {
 
     public function findUsersInDatabase()
     {
-        $cursor = $this->_mongoDatabaseConnection ->find();
+        $cursor = $this->mongo->find();
 
         $users = array();
 
@@ -59,7 +61,9 @@ class UserSupport {
 
     public function userHasFolderOnDisk($possibleUserfolderNames)
     {
-        foreach (Config::Instance()['folders_to_scan_for_files'] as $directory)
+        $directories = Config::get('folders_to_scan_for_files');
+
+        foreach ($directories as $directory)
             foreach($possibleUserfolderNames as $username)
                 if(is_dir($directory.DIRECTORY_SEPARATOR.$username))
                     return true;
@@ -70,7 +74,9 @@ class UserSupport {
 
     public function findUsersInOrganisationsInDatabase()
     {
-        $cursor = $this->_mongoDatabaseConnection->distinct("org");
+        $directories = Config::get('folders_to_scan_for_files');
+
+        $cursor = $this->mongo->distinct("org");
 
         $users = array();
 
@@ -78,11 +84,11 @@ class UserSupport {
 
             $array = array();
 
-            foreach (Config::Instance()['folders_to_scan_for_files'] as $directory) {
+            foreach ($directories as $directory) {
 
                 $dir = $directory . DIRECTORY_SEPARATOR;
 
-                $usersInOrg = $this->_mongoDatabaseConnection->find(array(UsersSchema::ORG => $org));
+                $usersInOrg = $this->mongo->find(array(UsersSchema::ORG => $org));
 
                 foreach($usersInOrg as $u) {
 

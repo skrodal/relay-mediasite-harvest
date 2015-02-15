@@ -2,71 +2,71 @@
 // Prerequisites: None. This class manages user finding from a source database and inserting to mongodb
 use Carbon\Carbon;
 use Monolog\Logger;
+use Uninett\Collections\Collection;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Database\EcampussqlMSSQLDatabaseConnection;
 use Uninett\Database\MongoConnection;
+use Uninett\Schemas\UserMediasiteSchema;
+use Uninett\Schemas\UsersSchema;
 
 
-class UserImport
+class UserImport extends Collection
 {
-    private $_largestUserIdInserted =  0;
+    private $latestUserId =  0;
+    private $mongo;
+    private $insert;
 
-    private $_mongoDatabaseConnection;
-
-    private $_userInserter;
-
-    private $_log;
+    private $usersInserted = 0;
 
     public function __construct()
     {
-        $this->_log = new Logger('import');
-        //$this->_log = new Logging(UsersSchema::COLLECTION_NAME, __FILE__);
+        parent::__construct(UsersSchema::COLLECTION_NAME);
 
-        $this->_mongoDatabaseConnection = new MongoConnection(UsersSchema::COLLECTION_NAME);
+        $this->mongo = new MongoConnection(UsersSchema::COLLECTION_NAME);
 
-        $this->_userInserter = new UserInsert(new MongoConnection(UsersSchema::COLLECTION_NAME));
-
-        //$this->_log->numberFound  = 0;
+        $this->insert = new UserInsert(new MongoConnection(UsersSchema::COLLECTION_NAME));
     }
 
     public function update()
     {
-        $this->_largestUserIdInserted = 0;
+        $this->latestUserId = $this->_lastInsertedUserIdInMongoDb();
 
         $newUsersInDatabase = new UserFind(0, new EcampussqlMSSQLDatabaseConnection);
 
         $query = $newUsersInDatabase->findNewUsersInDatabase();
 
-        $this->_log->addNotice("Found " . mssql_num_rows($query) . " results");
+        $this->LogNotice("Found " . mssql_num_rows($query) . " results");
 
         if ($this->_queryContainsNewUsers($query))
         {
-            $this->_log->numberFound = mssql_num_rows($query);
-
             while ($result = mssql_fetch_assoc($query))
             {
                 $criteria = array(UsersSchema::USERNAME => $result[UserMediasiteSchema::USERNAME]);
 
                 if ($this->foundNewUser($criteria))
                 {
-                    //$this->_log->logSingleUpdate("Found new user " . $result[UserMediasiteSchema::USERNAME]);
-                    $this->_log->addNotice("Found new user " . $result[UserMediasiteSchema::USERNAME]);
+                    $this->LogNotice("Found new user " . $result[UserMediasiteSchema::USERNAME]);
 
                     $user = (new UserCreate)->create($result);
 
                     if (is_null($user))
+                    {
+                        $this->LogError("Could not create the user with username:"
+                            . $result[UserMediasiteSchema::USERNAME]);
                         continue;
+                    }
 
                     $this->_insertUserToDb($user, $result[UserMediasiteSchema::USER_ID]);
 
                 } else
-                    $this->_log->addNotice("Tried to insert user: " .
-                $result[UserMediasiteSchema::USERNAME] . ", but user is already in database", false, false);
+                    $this->LogNotice("Tried to insert user: " .
+                $result[UserMediasiteSchema::USERNAME] . ", but user is already in database");
             }
         }
+
+        if($this->usersInserted > 0)
+            $this->_updateLargestInsertedUserIdInMongoDb();
     }
-
-
 
     private function _queryContainsNewUsers($query)
     {
@@ -78,41 +78,37 @@ class UserImport
 
     private function foundNewUser($criteria)
     {
-        $cursor = $this->_mongoDatabaseConnection->findOne($criteria);
+        $cursor = $this->mongo->findOne($criteria);
 
         return empty($cursor) ? true : false;
     }
 
     private function _insertUserToDb($user, $userId)
     {
-        $success = $this->_userInserter->insertUserToMongoDb($user);
+        $success = $this->insert->insertUserToMongoDb($user);
 
         if ($success) {
-            //$this->_log->numberInserted++;
             $this->_keepLargestUserId($userId);
         } else
-            $this->_log->addError("Something went wrong when inserting new user: " . $user->getUsername());
-
+            $this->LogError("Something went wrong when inserting new user: " . $user->getUsername());
     }
 
-    private function _keepLargestUserId($id)
+    private function _keepLargestUserId($newUserId)
     {
-        if($id > $this->_largestUserIdInserted)
-            $this->_largestUserIdInserted = $id;
+        if($newUserId > $this->latestUserId)
+            $this->latestUserId = $newUserId;
     }
 
     private function _lastInsertedUserIdInMongoDb()
     {
-        $last = new LastUpdates();
-        return $last->findUserId();
+        return (new LastUpdates)->findUserId();
     }
 
     private function _updateLargestInsertedUserIdInMongoDb()
     {
         $last = new LastUpdates();
-        $last->updateUserId($this->_largestUserIdInserted);
+        $last->updateUserId($this->latestUserId);
     }
-
-    }
+}
 
 

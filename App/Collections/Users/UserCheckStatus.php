@@ -1,5 +1,13 @@
 <?php namespace Uninett\Collections\Users;
-/**
+
+use Uninett\Collections\Collection;
+use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Config;
+use Uninett\Database\EcampussqlMSSQLDatabaseConnection;
+use Uninett\Database\MongoConnection;
+use Uninett\Schemas\UsersSchema;
+
+    /**
  *  A user may have different statuses
  *
  * -1. Not set yet. This is the default value a user will have when it is just imported from relay to mongodb
@@ -12,42 +20,34 @@
 
 //Prerequisites: Users collection in mongodb is updated, access to tblUser on ecampussql
 //This class compares the updated existence of users in tblUser, disk and reflect changes in mongodb
-class UserCheckStatus implements IUpdate
+class UserCheckStatus extends Collection implements CollectionUpdateInterface
 {
-    private $_mongoDatabaseConnection;
-    private $_ecampussqlDatabaseConnection;
+    private $mongo;
+    private $ecampussql;
 
-    private $_log;
+    private $numberOfStatusChanges;
 
     public function __construct()
     {
-        $this->_log = new Logging(UsersSchema::COLLECTION_NAME, __FILE__);
+        parent::__construct(UsersSchema::COLLECTION_NAME);
 
-        $this->_mongoDatabaseConnection = new MongoConnection(
-            Config::Instance()['mongoDatabase']['username'],
-            Config::Instance()['mongoDatabase']['password'],
-            Config::Instance()['mongoDatabase']['host'],
-            Config::Instance()['mongoDatabase']['db'], UsersSchema::COLLECTION_NAME);
-
-        $this->_ecampussqlDatabaseConnection =  new MSSQLDatabaseConnection(
-            Config::Instance()['ecampussqlDatabase']['host'],
-            Config::Instance()['ecampussqlDatabase']['username'],
-            Config::Instance()['ecampussqlDatabase']['password'],
-            Config::Instance()['ecampussqlDatabase']['db']);
+        $this->mongo = new MongoConnection(UsersSchema::COLLECTION_NAME);
+        $this->ecampussql =  new EcampussqlMSSQLDatabaseConnection();
     }
 
     public function update()
     {
-        if(!$this->_foundUsersInMongoDatabase())
+        if(!$this->foundUsersInMongoDatabase())
             return 0;
 
         $this->_updateStatusForUsers();
 
-        $this->_log->logSingleUpdate3($this->_log->numberInserted, "Changed status");
+        $this->LogNotice("Changed status for " . $this->numberOfStatusChanges . " users");
     }
 
     private function _updateStatusForUsers()
     {
+        $userStatus = Config::get('userStatus');
         $u = new UserSupport();
 
         $users = $u->findUsersInDatabase();
@@ -56,11 +56,11 @@ class UserCheckStatus implements IUpdate
 
              $userHasFolderOnDisk = $u->userHasFolderOnDisk($arrayOfPossibleUsernamesForAUser);
 
-             $userExistsInRelayDb = $this->_accountExistsOnRelayDatabase($feideUsername);
+             $userExistsInRelayDb = $this->ecampussql->userAccountExists($feideUsername);
 
              $criteria = array(UsersSchema::USERNAME => $feideUsername);
 
-             $userDocument = $this->_mongoDatabaseConnection->findOne($criteria);
+             $userDocument = $this->mongo->findOne($criteria);
 
              $statusFrom = $userDocument[UsersSchema::STATUS];
 
@@ -93,56 +93,29 @@ class UserCheckStatus implements IUpdate
                  continue;
              }
 
-             $success = $this->_mongoDatabaseConnection->update($criteria, '$set', UsersSchema::STATUS, $statusTo, 0);
+             $success = $this->mongo->update($criteria, '$set', UsersSchema::STATUS, $statusTo, 0);
 
              if ($success) {
 
-                 $this->_log->logSingleUpdate("Changed status for " .
+                 $this->LogNotice("Changed status for " .
                      $userDocument[UsersSchema::USERNAME] . " from: " .
-                     Config::Instance()['userStatus'][$statusFrom] . " to: " .
-                     Config::Instance()['userStatus'][$statusTo]);
+                     $userStatus[$statusFrom] . " to: " .
+                     $userStatus[$statusTo]);
 
-                 $this->_log->numberInserted++;
+                 $this->numberOfStatusChanges = $this->numberOfStatusChanges + 1;
              }
         }
      }
 
 
-    private function _foundUsersInMongoDatabase()
+    private function foundUsersInMongoDatabase()
     {
-        $numberOfusersFound = $this->_mongoDatabaseConnection->find()->count();
+        $numberOfusersFound = $this->mongo->find()->count();
 
         if ($numberOfusersFound == 0) {
-            $this->_log->logSingleUpdate( "No users found in database");
+            $this->LogNotice("No users found in database");
             return false;
         }
         return true;
-    }
-
-    private function _accountExistsOnRelayDatabase($username)
-    {
-        $query = "
-        SELECT userName
-        FROM tblUser
-        WHERE userName LIKE '" . $username . "'";
-
-        $query = $this->_ecampussqlDatabaseConnection->query($query);
-
-        //New code
-        if($query == false)
-            return false;
-
-        return true;
-
-        /*
-        //Old code
-        $rowsFound = mssql_num_rows($query);
-
-
-        if($rowsFound  > 0)
-
-            return true;
-        else
-            return false;*/
     }
 }

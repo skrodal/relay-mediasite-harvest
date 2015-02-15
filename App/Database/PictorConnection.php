@@ -9,7 +9,6 @@ class PictorDatabaseMSSQLDatabaseConnection extends MSSQLMSSQLDatabaseConnection
 		$this->username = Config::get('pictor')['username'];
 		$this->password = Config::get('pictor')['password'];
 		$this->database = Config::get('pictor')['database'];
-
 		$this->connect();
 	}
 

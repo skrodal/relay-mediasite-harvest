@@ -1,41 +1,45 @@
 <?php namespace Uninett\Collections\Users;
 //Uses users collection to match usernames in db and foldernames on disk and sets the correct affiliation if they maches a certain criteria
-class UserSetAffiliation implements IUpdate
+
+use Uninett\Collections\Collection;
+use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Config;
+use Uninett\Database\MongoConnection;
+use Uninett\Schemas\UsersSchema;
+
+class UserSetAffiliation extends Collection implements CollectionUpdateInterface
 {
     private $_mongoDatabaseConnection;
-    private $_diskOperation;
 
-    private $_log;
+    private $numberOfUsersInserted;
+
     public function __construct()
     {
-        $this->_log = new Logging(UsersSchema::COLLECTION_NAME, __FILE__);
+        parent::__construct(UsersSchema::COLLECTION_NAME);
 
-        $this->_mongoDatabaseConnection = new MongoConnection(
-            Config::Instance()['mongoDatabase']['username'],
-            Config::Instance()['mongoDatabase']['password'],
-            Config::Instance()['mongoDatabase']['host'],
-            Config::Instance()['mongoDatabase']['db'],
-            UsersSchema::COLLECTION_NAME);
-
-        $this->_diskOperation = new Convert();
+        $this->_mongoDatabaseConnection = new MongoConnection(UsersSchema::COLLECTION_NAME);
     }
 
     public function update()
     {
         $u = new UserSupport();
 
-        foreach (Config::Instance()['folders_to_scan_for_files'] as $directory) {
+        $directories = Config::get('folders_to_scan_for_files');
+
+        foreach ($directories as $directory) {
             $users =  $u->findUsersInDatabaseInDirectoryOnDisk($directory);
 
             $this->_validateUsersInDirectory($users);
-
         }
 
-        $this->_log->logFinished();
+        $this->LogNotice("Affiliation was set for " . $this->numberOfUsersInserted .  " users");
     }
 
     private function _validateUsersInDirectory($users)
     {
+        //TODO: Fix Convert class
+        $diskOperation = new Convert();
+
         foreach($users as $feideUsername => $userArrays)  {
 
             foreach ($userArrays as $userPath) {
@@ -44,21 +48,21 @@ class UserSetAffiliation implements IUpdate
 
                     $criteria = array
                     (
-                        'affiliation' => 'willBeSetIfFolderExistsAndUserSetAffiliationHaveDoneItsThing',
-                        'username' => $feideUsername
+                        UsersSchema::AFFILIATION => 'willBeSetIfFolderExistsAndUserSetAffiliationHaveDoneItsThing',
+                        UsersSchema::USERNAME => $feideUsername
                     );
 
                     $cursor = $this->_mongoDatabaseConnection->collection->find($criteria)->limit(1);
 
                     if ($this->_resultExists($cursor->count())) {
-                        $affiliation = $this->_diskOperation->getAffiliationFromPath($userPath);
+                        $affiliation = $diskOperation->getAffiliationFromPath($userPath);
 
                         $success = $this->_updateAffiliationInMongoDb($criteria, $affiliation);
 
                         if(!$success)
-                            $this->_log->logError("Could not update affiliation for " . $userPath);
+                            $this->LogError("Could not update affiliation for " . $userPath);
                         else
-                            $this->_log->numberInserted++;
+                            $this->numberOfUsersInserted = $this->numberOfUsersInserted + 1;
 
                         break;
                     }
