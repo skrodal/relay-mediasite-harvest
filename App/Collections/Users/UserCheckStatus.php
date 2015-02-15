@@ -43,7 +43,7 @@ class UserCheckStatus extends Collection implements CollectionUpdateInterface
 
         $this->_updateStatusForUsers();
 
-        $this->LogNotice("Changed status for " . $this->numberOfStatusChanges . " users");
+        $this->LogInfo("Changed status for " . $this->numberOfStatusChanges . " users");
     }
 
     private function _updateStatusForUsers()
@@ -98,7 +98,7 @@ class UserCheckStatus extends Collection implements CollectionUpdateInterface
 
              if ($success) {
 
-                 $this->LogNotice("Changed status for " .
+                 $this->LogInfo("Changed status for " .
                      $userDocument[UsersSchema::USERNAME] . " from: " .
                      $userStatus[$statusFrom] . " to: " .
                      $userStatus[$statusTo]);
@@ -114,7 +114,7 @@ class UserCheckStatus extends Collection implements CollectionUpdateInterface
         $numberOfusersFound = $this->mongo->find()->count();
 
         if ($numberOfusersFound == 0) {
-            $this->LogNotice("No users found in database");
+            $this->LogInfo("No users found in database");
             return false;
         }
         return true;

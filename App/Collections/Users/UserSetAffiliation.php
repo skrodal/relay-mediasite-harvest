@@ -34,7 +34,7 @@ class UserSetAffiliation extends Collection implements CollectionUpdateInterface
             $this->validateUsersInDirectory($users);
         }
 
-        $this->LogNotice("Affiliation was set for " . $this->numberOfUsersInserted .  " users");
+        $this->LogInfo("Affiliation was set for " . $this->numberOfUsersInserted .  " users");
     }
 
     private function validateUsersInDirectory($users)

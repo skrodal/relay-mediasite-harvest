@@ -34,7 +34,7 @@ class UserImport extends Collection
 
         $query = $newUsersInDatabase->findNewUsersInDatabase();
 
-        $this->LogNotice("Found " . mssql_num_rows($query) . " results");
+        $this->LogInfo("Found " . mssql_num_rows($query) . " results");
 
         if ($this->_queryContainsNewUsers($query))
         {
@@ -44,7 +44,7 @@ class UserImport extends Collection
 
                 if ($this->foundNewUser($criteria))
                 {
-                    $this->LogNotice("Found new user " . $result[UserMediasiteSchema::USERNAME]);
+                    $this->LogInfo("Found new user " . $result[UserMediasiteSchema::USERNAME]);
 
                     $user = (new UserCreate)->create($result);
 
@@ -58,13 +58,18 @@ class UserImport extends Collection
                     $this->_insertUserToDb($user, $result[UserMediasiteSchema::USER_ID]);
 
                 } else
-                    $this->LogNotice("Tried to insert user: " .
+                    $this->LogInfo("Tried to insert user: " .
                 $result[UserMediasiteSchema::USERNAME] . ", but user is already in database");
             }
         }
 
         if($this->usersInserted > 0)
-            $this->_updateLargestInsertedUserIdInMongoDb();
+        {
+	        $this->_updateLargestInsertedUserIdInMongoDb();
+
+	        $this->LogInfo("Inserted " . $this->usersInserted . " new users");
+        }
+
     }
 
     private function _queryContainsNewUsers($query)

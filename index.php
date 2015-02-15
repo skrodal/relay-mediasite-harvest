@@ -1,5 +1,6 @@
 <?php
 use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\Users\UserTest;
 
 require 'start/bootstrap.php';
 

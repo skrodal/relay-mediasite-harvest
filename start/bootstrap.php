@@ -1,7 +1,8 @@
 <?php
 require 'global.php';
 
-$basePath = dirname('../'. __FILE__);
+$projectRoot = dirname( __DIR__);
+
 
 /**
  * Autoload third party modules
