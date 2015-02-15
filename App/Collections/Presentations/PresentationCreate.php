@@ -1,6 +1,7 @@
 <?php namespace Uninett\Collections\Presentations;
 //This class creates a presentation object after reading its xmlfiles
 use Uninett\Collections\Collection;
+
 use Uninett\Collections\Helpers\Arithmetic;
 use Uninett\Collections\Helpers\Convert;
 use Uninett\Models\PresentationFilesModel;

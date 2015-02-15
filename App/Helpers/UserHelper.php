@@ -1,4 +1,5 @@
 <?php namespace Uninett\Collections\Helpers;
+
 use Uninett\Collections\Collection;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;

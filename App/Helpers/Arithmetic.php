@@ -1,4 +1,5 @@
 <?php namespace Uninett\Collections\Helpers;
+
 use Uninett\Config;
 
 class Arithmetic {
