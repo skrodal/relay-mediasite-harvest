@@ -9,7 +9,7 @@ abstract class Collection
     protected $logger;
     protected $reflect;
     protected $collectionName;
-	protected fileName
+
 
     function __construct($collectionName)
     {
@@ -37,7 +37,7 @@ abstract class Collection
 		$this->logger->pushHandler($stream);
 	}
 
-	
+
     public function LogError($message)
     {
         $this->logger->error($this->logMessageFormat($message));
