@@ -7,6 +7,6 @@ require 'global.php';
 /**
  * Autoload third party modules
  */
-require dirname(__FILE__) . '/../vendor/autoload.php';
-require dirname(__FILE__) . '/../config.php';
+require 'vendor/autoload.php';
+require 'config.php';
 
