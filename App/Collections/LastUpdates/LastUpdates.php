@@ -54,7 +54,7 @@ class LastUpdates extends Collection
             $success = $this->_mongo->createLastUpdates($document);
 
             if($success)
-                $this->_log->addNotice(Carbon::now()->toDateTimeString() . ": Created collection");
+                $this->_log->addNotice("Created collection: " .  LastUpdatesSchema::COLLECTION_NAME);
 
             return $success;
         }
@@ -73,7 +73,7 @@ class LastUpdates extends Collection
         $updateWentWell = $this->_mongo->update($this->_criteria, $operation, $field, $id, $options);
 
         if($updateWentWell)
-            $this->_log->addNotice(Carbon::now()->toDateTimeString() . ":" . $field. " set to " . $id);
+            $this->LogInfo($field. " set to " . $id);
 
         return $updateWentWell;
     }
