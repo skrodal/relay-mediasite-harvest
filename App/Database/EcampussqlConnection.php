@@ -1,9 +1,9 @@
 <?php  namespace Uninett\Database;
 
-use Exception;
 use Uninett\Config;
 
-class EcampusSQLConnection extends MSSQLMSSQLDatabaseConnection {
+class EcampusSQLConnection extends MSSQLDatabaseConnection
+{
 	public function __construct()
 	{
 		$this->host = Config::get('ecampussql')['host'];

@@ -1,8 +1,8 @@
 <?php namespace Uninett\Database;
-use Exception;
 use Uninett\Config;
 
-class PictorDatabaseMSSQLDatabaseConnection extends MSSQLMSSQLDatabaseConnection {
+class PictorDatabaseMSSQLDatabaseConnection extends MSSQLDatabaseConnection
+{
 	public function __construct()
 	{
 		$this->host = Config::get('pictor')['host'];
