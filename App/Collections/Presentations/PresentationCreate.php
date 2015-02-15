@@ -4,7 +4,7 @@ use Uninett\Collections\Collection;
 
 
 use Uninett\Helpers\Arithmetic;
-use Uninett\Helpers\Convert;
+use Uninett\Helpers\ConvertHelper;
 use Uninett\Models\PresentationFilesModel;
 use Uninett\Models\PresentationModel;
 use Uninett\Schemas\PresentationSchema;
@@ -23,7 +23,7 @@ class PresentationCreate extends Collection
     public function createPresentationFromArrayResult($presentationXmlFiles) {
         $haveFilledInGeneralInfo = false;
 
-        $convert = new Convert();
+        $convert = new ConvertHelper();
 
         $newPresentation = new PresentationModel();
 

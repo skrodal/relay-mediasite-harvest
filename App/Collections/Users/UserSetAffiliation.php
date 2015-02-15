@@ -3,7 +3,7 @@
 
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
-use Uninett\Helpers\Convert;
+use Uninett\Helpers\ConvertHelper;
 use Uninett\Helpers\UserHelper;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
@@ -39,7 +39,7 @@ class UserSetAffiliation extends Collection implements CollectionUpdateInterface
 
     private function validateUsersInDirectory($users)
     {
-        $diskOperation = new Convert();
+        $diskOperation = new ConvertHelper();
 
         foreach($users as $feideUsername => $userArrays)  {
 

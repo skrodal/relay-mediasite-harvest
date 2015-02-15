@@ -1,4 +1,8 @@
 <?php namespace Uninett\Collections\Presentations;
+use DateInterval;
+use DatePeriod;
+use DateTime;
+use MongoDate;
 use Uninett\Collections\Collection;
 
 use Uninett\Collections\CollectionUpdateInterface;
@@ -9,8 +13,8 @@ use Uninett\Schemas\UniqueTrafficSchema;
 
 class PresentationHitsImport extends Collection implements CollectionUpdateInterface
 {
-    private $_presentationCollection;
-    private $_uniqueTrafficCollection;
+    private $presentations;
+    private $uniqueTraffic;
 
     private $_startDate;
     private $_endDate;
@@ -26,14 +30,13 @@ class PresentationHitsImport extends Collection implements CollectionUpdateInter
         $this->_endDate = $endDate;
         $this->_interval = $interval;
 
-        $this->_presentationCollection = new MongoConnection(PresentationSchema::COLLECTION_NAME);
+        $this->presentations = new MongoConnection(PresentationSchema::COLLECTION_NAME);
 
-        $this->_uniqueTrafficCollection = new MongoConnection(UniqueTrafficSchema::COLLECTION_NAME);
+        $this->uniqueTraffic = new MongoConnection(UniqueTrafficSchema::COLLECTION_NAME);
     }
 
     public function update()
     {
-
         $count = 0;
         $startDate = new DateTime($this->_startDate);
         $endDate = new DateTime($this->_endDate);
@@ -61,7 +64,7 @@ class PresentationHitsImport extends Collection implements CollectionUpdateInter
     public function find($date) {
         $criteriaDaily = array(DailyVideosSchema::DATE => new MongoDate(strtotime($date->format('Y-m-d'))));
 
-        $res = $this->_uniqueTrafficCollection->collection->find($criteriaDaily);
+        $res = $this->uniqueTraffic->collection->find($criteriaDaily);
 
         if($res->count() > 0) {
             foreach($res as $document)
@@ -74,12 +77,12 @@ class PresentationHitsImport extends Collection implements CollectionUpdateInter
     }
 
     private function _increaseHits($criteria) {
-        $success1 = $this->_presentationCollection->updateIncrease(
+        $success1 = $this->presentations->updateIncrease(
             $criteria,
             array('$inc' => array(PresentationSchema::FILES.'.$.'.PresentationSchema::HITS => 1))
         );
 
-        $success2 =  $this->_presentationCollection->updateIncrease(
+        $success2 =  $this->presentations->updateIncrease(
             $criteria,
             array('$inc' => array(PresentationSchema::HITS => 1))
         );

@@ -3,13 +3,12 @@
 //Queries Perseus DB for new files based on largest fileId in MongoDB and inserts to MongoDB
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
-use Uninett\Helpers\Convert;
+use Uninett\Helpers\ConvertHelper;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Schemas\PresentationSchema;
 
 class PresentationImport extends Collection implements CollectionUpdateInterface
 {
-
     private $insert;
     private $find;
 
@@ -56,7 +55,7 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
 
     private function findAndInsertNewVideos()
     {
-        $convertedPath = new Convert();
+        $convertedPath = new ConvertHelper();
 
         $objectCreator = new PresentationCreate();
 

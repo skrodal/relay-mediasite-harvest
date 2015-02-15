@@ -2,7 +2,7 @@
 
 use Uninett\Config;
 
-class Convert
+class ConvertHelper
 {
 	public function convertExternalToLocalPath($path)
 	{
