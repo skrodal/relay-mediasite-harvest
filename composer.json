@@ -1,4 +1,8 @@
 {
+  "name": "ecampus-statistics",
+  "description": "Ecampus backend for collection statistics.",
+  "license": "Copyright UNINETT",
+  "type": "project",
   "require": {
     "monolog/monolog": "1.12.*@dev",
     "nesbot/Carbon": "*"
@@ -7,5 +11,15 @@
     "psr-4": {
       "Uninett\\": "App"
     }
-  }
+  },
+  "support" : {
+    "email" : "kim.syversen@gmail.com"
+  },
+  "authors": [
+    {
+      "name": "Kim Syversen",
+      "email": "kim.syversen@gmail.com",
+      "role": "Developer"
+    }
+  ]
 }
