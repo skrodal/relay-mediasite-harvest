@@ -39,5 +39,10 @@ Uninett\Config::add(
 		],
 		'arithmetic' => [
 			'numberOfDecimals' => 2
+		],
+		'mediasite' => [
+			'directories' => [
+				"/home/uninett/mediasite/"
+			]
 		]
 ]);
