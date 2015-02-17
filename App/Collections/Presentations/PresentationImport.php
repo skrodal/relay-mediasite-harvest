@@ -3,6 +3,7 @@
 //Queries Perseus DB for new files based on largest fileId in MongoDB and inserts to MongoDB
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\DailyVideos\DailyVideoImport;
 use Uninett\Helpers\ConvertHelper;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Schemas\PresentationSchema;
@@ -47,9 +48,8 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
         if($this->numberInserted > 0)
             $this->updateLargestPresentationIdInMongoDb();
 
-	    //TODO: Implement daily videos
-        //if($this->updateDailyVideos)
-        //    $this->_updateDailyVideos();
+        if($this->shouldUpdateDailyVideosCollection)
+            $this->_updateDailyVideos();
     }
 
     private function findAndInsertNewVideos()
@@ -145,8 +145,8 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
 
     private function _updateDailyVideos()
     {
-	    //TODO: Implement daily video
-       // $dv = new DailyVideoImport();
-       // $dv->insert($this->_log->numberInserted);
+
+        $dv = new DailyVideoImport();
+        $dv->insert($this->numberInserted);
     }
 }
