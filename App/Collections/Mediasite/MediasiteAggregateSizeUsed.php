@@ -1,4 +1,5 @@
-<?php
+<?php namespace Uninett\Collections\Mediasite;
+
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
 use Uninett\Config;

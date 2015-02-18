@@ -12,7 +12,7 @@ $collections = [
 	new \Uninett\Collections\Presentations\PresentationImport(true),
 	new \Uninett\Collections\Org\OrgImport,
 	new \Uninett\Collections\Org\OrgAggregateSizeUsed,
-	new MediasiteAggregateSizeUsed
+	new \Uninett\Collections\Mediasite\MediasiteAggregateSizeUsed
 
 ];
 
