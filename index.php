@@ -11,7 +11,9 @@ $collections = [
 foreach($collections as $collection)
 	$collection->update();
 
+$pres = new \Uninett\Collections\Presentations\PresentationImport(false);
 
+$pres->update();
 /*$mongo = new \Uninett\Database\MongoConnection(\Uninett\Schemas\PresentationSchema::COLLECTION_NAME);
 
 $criteria = array('presId' => 15319);
