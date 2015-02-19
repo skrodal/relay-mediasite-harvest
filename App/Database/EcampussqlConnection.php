@@ -6,10 +6,10 @@ class EcampusSQLConnection extends MSSQLDatabaseConnection
 {
 	public function __construct()
 	{
-		$this->host = Config::get('ecampussql')['host'];
-		$this->username = Config::get('ecampussql')['username'];
-		$this->password = Config::get('ecampussql')['password'];
-		$this->database = Config::get('ecampussql')['database'];
+		$this->host = getenv('ESQL_HOST');
+		$this->username = getenv('ESQL_USERNAME');
+		$this->password = getenv('ESQL_PASSWORD');
+		$this->database = getenv('ESQL_DATABASE');
 
 		$this->connect();
 	}

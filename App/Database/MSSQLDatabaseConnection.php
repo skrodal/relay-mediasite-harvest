@@ -13,7 +13,9 @@ class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 	public function connect()
 	{
 		try {
-			$this->connection =  mssql_connect($this->host, $this->username, $this->password);
+			$this->connection =  mssql_connect(
+				$this->host, $this->username, $this->password
+			);
 			mssql_select_db($this->database, $this->connection);
 		} catch (Exception $e) {
 			throw new Exception($e->getMessage() . PHP_EOL .  mssql_get_last_message());
@@ -31,17 +33,13 @@ class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 
 		$result = mssql_query($query);
 
+		//If no rows was returned
+		if($result === true)
+			return false;
 
-		if(mssql_num_rows($result) == 0) {
-
-			if($result == false)
-				echo __FILE__ . ": Query failed. Result was false " .  $query . PHP_EOL . mssql_get_last_message() . PHP_EOL;
-
-			//! Query could also be true if no rows was returned, but query succeeded
-
-			//TODO: Funker dette?
-			return $result;
-		}
+		//If error
+		if($result === false)
+			echo __FILE__ . ": Query failed. Result was false " .  $query . PHP_EOL . mssql_get_last_message() . PHP_EOL;
 
 		return $result;
 	}

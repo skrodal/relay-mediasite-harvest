@@ -10,20 +10,20 @@ use Uninett\Schemas\LastUpdatesSchema;
 
 class LastUpdates extends Collection
 {
-    private $_mongo;
-    private $_criteria;
+    private $mongo;
+    private $criteria;
 
-    private $_log;
+    private $log;
 
     public function __construct()
     {
 	    parent::__construct(LastUpdatesSchema::COLLECTION_NAME);
 
-        $this->_log = new Logger('import');
+        $this->log = new Logger('import');
 
-        $this->_mongo = new MongoConnection(LastUpdatesSchema::COLLECTION_NAME);
+        $this->mongo = new MongoConnection(LastUpdatesSchema::COLLECTION_NAME);
 
-        $this->_criteria = array(LastUpdatesSchema::DOCUMENT_KEY => Config::get('settings')['lastupdates_doc_key']);
+        $this->criteria = array(LastUpdatesSchema::DOCUMENT_KEY => Config::get('settings')['lastupdates_doc_key']);
 
         if($this->_collectionDoesNotExist())
             $this->createCollection();
@@ -31,7 +31,7 @@ class LastUpdates extends Collection
 
     private function _collectionDoesNotExist()
     {
-        $cursor = $this->_mongo->collection->find($this->_criteria)->limit(1)->count();
+        $cursor = $this->mongo->collection->find($this->criteria)->limit(1)->count();
         if(empty($cursor))
             return true;
 
@@ -40,7 +40,7 @@ class LastUpdates extends Collection
 
     private function createCollection()
     {
-        $cursor = $this->_mongo->findLimitOneCount($this->_criteria);
+        $cursor = $this->mongo->findLimitOneCount($this->criteria);
 
         if (empty($cursor)) {
             //Returns true if inserted
@@ -51,10 +51,10 @@ class LastUpdates extends Collection
                 LastUpdatesSchema::USER_ID => (int) 0,
                 LastUpdatesSchema::PRESENTATION_ID => (int) 0,
             );
-            $success = $this->_mongo->createLastUpdates($document);
+            $success = $this->mongo->createLastUpdates($document);
 
             if($success)
-                $this->_log->addNotice("Created collection: " .  LastUpdatesSchema::COLLECTION_NAME);
+                $this->log->addNotice("Created collection: " .  LastUpdatesSchema::COLLECTION_NAME);
 
             return $success;
         }
@@ -70,7 +70,7 @@ class LastUpdates extends Collection
             'upsert' => true,
         );
 
-        $updateWentWell = $this->_mongo->update($this->_criteria, $operation, $field, $id, $options);
+        $updateWentWell = $this->mongo->update($this->criteria, $operation, $field, $id, $options);
 
         if($updateWentWell)
             $this->LogInfo($field. " set to " . $id);
@@ -91,7 +91,7 @@ class LastUpdates extends Collection
     private function find($field)
     {
         //Finds the one document that matches the criteria, which depends on MONGO_LASTUPDATES_DOCUMENT_KEY
-        $cursor = $this->_mongo->collection->find($this->_criteria)->limit(1);
+        $cursor = $this->mongo->collection->find($this->criteria)->limit(1);
 
         //Returns the field. It will be found only one field.
         foreach($cursor as $obj)
