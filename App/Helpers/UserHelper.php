@@ -60,7 +60,7 @@ class UserHelper extends Collection {
         return $users;
     }
 
-    public function userHasFolderOnDisk($possibleUserfolderNames)
+    public function hasFolderOnDisk($possibleUserfolderNames)
     {
         $directories = Config::get('folders_to_scan_for_files');
 

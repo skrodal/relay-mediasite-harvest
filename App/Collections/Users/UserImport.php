@@ -34,7 +34,7 @@ class UserImport extends Collection
 
         $query = $newUsersInDatabase->findNewUsersInDatabase();
 
-        $this->LogInfo("Found " . mssql_num_rows($query) . " results");
+        $this->LogInfo("Found " . mssql_num_rows($query) . " new users");
 
         if ($this->queryContainsNewUsers($query))
         {

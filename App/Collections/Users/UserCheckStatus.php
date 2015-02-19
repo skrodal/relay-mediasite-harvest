@@ -48,18 +48,20 @@ class UserCheckStatus extends Collection implements CollectionUpdateInterface
 
     private function _updateStatusForUsers()
     {
-        $userStatus = Config::get('userStatus');
-        $u = new UserHelper();
 
-        $users = $u->findUsersInDatabase();
+        $userStatus = Config::get('userStatus');
+
+        $user = new UserHelper();
+
+        $users = $user->findUsersInDatabase();
 
         foreach($users as $feideUsername => $arrayOfPossibleUsernamesForAUser)  {
 
-             $userHasFolderOnDisk = $u->userHasFolderOnDisk($arrayOfPossibleUsernamesForAUser);
+             $userHasFolderOnDisk = $user->hasFolderOnDisk($arrayOfPossibleUsernamesForAUser);
 
 	         $query = "SELECT userName FROM tblUser WHERE userName LIKE '" . $feideUsername . "'";
 
-	        $userExistsInRelayDb = $this->ecampussql->query($query);
+	         $userExistsInRelayDb = $this->ecampussql->query($query);
 
              $criteria = array(UsersSchema::USERNAME => $feideUsername);
 
@@ -92,7 +94,7 @@ class UserCheckStatus extends Collection implements CollectionUpdateInterface
                      $statusTo = 4;
 
              } else {
-                 $this->LogError("None matched when checking statuses. Should never happen.");
+                 $this->LogError("None matched when checking statuses. This should never happen.");
                  continue;
              }
 

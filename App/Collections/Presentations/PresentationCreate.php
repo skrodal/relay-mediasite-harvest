@@ -89,6 +89,14 @@ class PresentationCreate extends Collection
 
                         $resSplit = explode("x", $res);
 
+	                    if(!isset($resSplit[0]) || !isset($resSplit[0]))
+	                    {
+		                    $presentation_id = $newPresentation->getpresentationId();
+		                    $presentation_path = $newPresentation->getPath();
+
+		                    $this->LogError("Did not find attribute resolution in presentation with id {$presentation_id} and path {$presentation_path}");
+	                    }
+
                         $newFile->setX((int) $resSplit[0]);
                         $newFile->setY((int) $resSplit[1]);
 

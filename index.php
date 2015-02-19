@@ -8,7 +8,7 @@ $collections = [
 	new \Uninett\Collections\Users\UserSetAffiliation,
 	new \Uninett\Collections\Users\UserCheckStatus,
 	new \Uninett\Collections\Presentations\PresentationImport(false),
-
+	new \Uninett\Collections\Presentations\PresentationCheckForDeleted
 
 /*	new \Uninett\Collections\Users\UserImport,
 	new \Uninett\Collections\Users\UserSetAffiliation,
