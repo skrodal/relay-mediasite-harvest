@@ -31,6 +31,8 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
         $this->insert = new PresentationInsert();
 
         $this->shouldUpdateDailyVideosCollection = $shouldUpdateDailyVideosCollection;
+
+	    $this->update();
     }
 
     private function getLargestInsertedFileId()
@@ -68,7 +70,7 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
 
 	    $this->LogInfo("Largest presentationid from source is  {$largestPresentationIdFromSource}");
 
-        if($largestPresentationIdFromSource == false)
+        if($largestPresentationIdFromSource === false)
         {
             $this->LogError("Could not retrieve largest presentationId from database");
             return;
