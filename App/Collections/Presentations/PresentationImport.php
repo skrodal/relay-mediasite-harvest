@@ -43,8 +43,6 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
 
     public function update()
     {
-	    $this->LogInfo("Starting update method");
-
         $this->findAndInsertNewVideos();
 
 	    $this->LogInfo("Finished importing {$this->numberInserted} presentations");
@@ -58,7 +56,6 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
 
     private function findAndInsertNewVideos()
     {
-	    $this->LogInfo("Starting to import presentations");
         $convertedPath = new ConvertHelper();
 
         $objectCreator = new PresentationCreate();

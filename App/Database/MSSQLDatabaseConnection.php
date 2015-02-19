@@ -31,6 +31,7 @@ class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 
 		$result = mssql_query($query);
 
+
 		if(mssql_num_rows($result) == 0) {
 
 			if($result == false)
