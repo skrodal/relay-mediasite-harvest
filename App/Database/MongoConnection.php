@@ -34,7 +34,7 @@ class MongoConnection
 				getenv('MONGO_DATABASE'));
 
 			$mongoClient = new MongoClient($authString);
-			$this->database = $mongoClient->selectDB($mongoConfig['database']);
+			$this->database = $mongoClient->selectDB(getenv('MONGO_DATABASE'));
 		} catch (MongoConnectionException $e) {
 			die('Error connecting to MongoDB server: ' . $e->getMessage()  . PHP_EOL);
 		}
