@@ -33,8 +33,6 @@ class PresentationCheckForDeleted extends Collection implements CollectionUpdate
 	    foreach ($cursor as $document) {
 		    $id = $document[PresentationSchema::PRESENTATION_ID];
 
-		    $this->LogInfo("Check presentation with id {$id}");
-
 		    $subDocument = $this->getFirstSubdocumentOfPresentation($id);
 
 		    if($subDocument !== false) {
@@ -48,7 +46,6 @@ class PresentationCheckForDeleted extends Collection implements CollectionUpdate
 				    $this->LogInfo("Presentation at {$pathOnDisk} with id {$id} is marked as deleted");
 			    }
 		    }
-
 	    }
 	    $this->LogInfo("Finished checking for deleted presentations");
     }
