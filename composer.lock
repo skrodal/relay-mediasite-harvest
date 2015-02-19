@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "abfef65f6e3887179a118fdcbcdfbc2e",
+    "hash": "3999b9dd8c652c5c8f1d1701b9568733",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -164,20 +164,20 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "2.x-dev",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "c4368fda432d002a4e40029072421fbaeac67714"
+                "reference": "732d2adb7d916c9593b9d58c3b0d9ebefead07aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/c4368fda432d002a4e40029072421fbaeac67714",
-                "reference": "c4368fda432d002a4e40029072421fbaeac67714",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/732d2adb7d916c9593b9d58c3b0d9ebefead07aa",
+                "reference": "732d2adb7d916c9593b9d58c3b0d9ebefead07aa",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.2"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.0"
@@ -185,16 +185,13 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0-dev"
+                    "dev-master": "1.0-dev"
                 }
             },
             "autoload": {
-                "psr-4": {
-                    "Dotenv\\": "src/"
-                },
-                "files": [
-                    "src/helpers.php"
-                ]
+                "psr-0": {
+                    "Dotenv": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -214,15 +211,14 @@
                 "env",
                 "environment"
             ],
-            "time": "2015-01-30 16:15:21"
+            "time": "2014-12-05 15:19:21"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "monolog/monolog": 20,
-        "vlucas/phpdotenv": 20
+        "monolog/monolog": 20
     },
     "prefer-stable": false,
     "platform": [],

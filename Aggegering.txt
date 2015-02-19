@@ -1,0 +1,56 @@
+#Aggregering
+
+#Summere opp hvor mye plass alle videoer i databasen har brukt:
+db.presentations.aggregate({$group : { _id : null, total : {$sum : "$size_mib"}}})
+
+#Summere opp antall presentasjoner for alle brukere
+db.presentations.aggregate({$group : {_id : "$username", presentations : {$sum : 1}} })
+db.presentations.aggregate({$group : {_id : "$username", presentations : {$sum : 1}}}, {$project : {presentations: 1, username : "$_id", _id : 0}})
+db.presentations.aggregate({$match : {created : {$gte : new Date("2013-07-05")} }},{$group : {_id : "$username", presentations : {$sum : 1}}})
+
+#Finne diskbruk for en spesifikk dato (Må ha med alt i new Date, ellers funker det dårlig.
+db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "henrikkg@hiof.no"}, {"storage.date" : {$gte : new Date("2014-07-28T00:00:00.000ZZ")}}, {"storage.date" : {$lte : new Date("2014-07-28T00:00:00.000Z")}}    ]}}).pretty()
+
+##Kan evt trikse med dato
+db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "henrikkg@hiof.no"}, {"storage.date" : {$gte : new Date("2014-07-28")}}, {"storage.date" : {$lt : new Date("2014-07-29")}}    ]}}).pretty()
+
+##Sortere stigende/synkende på dato
+db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "henrikkg@hiof.no"}, {"storage.date" : {$gte : new Date("2014-07-29T00:00:00.000ZZ")}}, {"storage.date" : {$lte : new Date("2014-07-29T00:00:00.000Z")}} ]}}, {$sort : {"storage.date" : -1 }} ).pretty()
+
+###Siste (nyeste) dokument
+
+db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "henrikkg@hiof.no"}, {"storage.date" : {$gte : new Date("2014-07-29T00:00:00.000ZZ")}}, {"storage.date" : {$lte : new Date("2014-07-29T00:00:00.000Z")}} ]}}, {$sort : {"storage.date" : 1 }}, {$limit : 1} ).pretty()
+
+
+
+
+##Finne orgs ut fra username i presentations
+
+db.presentations.find({username : /.*uninett.no.*/}).pretty()
+
+$collection->find(array('name'=> array('$regex' => 'sometext'));
+
+
+
+db.lastupdates.update({ _id : new ObjectId("54a2d5890b41c08e4e8b4567") }, {$set : {presentationId : NumberLong(0) } })
+db.lastupdates.update({ _id : new ObjectId("54a2d5890b41c08e4e8b4567") }, {$set : {userId : NumberLong(0) } })
+--example ---
+db.users.insert({name: 'paulo'})
+db.users.insert({name: 'patric'})
+db.users.insert({name: 'pedro'})
+
+db.users.find({name: /a/})  //like '%m%'
+
+out: paulo, patric
+
+db.users.find({name: /^pa/}) //like 'm%'
+
+out: paulo, patric
+
+db.users.find({name: /ro$/}) //like '%m'
+
+out: pedro
+-----
+
+db.userDiskUsage.find({'storage.1' : {$exists : true}}).pretty()
+db.org.find({'storage.1' : {$exists : true}}).pretty()

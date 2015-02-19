@@ -21,11 +21,17 @@ class MongoConnection
 		$mongoConfig = Config::get('mongo');
 
 		try {
-			$authString = sprintf('mongodb://%s:%s@%s/%s',
+		/*	$authString = sprintf('mongodb://%s:%s@%s/%s',
 				$mongoConfig['username'],
 				$mongoConfig['password'],
 				$mongoConfig['host'],
-				$mongoConfig['database']);
+				$mongoConfig['database']);*/
+
+			$authString = sprintf('mongodb://%s:%s@%s/%s',
+				getenv('MONGO_USERNAME'),
+				getenv('MONGO_PASSWORD'),
+				getenv('MONGO_HOST'),
+				getenv('MONGO_DATABASE'));
 
 			$mongoClient = new MongoClient($authString);
 			$this->database = $mongoClient->selectDB($mongoConfig['database']);
