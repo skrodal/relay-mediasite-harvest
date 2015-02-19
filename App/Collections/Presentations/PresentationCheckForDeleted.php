@@ -20,41 +20,41 @@ class PresentationCheckForDeleted extends Collection implements CollectionUpdate
 
     public function update()
     {
-        $currentPresentationId = 0;
-        $stopId = $this->getLargestInsertedFileId();
+	    $criteria = array(
+		    PresentationSchema::DELETED => 0
+	    );
 
-        while($currentPresentationId <= $stopId) {
+	    $cursor = $this->mongo->find($criteria);
 
-            $criteria = array(
-                PresentationSchema::PRESENTATION_ID => $currentPresentationId,
-                PresentationSchema::DELETED => 0
-            );
+	    foreach ($cursor as $document) {
+		    $id = $document[PresentationSchema::PRESENTATION_ID];
 
-            $presentationIsFoundInDb = $this->mongo->collection->find($criteria)->count();
+		    $this->LogInfo("Check presentation with id {$id}");
 
-            if($presentationIsFoundInDb != 0) {
-                $document = $this->_getPartOfPresentation($this->mongo, $currentPresentationId);
+		    $subDocument = $this->getFirstSubdocumentOfPresentation($id);
 
-                if(isset($document['result']['0'])) {
-                    $shortPath = $document['result']['0'][PresentationSchema::FILES][PresentationSchema::PATH];
+		    if($subDocument !== false) {
 
-                    $localPath = $this->_convertToLocalPath($shortPath);
+			    $shortPath = $subDocument[PresentationSchema::FILES][PresentationSchema::PATH];
 
-                    if($this->_presentationDoesNotExist($localPath))
-                        $this->_changeDeletedAttribute($criteria, $localPath);
-                }
-            }
-            $currentPresentationId++;
-        }
+			    $pathOnDisk = $this->convertToLocalPath($shortPath);
+
+			    if($this->onePresentationFileDoesNotExist($pathOnDisk)) {
+				    $this->changeDeletedAttribute($criteria, $pathOnDisk);
+				    $this->LogInfo("Presentation at {$pathOnDisk} with id {$id} is marked as deleted");
+			    }
+		    }
+		    $cursor = $cursor->getNext();
+	    }
 	    $this->LogInfo("Finished checking for deleted presentations");
     }
 
-    private function _presentationDoesNotExist($path)
+    private function onePresentationFileDoesNotExist($path)
     {
         return !file_exists($path);
     }
 
-    private function _getPartOfPresentation($mongoDatabaseConnection, $id)
+    private function getFirstSubdocumentOfPresentation($id)
     {
         $unwind = array('$unwind' => '$'.PresentationSchema::FILES);
 
@@ -68,28 +68,26 @@ class PresentationCheckForDeleted extends Collection implements CollectionUpdate
 
         $limit = array('$limit' => 1);
 
-        return $mongoDatabaseConnection->collection->aggregate($unwind, $match, $limit);
+        $subDocument = $this->mongo->collection->aggregate($unwind, $match, $limit);
 
-    }
-    private function getLargestInsertedFileId()
-    {
-        $largestInsertedFileId = new LastUpdates();
-
-        return $largestInsertedFileId->findLargestPresentationId();
+	    if(!isset($subDocument['result']['0']))
+	        return false;
+	    else
+		    return $subDocument;
     }
 
-    private function _convertToLocalPath($presentation)
+    private function convertToLocalPath($presentation)
     {
         return Config::get('settings')['relaymedia'] . DIRECTORY_SEPARATOR . $presentation;
     }
 
-    private function _changeDeletedAttribute($criteria, $path)
+    private function changeDeletedAttribute($criteria, $path)
     {
         $operationSucceeded = $this->mongo->update($criteria, '$set', PresentationSchema::DELETED, 1, 0);
 
         if ($operationSucceeded)
-	        $this->LogInfo("Did not find " .  $path . ". Marked as deleted");
+	        $this->LogInfo("Did not find {$path}. Marked as deleted");
         else
-	        $this->LogError("Could not mark " .  $path . "as deleted");
+	        $this->LogError("Could not mark {$path} as deleted");
     }
 }
