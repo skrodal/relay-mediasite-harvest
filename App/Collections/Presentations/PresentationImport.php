@@ -4,6 +4,7 @@
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
 use Uninett\Collections\DailyVideos\DailyVideoImport;
+use Uninett\Database\EcampusSQLConnection;
 use Uninett\Helpers\ConvertHelper;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Schemas\PresentationSchema;
@@ -25,7 +26,7 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
 
         $this->currentPresentationId = $this->getLargestInsertedFileId();
 
-	    $this->find = new PresentationFind($this->currentPresentationId);
+	    $this->find = new PresentationFind($this->currentPresentationId, new EcampusSQLConnection);
 
         $this->insert = new PresentationInsert();
 
@@ -98,7 +99,7 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
             } else
                 $presentationsNotFound = $presentationsNotFound + 1;
 
-            $this->currentPresentationId++;
+            $this->currentPresentationId = $this->currentPresentationId + 1;
         }
     }
 

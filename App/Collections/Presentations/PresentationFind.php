@@ -4,27 +4,32 @@ use Uninett\Database\EcampusSQLConnection;
 
 class PresentationFind
 {
-    private $database;
+	private $connection;
 
-    function __construct()
+    function __construct(EcampusSQLConnection $connection)
     {
-        $this->database = new EcampusSQLConnection();
+        $this->connection = $connection;
     }
 
     public function findPresentationWithId($presentationId)
     {
-        $queryString = "SELECT filePresentation_presId, fileId, filePath, createdOn from tblFile
+  /*      $queryString = "SELECT filePresentation_presId, fileId, filePath, createdOn from tblFile
         WHERE (filePath LIKE '\\\kastra%.xml' OR filePath LIKE 'https://screencast%.xml')
         AND filePath NOT LIKE '%video_xmp.xml'
-        AND filePresentation_presId LIKE '" . $presentationId  .  "' ORDER BY fileId ASC";
+        AND filePresentation_presId LIKE '" . $presentationId  .  "' ORDER BY fileId ASC";*/
 
-        return $this->database->query($queryString);
+	    $queryString = "SELECT filePresentation_presId, fileId, filePath, createdOn from tblFile
+        WHERE (filePath LIKE '\\\kastra%.xml' OR filePath LIKE 'https://screencast%.xml')
+        AND filePath NOT LIKE '%video_xmp.xml'
+        AND filePresentation_presId LIKE {$presentationId} ORDER BY fileId ASC";
+
+        return $this->connection->query($queryString);
     }
 
     public function findHighestPresentationsId()
     {
         $queryString = "SELECT MAX(filePresentation_presID) FROM tblFile";
 
-        return $this->database->query($queryString);
+        return $this->connection->query($queryString);
     }
 }
