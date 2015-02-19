@@ -5,7 +5,8 @@
   "type": "project",
   "require": {
     "monolog/monolog": "1.12.*@dev",
-    "nesbot/Carbon": "*"
+    "nesbot/Carbon": "*",
+    "vlucas/phpdotenv": "2.*@dev"
   },
   "autoload": {
     "psr-4": {
