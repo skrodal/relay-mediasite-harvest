@@ -16,19 +16,20 @@ class PresentationHitsImport extends Collection implements CollectionUpdateInter
     private $presentations;
     private $uniqueTraffic;
 
-    private $_startDate;
-    private $_endDate;
-    private $_interval;
+    private $startDate;
+    private $endDate;
+    private $interval;
 
 	private $numberInserted = 0;
 	private $numberErrors = 0;
+
     public function __construct($startDate, $endDate, $interval)
     {
 	    parent::__construct(PresentationSchema::COLLECTION_NAME);
 
-        $this->_startDate = $startDate;
-        $this->_endDate = $endDate;
-        $this->_interval = $interval;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+        $this->interval = $interval;
 
         $this->presentations = new MongoConnection(PresentationSchema::COLLECTION_NAME);
 
@@ -38,10 +39,10 @@ class PresentationHitsImport extends Collection implements CollectionUpdateInter
     public function update()
     {
         $count = 0;
-        $startDate = new DateTime($this->_startDate);
-        $endDate = new DateTime($this->_endDate);
+        $startDate = new DateTime($this->startDate);
+        $endDate = new DateTime($this->endDate);
 
-        $dateInterval = DateInterval::createFromDateString($this->_interval);
+        $dateInterval = DateInterval::createFromDateString($this->interval);
 
         $datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
 
@@ -58,36 +59,39 @@ class PresentationHitsImport extends Collection implements CollectionUpdateInter
             }
             $count++;
         }
-        $this->LogInfo("Finished with " . $count . " imports");
+        $this->LogInfo("Finished with {$count} imports");
     }
 
     public function find($date) {
         $criteriaDaily = array(DailyVideosSchema::DATE => new MongoDate(strtotime($date->format('Y-m-d'))));
 
-        $res = $this->uniqueTraffic->collection->find($criteriaDaily);
+        $cursor = $this->uniqueTraffic->collection->find($criteriaDaily);
 
-        if($res->count() > 0) {
-            foreach($res as $document)
-               $this->_increaseHits(array(
-                   PresentationSchema::FILES.'.'.PresentationSchema::PATH => $document[UniqueTrafficSchema::URI]));
+        if($cursor->count() > 0) {
+            foreach($cursor as $document) {
+	            $criteria = array(
+		            PresentationSchema::FILES.'.'.PresentationSchema::PATH => $document[UniqueTrafficSchema::URI]);
 
+	            $this->increaseHits($criteria);
+            }
         } else {
             $this->LogError("Did not find hits for " . $date->format('Y-m-d'));
         }
     }
 
-    private function _increaseHits($criteria) {
-        $success1 = $this->presentations->updateIncrease(
+    private function increaseHits($criteria) {
+
+        $updateHitsForFile = $this->presentations->updateIncrease(
             $criteria,
             array('$inc' => array(PresentationSchema::FILES.'.$.'.PresentationSchema::HITS => 1))
         );
 
-        $success2 =  $this->presentations->updateIncrease(
+        $updateTotalHits =  $this->presentations->updateIncrease(
             $criteria,
             array('$inc' => array(PresentationSchema::HITS => 1))
         );
 
-        if($success1 && $success2) {
+        if($updateHitsForFile && $updateTotalHits) {
             $this->numberInserted = $this->numberInserted + 1;
         }
         else

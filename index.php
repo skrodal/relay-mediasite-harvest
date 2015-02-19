@@ -1,10 +1,12 @@
 <?php
 use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Schemas\PresentationSchema;
 
 
 require 'start/bootstrap.php';
 
 $collections = [
+	new \Uninett\Collections\Presentations\PresentationImport(false)
 /*	new \Uninett\Collections\Users\UserImport,
 	new \Uninett\Collections\Users\UserSetAffiliation,
 	new \Uninett\Collections\Users\UserCheckStatus,
@@ -12,8 +14,8 @@ $collections = [
 	new \Uninett\Collections\Presentations\PresentationImport(true),
 	new \Uninett\Collections\Org\OrgImport,
 	new \Uninett\Collections\Org\OrgAggregateSizeUsed,
-	new \Uninett\Collections\Mediasite\MediasiteAggregateSizeUsed*/
-	new \Uninett\Collections\Presentations\PresentationCheckForDeleted()
+	new \Uninett\Collections\Mediasite\MediasiteAggregateSizeUsed
+	new \Uninett\Collections\Presentations\PresentationCheckForDeleted */
 
 ];
 
@@ -21,3 +23,15 @@ $collections = [
 foreach($collections as $collection)
 	$collection->update();
 
+
+/*$mongo = new \Uninett\Database\MongoConnection(\Uninett\Schemas\PresentationSchema::COLLECTION_NAME);
+
+$criteria = array('presId' => 15319);
+
+$cursor = $mongo->find($criteria);
+
+foreach($cursor as $document)
+{
+	echo "PATH: " . $document[PresentationSchema::PATH];
+	echo "SUBPATH" . $document[PresentationSchema::FILES][0][PresentationSchema::PATH];
+}*/

@@ -49,7 +49,7 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
             $this->updateLargestPresentationIdInMongoDb();
 
         if($this->shouldUpdateDailyVideosCollection)
-            $this->_updateDailyVideos();
+            $this->updateDailyVideosCollection();
     }
 
     private function findAndInsertNewVideos()
@@ -104,8 +104,6 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
 
     private function findLargestPresentationIdFromSource()
     {
-
-
         $max = $this->find->findHighestPresentationsId();
 
         $maxRes = mssql_fetch_assoc($max);
@@ -143,9 +141,8 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
         $largestIdInMongoDb->updatePresentationId($this->currentPresentationId);
     }
 
-    private function _updateDailyVideos()
+    private function updateDailyVideosCollection()
     {
-
         $dv = new DailyVideoImport();
         $dv->insert($this->numberInserted);
     }

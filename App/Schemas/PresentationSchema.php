@@ -10,7 +10,7 @@ class PresentationSchema
     const USERNAME = "username";
     const ORG = "org";
     const CREATED = "created_date";
-    const DELETED = "deleted_date";
+    const DELETED = "is_deleted";
     Const X = "x";
     Const Y = "y";
     const PATH = "path";

@@ -21,7 +21,7 @@ class PresentationCheckForDeleted extends Collection implements CollectionUpdate
     public function update()
     {
 	    $criteria = array(
-		    PresentationSchema::DELETED => 0
+		    PresentationSchema::DELETED => 0,
 	    );
 
 	    $cursor = $this->mongo->find($criteria);
@@ -48,7 +48,7 @@ class PresentationCheckForDeleted extends Collection implements CollectionUpdate
 				    $this->LogInfo("Presentation at {$pathOnDisk} with id {$id} is marked as deleted");
 			    }
 		    }
-		    $cursor = $cursor->getNext();
+
 	    }
 	    $this->LogInfo("Finished checking for deleted presentations");
     }
@@ -74,10 +74,10 @@ class PresentationCheckForDeleted extends Collection implements CollectionUpdate
 
         $subDocument = $this->mongo->collection->aggregate($unwind, $match, $limit);
 
-	    if(!isset($subDocument['result']['0']))
-	        return false;
-	    else
-		    return $subDocument;
+	    if(isset($subDocument['result']['0']))
+	        return $subDocument;
+
+	    return false;
     }
 
     private function convertToLocalPath($presentation)
