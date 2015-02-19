@@ -55,6 +55,7 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
 
     private function findAndInsertNewVideos()
     {
+	    $this->LogInfo("Starting to import presentations");
         $convertedPath = new ConvertHelper();
 
         $objectCreator = new PresentationCreate();
@@ -62,6 +63,8 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
         $presentationsNotFound = 0;
 
         $largestPresentationIdFromSource = $this->findLargestPresentationIdFromSource();
+
+	    $this->LogInfo("Largest presentationid from source is  {$largestPresentationIdFromSource}");
 
         if($largestPresentationIdFromSource == false)
         {
