@@ -1,4 +1,4 @@
-<?php  namespace Uninett\Database;
+<?php namespace Uninett\Database;
 
 use Uninett\Config;
 

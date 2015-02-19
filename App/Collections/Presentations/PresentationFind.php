@@ -8,6 +8,7 @@ class PresentationFind
 
     function __construct(EcampusSQLConnection $connection)
     {
+
         $this->connection = $connection;
     }
 
