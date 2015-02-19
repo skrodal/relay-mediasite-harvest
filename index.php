@@ -1,15 +1,19 @@
 <?php
 require 'start/bootstrap.php';
-
 use Uninett\Collections\CollectionUpdateInterface;
 
-$collections = [
+
+$p = new \Uninett\Collections\Presentations\PresentationImport(false);
+
+$p->update();
+
+/*$collections = [
 	new \Uninett\Collections\Presentations\PresentationImport(false)
 ];
 
 /* @var $collection CollectionUpdateInterface */
 foreach($collections as $collection)
-	$collection->update();
+	$collection->update();*/
 
 /*$mongo = new \Uninett\Database\MongoConnection(\Uninett\Schemas\PresentationSchema::COLLECTION_NAME);
 

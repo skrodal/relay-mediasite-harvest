@@ -42,6 +42,8 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
 
     public function update()
     {
+	    $this->LogInfo("Starting update method");
+
         $this->findAndInsertNewVideos();
 
 	    $this->LogInfo("Finished importing {$this->numberInserted} presentations");
