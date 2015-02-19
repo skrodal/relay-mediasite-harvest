@@ -26,6 +26,10 @@ class PresentationCheckForDeleted extends Collection implements CollectionUpdate
 
 	    $cursor = $this->mongo->find($criteria);
 
+	    $presentations = $cursor->count();
+
+	    $this->LogInfo("Found {$presentations} presentations");
+
 	    foreach ($cursor as $document) {
 		    $id = $document[PresentationSchema::PRESENTATION_ID];
 
