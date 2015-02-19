@@ -57,7 +57,9 @@ class UserCheckStatus extends Collection implements CollectionUpdateInterface
 
              $userHasFolderOnDisk = $u->userHasFolderOnDisk($arrayOfPossibleUsernamesForAUser);
 
-             $userExistsInRelayDb = $this->ecampussql->userAccountExists($feideUsername);
+	         $query = "SELECT userName FROM tblUser WHERE userName LIKE '" . $feideUsername . "'";
+
+	        $userExistsInRelayDb = $this->ecampussql->query($query);
 
              $criteria = array(UsersSchema::USERNAME => $feideUsername);
 

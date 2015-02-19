@@ -34,8 +34,11 @@ class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 		$result = mssql_query($query);
 
 		//If no rows was returned
-		if($result === true)
+		if($result === true) {
+			echo __FILE__ . ": No rows was returned: " .  $query . PHP_EOL . mssql_get_last_message() . PHP_EOL;
 			return false;
+		}
+
 
 		//If error
 		if($result === false)

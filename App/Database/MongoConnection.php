@@ -18,14 +18,8 @@ class MongoConnection
 	{
 		$this->debug = Config::get('settings')['debug'];
 
-		$mongoConfig = Config::get('mongo');
-
 		try {
-		/*	$authString = sprintf('mongodb://%s:%s@%s/%s',
-				$mongoConfig['username'],
-				$mongoConfig['password'],
-				$mongoConfig['host'],
-				$mongoConfig['database']);*/
+
 
 			$authString = sprintf('mongodb://%s:%s@%s/%s',
 				getenv('MONGO_USERNAME'),

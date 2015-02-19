@@ -14,7 +14,7 @@ class EcampusSQLConnection extends MSSQLDatabaseConnection
 		$this->connect();
 	}
 
-	public function userAccountExists($username)
+/*	public function userAccountExists($username)
 	{
 		$query = "
         SELECT userName
@@ -27,6 +27,5 @@ class EcampusSQLConnection extends MSSQLDatabaseConnection
 			return false;
 
 		return true;
-
-	}
+	}*/
 }
