@@ -32,7 +32,6 @@ class PresentationImport extends Collection implements CollectionUpdateInterface
 
         $this->shouldUpdateDailyVideosCollection = $shouldUpdateDailyVideosCollection;
 
-	    $this->update();
     }
 
     private function getLargestInsertedFileId()
