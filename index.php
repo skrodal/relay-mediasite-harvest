@@ -3,8 +3,6 @@ require 'start/bootstrap.php';
 
 use Uninett\Collections\CollectionUpdateInterface;
 
-echo getenv('MONGO_DATABASE');
-
 $collections = [
 	new \Uninett\Collections\Presentations\PresentationImport(true),
 /*	new \Uninett\Collections\Users\UserImport,
