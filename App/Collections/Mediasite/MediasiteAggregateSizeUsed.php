@@ -1,5 +1,6 @@
 <?php namespace Uninett\Collections\Mediasite;
 
+use MongoDate;
 use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
 use Uninett\Config;
