@@ -42,26 +42,56 @@ class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateI
 
             $criteria = array(MediaSiteSchema::ORG => $organisation);
 
-            $cursor = $this->mongo->findLimitOne($criteria);
+            //$cursor = $this->mongo->findLimitOne($criteria);
 
-            if (!empty($cursor)) {
+            //if (!empty($cursor)) {
 
-                $storage = array
-                (
-                    MediaSiteSchema::DATE => new MongoDate(),
-                    MediaSiteSchema::SIZE => $sizeMiB,
-                );
+	        $lastKnownUsedSize = $this->producedMoreSinceLastSave($organisation);
 
-                $success = $this->mongo->update($criteria, '$push', MediaSiteSchema::STORAGE, $storage, 1);
+	        if($lastKnownUsedSize !== $sizeMiB) {
 
-                if($success)
-                    $this->numberInserted = $this->numberInserted + 1;
+		        $storage = array (
+			        MediaSiteSchema::DATE => new MongoDate(),
+			        MediaSiteSchema::SIZE => $sizeMiB,
+		        );
 
-            } else
-                $this->LogError("Could not find {$directory}/{$organisation}");
+		        $success = $this->mongo->update($criteria, '$push', MediaSiteSchema::STORAGE, $storage, 1);
+
+		        if($success)
+			        $this->numberInserted = $this->numberInserted + 1;
+	        }
+
+            //} else
+              //  $this->LogError("Could not find {$directory}/{$organisation}");
         }
 
         $this->LogInfo("Aggregated data and inserted {$this->numberInserted} items");
 
     }
+
+	private function producedMoreSinceLastSave($organisation)
+	{
+		$unwind = array('$unwind' => '$storage');
+
+		$match = array (
+			'$match' => array (
+				MediaSiteSchema::ORG => $organisation,
+			)
+		);
+
+		$sort = array (
+			'$sort' => array (
+				'storage.date' => -1
+			)
+		);
+
+		$limit = array('$limit' => 1);
+
+		$size = $this->mongo->collection->aggregate($unwind, $match, $sort, $limit);
+
+		if(isset($size['result']['0'][MediaSiteSchema::STORAGE][MediaSiteSchema::SIZE]))
+			return (double) $size['result']['0'][MediaSiteSchema::STORAGE][MediaSiteSchema::SIZE];
+		else
+			return 0.0;
+	}
 }
