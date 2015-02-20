@@ -5,6 +5,7 @@ use Uninett\Collections\Collection;
 use Uninett\Collections\CollectionUpdateInterface;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
+use Uninett\Helpers\Arithmetic;
 use Uninett\Helpers\ConvertHelper;
 use Uninett\Helpers\LinuxOperationsHelper;
 use Uninett\Schemas\MediaSiteSchema;
@@ -29,6 +30,7 @@ class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateI
     {
         $directory = "/home/uninett/mediasite/";
 
+	    $math = new Arithmetic();
         $lop = new LinuxOperationsHelper();
 
         $organisations = $lop->getFolderNamesFromDirectory($directory);
@@ -60,7 +62,10 @@ class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateI
 		        if($success) {
 			        $this->numberInserted = $this->numberInserted + 1;
 
-			        $this->LogInfo("Aggregated {$sizeMiB} for {$organisation}");
+			        $diff = $math->subtract($lastKnownUsedSize, $sizeMiB);
+
+			        $this->LogInfo("{$diff}MiB diff for {$organisation}");
+
 		        }
 
 	        }
