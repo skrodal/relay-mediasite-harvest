@@ -24,20 +24,19 @@ class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateI
     {
 	    parent::__construct(MediaSiteSchema::COLLECTION_NAME);
 
-        $this->_mongoDatabaseConnection = new MongoConnection(MediaSiteSchema::COLLECTION_NAME
-        );
+        $this->mongo = new MongoConnection(MediaSiteSchema::COLLECTION_NAME);
 
-	    //TODO: Tror dette kan fjernes. Sjekk mongospec
+	    //TODO: Tror dette kan fjernes. Sjekk mongospec (update, upsert)
         //Check if collection exists, if not, create it
-        if (!$this->collectionExists(MediaSiteSchema::COLLECTION_NAME)) {
+/*        if (!$this->collectionExists(MediaSiteSchema::COLLECTION_NAME)) {
 
             $this->insert();
 
             $this->criteria = array(MediaSiteSchema::ORG => "Dummy");
 
             //Then remove dummy
-            $this->_mongoDatabaseConnection->collection->remove($this->criteria);
-        }
+            $this->mongo->collection->remove($this->criteria);
+        }*/
     }
 
     public function update()
@@ -47,36 +46,36 @@ class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateI
 
         $lop = new LinuxOperationsHelper();
 
-        $orgs = $lop->getFolderNamesFromDirectory($directory);
+        $organisations = $lop->getFolderNamesFromDirectory($directory);
 
-
-        foreach ($orgs as $org) {
-            //Calculate space
+        foreach ($organisations as $organisation) {
             $lop = new LinuxOperationsHelper();
 
-            $sizeb = $lop->getSpaceUsedByMediasiteOrg($directory, $org);
+            $sizeB = $lop->getSpaceUsedByMediasiteOrg($directory, $organisation);
+
             $convert = new ConvertHelper();
-            $size = $convert->bytesToMegabytes($sizeb);
 
-            $criteria = array(MediaSiteSchema::ORG => $org);
+	        $sizeMiB = $convert->bytesToMegabytes($sizeB);
 
-            $cursor = $this->_mongoDatabaseConnection->findLimitOne($criteria);
+            $criteria = array(MediaSiteSchema::ORG => $organisation);
+
+            $cursor = $this->mongo->findLimitOne($criteria);
 
             if (!empty($cursor)) {
 
                 $storage = array
                 (
                     MediaSiteSchema::DATE => new MongoDate(),
-                    MediaSiteSchema::SIZE => $size,
+                    MediaSiteSchema::SIZE => $sizeMiB,
                 );
 
-                $success = $this->_mongoDatabaseConnection->update($criteria, '$push', MediaSiteSchema::STORAGE, $storage, 1);
+                $success = $this->mongo->update($criteria, '$push', MediaSiteSchema::STORAGE, $storage, 1);
 
                 if($success)
                     $this->numberInserted = $this->numberInserted + 1;
 
             } else
-                $this->LogError("Could not find " . $directory.DIRECTORY_SEPARATOR.$org);
+                $this->LogError("Could not find " . $directory.DIRECTORY_SEPARATOR.$organisation);
         }
 
 
@@ -84,33 +83,30 @@ class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateI
 
     }
 
-    public function collectionExists($collection)
+/*    public function collectionExists($collection)
     {
 	    $config = Config::get('mongoDatabase');
 
-        if ($this->_mongoDatabaseConnection->collection->system->namespaces->findOne(array("name" => $config['db'] .".".$collection)) === null)
+        if ($this->mongo->collection->system->namespaces->findOne(array("name" => $config['db'] .".".$collection)) === null)
             return false;
         return true;
-    }
+    }*/
 
     /**
      * Use only first time system is set up. This creates the collection and document
      * @return array|bool
      */
-    public function insert()
+/*    public function insert()
     {
-        $cursor = $this->_mongoDatabaseConnection->findLimitOneCount($this->criteria);
+        $cursor = $this->mongo->findLimitOneCount($this->criteria);
 
         if (empty($cursor)) {
-            $success =  $this->_mongoDatabaseConnection->insert
+            $success =  $this->mongo->insert
             (
                 array
                 (
                     MediaSiteSchema::ORG => "Dummy",
-                    MediaSiteSchema::STORAGE => array
-                    (
-
-                    ),
+                    MediaSiteSchema::STORAGE => array (),
                 )
             );
             if($success)
@@ -120,5 +116,5 @@ class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateI
         }
 
         return false;
-    }
+    }*/
 }
