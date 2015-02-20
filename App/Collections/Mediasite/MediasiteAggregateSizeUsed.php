@@ -60,7 +60,7 @@ class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateI
 		        if($success) {
 			        $this->numberInserted = $this->numberInserted + 1;
 
-			        $this->LogInfo("Aggregated {$lastKnownUsedSize} for {$organisation}");
+			        $this->LogInfo("Aggregated {$sizeMiB} for {$organisation}");
 		        }
 
 	        }
