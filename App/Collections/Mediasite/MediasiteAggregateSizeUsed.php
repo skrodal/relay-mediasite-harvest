@@ -57,8 +57,12 @@ class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateI
 
 		        $success = $this->mongo->update($criteria, '$push', MediaSiteSchema::STORAGE, $storage, 1);
 
-		        if($success)
+		        if($success) {
 			        $this->numberInserted = $this->numberInserted + 1;
+
+			        $this->LogInfo("Aggregated {$lastKnownUsedSize} for {$organisation}");
+		        }
+
 	        }
 
             //} else
