@@ -62,8 +62,8 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 	    $this->LogInfo("Found {$this->numberFound} results");
 	    $this->LogInfo("Inserted {$this->numberInserted} results");
 
-	    $date = (string)date('Y-m-d');
-	    $this->updateDateInMongoDb($date);
+
+	    $this->updateDateInMongoDb($endDate);
     }
 
 	protected function startImport($date)
@@ -101,10 +101,10 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 		return true;
 	}
 
-	private function updateDateInMongoDb()
+	private function updateDateInMongoDb($date)
 	{
 		$last = new LastUpdates();
-		$last->updateRequestPerHourDate($this->date);
+		$last->updateRequestPerHourDate($date->format('Y-m-d'));
 	}
 
 	private function findLastInsertedDate()

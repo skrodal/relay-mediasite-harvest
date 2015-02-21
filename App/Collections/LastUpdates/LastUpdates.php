@@ -115,6 +115,7 @@ class LastUpdates extends Collection
 
 	public function updateRequestPerHourDate($date)
 	{
+		echo "Trying to set " . $date . PHP_EOL;
 		return $this->updateFieldInCollection(
 			LastUpdatesSchema::LAST_IMPORTED_REQUESTS_DATE,
 			new MongoDate(strtotime($date)));
