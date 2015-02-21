@@ -25,6 +25,8 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 
     public function __construct()
     {
+	    parent::__construct(RequestsPerHourSchema::COLLECTION_NAME);
+
 	    $this->create = new RequestPerHourCreate();
 
 	    $this->find = new RequestPerHourFind(new PictorConnection);
