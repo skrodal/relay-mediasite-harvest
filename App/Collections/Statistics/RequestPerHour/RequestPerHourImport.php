@@ -4,7 +4,6 @@ use DateInterval;
 use DatePeriod;
 use DateTime;
 
-
 use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\LastUpdates\LastUpdates;
