@@ -28,54 +28,46 @@ class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateI
 
     public function update()
     {
-        $directory = "/home/uninett/mediasite/";
+        $directories = Config::get('mediasite')['directories'];
+
+        //'$directory = "/home/uninett/mediasite/";
 
 	    $math = new Arithmetic();
-        $lop = new LinuxOperationsHelper();
+        $disk = new LinuxOperationsHelper();
 
-        $organisations = $lop->getFolderNamesFromDirectory($directory);
+	    $convert = new ConvertHelper();
 
-        foreach ($organisations as $organisation) {
-            $sizeB = $lop->getSpaceUsedByMediasiteOrg($directory, $organisation);
+	    foreach($directories as $directory) {
+		    $organisations = $disk->getFolderNamesFromDirectory($directory);
 
-            $convert = new ConvertHelper();
+		    foreach ($organisations as $organisation) {
+			    $sizeB = $disk->getSpaceUsedByMediasiteOrg($directory, $organisation);
 
-	        $sizeMiB = $convert->bytesToMegabytes($sizeB);
+			    $sizeMiB = $convert->bytesToMegabytes($sizeB);
 
-            $criteria = array(MediaSiteSchema::ORG => $organisation);
+			    $criteria = array(MediaSiteSchema::ORG => $organisation);
 
-            //$cursor = $this->mongo->findLimitOne($criteria);
+			    $lastKnownUsedSize = $this->producedMoreSinceLastSave($organisation);
 
-            //if (!empty($cursor)) {
+			    if($lastKnownUsedSize !== $sizeMiB) {
+				    $storage = array (
+					    MediaSiteSchema::DATE => new MongoDate(),
+					    MediaSiteSchema::SIZE => $sizeMiB,
+				    );
 
-	        $lastKnownUsedSize = $this->producedMoreSinceLastSave($organisation);
+				    $success = $this->mongo->update($criteria, '$push', MediaSiteSchema::STORAGE, $storage, 1);
 
-	        if($lastKnownUsedSize !== $sizeMiB) {
+				    if($success) {
+					    $this->numberInserted = $this->numberInserted + 1;
 
-		        $storage = array (
-			        MediaSiteSchema::DATE => new MongoDate(),
-			        MediaSiteSchema::SIZE => $sizeMiB,
-		        );
+					    $diff = $math->subtract($lastKnownUsedSize, $sizeMiB);
 
-		        $success = $this->mongo->update($criteria, '$push', MediaSiteSchema::STORAGE, $storage, 1);
-
-		        if($success) {
-			        $this->numberInserted = $this->numberInserted + 1;
-
-			        $diff = $math->subtract($lastKnownUsedSize, $sizeMiB);
-
-			        $this->LogInfo("{$diff}MiB diff for {$organisation}");
-
+					    $this->LogInfo("{$diff}MiB diff for {$organisation}");
+				    }
 		        }
-
 	        }
-
-            //} else
-              //  $this->LogError("Could not find {$directory}/{$organisation}");
-        }
-
+	    }
         $this->LogInfo("Aggregated data and inserted {$this->numberInserted} items");
-
     }
 
 	private function producedMoreSinceLastSave($organisation)
