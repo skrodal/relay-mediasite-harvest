@@ -6,9 +6,9 @@ class RequestPerHourFind
 {
 	protected $database;
 
-	function __construct()
+	function __construct(PictorConnection $database)
 	{
-		$this->database = new PictorConnection();
+		$this->database = $database;
 	}
 
 	public function findData($date)

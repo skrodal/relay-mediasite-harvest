@@ -26,6 +26,7 @@ class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 
 	public function query($query)
 	{
+
 		if(is_bool($query)) {
 			echo __FILE__ . ": Query cannot be executed. It came in as a boolean: " . PHP_EOL;
 			return false;
@@ -33,7 +34,6 @@ class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 
 		$result = mssql_query($query);
 
-		return $result;
 		//If no rows was returned
 		if($result === true) {
 			echo __FILE__ . ": No rows was returned: " .  $query . PHP_EOL;
