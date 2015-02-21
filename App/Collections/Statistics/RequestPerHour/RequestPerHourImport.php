@@ -9,6 +9,7 @@ use Uninett\Collections\Logging;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Database\MongoConnection;
+use Uninett\Database\PictorConnection;
 use Uninett\Schemas\RequestsPerHourSchema;
 
 class RequestPerHourImport extends Logging implements UpdateInterface
@@ -26,7 +27,7 @@ class RequestPerHourImport extends Logging implements UpdateInterface
     public function __construct()
     {
 	    $this->create = new RequestPerHourCreate();
-	    $this->find =  new RequestPerHourFind(RequestsPerHourSchema::PICTOR_TABLE_NAME);
+	    $this->find =  new RequestPerHourFind(new PictorConnection);
 
 	    $this->mongo = new MongoConnection(RequestsPerHourSchema::COLLECTION_NAME);
     }

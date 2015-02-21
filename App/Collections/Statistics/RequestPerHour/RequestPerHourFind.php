@@ -8,7 +8,7 @@ class RequestPerHourFind
 
 	function __construct(PictorConnection $database)
 	{
-		$this->database = new PictorConnection;
+		$this->database = $database;
 	}
 
 	public function findData($date)
