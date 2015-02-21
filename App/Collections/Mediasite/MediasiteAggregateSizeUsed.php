@@ -65,6 +65,9 @@ class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateI
 					    $this->LogInfo("{$diff}MiB diff for {$organisation}");
 				    }
 		        }
+			    else
+				    $this->LogInfo("No change in storage for {$organisation}");
+
 	        }
 	    }
         $this->LogInfo("Aggregated data and inserted {$this->numberInserted} items");
