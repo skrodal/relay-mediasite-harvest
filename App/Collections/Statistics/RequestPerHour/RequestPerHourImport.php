@@ -69,7 +69,6 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 
 			while ($result = mssql_fetch_assoc($query)) {
 
-				print_r($result);
 				$this->numberFound = $this->numberFound + 1;
 
 				$objectWasCreatedSuccessfully = $this->create->createObjectFromResult($result);

@@ -11,6 +11,7 @@ class RequestPerHourCreate
 	    $this->object = new RequestPerHourModel();
 
         if (is_array($result)) {
+
             $variableWasSetSuccessfully = $this->object->setDate($result['Dates']);
 
             if($variableWasSetSuccessfully == false)
@@ -23,7 +24,7 @@ class RequestPerHourCreate
 
                 return null;
 
-            $variableWasSetSuccessfully = $this->object->setBytesSent($result['Requests']);
+            $variableWasSetSuccessfully = $this->object->setRequest($result['Requests']);
 
             if($variableWasSetSuccessfully == false)
 

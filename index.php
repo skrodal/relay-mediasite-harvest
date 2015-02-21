@@ -5,7 +5,7 @@ use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Collections\UpdateInterface;
 
 $collections = [
-	new \Uninett\Collection\Statistics\RequestPerHour\RequestPerHourImport();
+	new \Uninett\Collection\Statistics\RequestPerHour\RequestPerHourImport()
 /*	new \Uninett\Collections\Users\UserImport,
 	new \Uninett\Collections\Users\UserSetAffiliation,
 	new \Uninett\Collections\Users\UserCheckStatus,
