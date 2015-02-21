@@ -27,7 +27,7 @@ class RequestPerHourImport extends Collection implements UpdateInterface
     {
 	    $this->create = new RequestPerHourCreate();
 
-	    $this->find = new RequestPerHourFind(new PictorConnection);
+	    $this->find = new RequestPerHourFind();
 
 	    $this->mongo = new MongoConnection(RequestsPerHourSchema::COLLECTION_NAME);
     }

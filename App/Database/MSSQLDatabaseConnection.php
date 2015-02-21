@@ -26,7 +26,6 @@ class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 
 	public function query($query)
 	{
-		var_dump($query);
 		if(is_bool($query)) {
 			echo __FILE__ . ": Query cannot be executed. It came in as a boolean: " . PHP_EOL;
 			return false;
