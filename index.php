@@ -1,11 +1,12 @@
 <?php
 require 'start/bootstrap.php';
 
+use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Collections\UpdateInterface;
 
 $collections = [
-	new \Uninett\Collections\Users\UserImport,
-	new \Uninett\Collection\Statistics\RequestPerHour\RequestPerHourImport
+/*	new \Uninett\Collections\Users\UserImport,
+	new \Uninett\Collection\Statistics\RequestPerHour\RequestPerHourImport*/
 /*	new \Uninett\Collections\Users\UserImport,
 	new \Uninett\Collections\Users\UserSetAffiliation,
 	new \Uninett\Collections\Users\UserCheckStatus,
@@ -20,3 +21,16 @@ $collections = [
 /* @var $collection UpdateInterface */
 foreach($collections as $collection)
 	$collection->update();
+
+
+
+$last = new LastUpdates();
+$date =  $last->findLastInsertedRequestPerHourDate();
+
+
+
+echo $date->sec;
+
+echo PHP_EOL;
+
+echo date($date->sec);

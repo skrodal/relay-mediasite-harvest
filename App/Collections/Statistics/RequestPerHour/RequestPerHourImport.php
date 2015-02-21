@@ -33,9 +33,10 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 
     public function update()
     {
+	    $startDate = $this->findLastInsertedDate();
         $this->prepareForImport
         (
-            $this->findLastInsertedDate(),
+            $startDate,
             'today',
             '1 hour'
         );
