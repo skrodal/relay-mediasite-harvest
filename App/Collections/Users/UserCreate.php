@@ -1,12 +1,12 @@
 <?php namespace Uninett\Collections\Users;
 //Creates an User object with by using the result from UserFind
 
-use Uninett\Collections\Logging;
+use Uninett\Collections\Collection;
 use Uninett\Models\User;
 use Uninett\Schemas\UserMediasiteSchema;
 use Uninett\Schemas\UsersSchema;
 
-class UserCreate extends Logging
+class UserCreate extends Collection
 {
     const StatusNotSet = -1;
 

@@ -1,7 +1,7 @@
 <?php namespace Uninett\Collections\Users;
 //Uses users collection to match usernames in db and foldernames on disk and sets the correct affiliation if they maches a certain criteria
 
-use Uninett\Collections\Logging;
+use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Helpers\ConvertHelper;
 use Uninett\Helpers\UserHelper;
@@ -9,7 +9,7 @@ use Uninett\Config;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\UsersSchema;
 
-class UserSetAffiliation extends Logging implements UpdateInterface
+class UserSetAffiliation extends Collection implements UpdateInterface
 {
     private $_mongoDatabaseConnection;
 

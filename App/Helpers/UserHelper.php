@@ -1,11 +1,11 @@
 <?php namespace  Uninett\Helpers;
 
-use Uninett\Collections\Logging;
+use Uninett\Collections\Collection;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\UsersSchema;
 
-class UserHelper extends Logging {
+class UserHelper extends Collection {
     private $mongo;
 
     function __construct()

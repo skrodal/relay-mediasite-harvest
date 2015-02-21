@@ -5,14 +5,14 @@ use DatePeriod;
 use DateTime;
 
 
-use Uninett\Collections\Logging;
+use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Database\MongoConnection;
 use Uninett\Database\PictorConnection;
 use Uninett\Schemas\RequestsPerHourSchema;
 
-class RequestPerHourImport extends Logging implements UpdateInterface
+class RequestPerHourImport extends Collection implements UpdateInterface
 {
 	protected $create;
 	protected $find;

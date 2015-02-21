@@ -4,13 +4,13 @@
 use Carbon\Carbon;
 use MongoDate;
 use Monolog\Logger;
-use Uninett\Collections\Logging;
+use Uninett\Collections\Collection;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\LastUpdatesSchema;
 use Uninett\Schemas\RequestsPerHourSchema;
 
-class LastUpdates extends Logging
+class LastUpdates extends Collection
 {
     private $mongo;
     private $criteria;

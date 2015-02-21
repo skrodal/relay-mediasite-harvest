@@ -1,6 +1,6 @@
 <?php namespace Uninett\Collections\Presentations;
 //This class creates a presentation object after reading its xmlfiles
-use Uninett\Collections\Logging;
+use Uninett\Collections\Collection;
 
 
 use Uninett\Helpers\Arithmetic;
@@ -9,7 +9,7 @@ use Uninett\Models\PresentationFilesModel;
 use Uninett\Models\PresentationModel;
 use Uninett\Schemas\PresentationSchema;
 
-class PresentationCreate extends Logging
+class PresentationCreate extends Collection
 {
     private $math;
 

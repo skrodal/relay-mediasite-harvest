@@ -1,7 +1,7 @@
 <?php namespace Uninett\Collections\Presentations;
 
 //Queries Perseus DB for new files based on largest fileId in MongoDB and inserts to MongoDB
-use Uninett\Collections\Logging;
+use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\DailyVideos\DailyVideoImport;
 use Uninett\Database\EcampusSQLConnection;
@@ -9,7 +9,7 @@ use Uninett\Helpers\ConvertHelper;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Schemas\PresentationSchema;
 
-class PresentationImport extends Logging implements UpdateInterface
+class PresentationImport extends Collection implements UpdateInterface
 {
     private $insert;
     private $find;

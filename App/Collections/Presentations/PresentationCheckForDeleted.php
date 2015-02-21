@@ -1,13 +1,13 @@
 <?php namespace Uninett\Collections\Presentations;
 // Checks if a presentation exists on disk, if not, it changes deleted attribute in mongo db from 0 (not deleted) to 1 (deleted)
-use Uninett\Collections\Logging;
+use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\PresentationSchema;
 
-class PresentationCheckForDeleted extends Logging implements UpdateInterface
+class PresentationCheckForDeleted extends Collection implements UpdateInterface
 {
     private $mongo;
 
