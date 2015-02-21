@@ -62,7 +62,8 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 	    $this->LogInfo("Found {$this->numberFound} results");
 	    $this->LogInfo("Inserted {$this->numberInserted} results");
 
-	    $this->updateDateInMongoDb(date('Y-m-d'));
+	    $date = (string)date('Y-m-d');
+	    $this->updateDateInMongoDb($date);
     }
 
 	protected function startImport($date)
