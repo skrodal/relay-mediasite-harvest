@@ -14,7 +14,7 @@ class RequestPerHourFind
 	public function findData($date)
     {
         $queryString =
-            "SELECT * FROM " . RequestsPerHourSchema::PICTOR_TABLE_NAME.
+            "SELECT * FROM requestsPerHour" .
             " WHERE Dates = '" . $date->format('Y-m-d H:i:s') . "' ORDER BY Dates DESC" ;
 
         return $this->database->query($queryString);
