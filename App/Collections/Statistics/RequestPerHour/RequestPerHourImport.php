@@ -4,6 +4,7 @@ use DateInterval;
 use DatePeriod;
 use DateTime;
 
+use MongoDate;
 use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\LastUpdates\LastUpdates;
@@ -61,7 +62,7 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 	    $this->LogInfo("Found {$this->numberFound} results");
 	    $this->LogInfo("Inserted {$this->numberInserted} results");
 
-	    $this->updateDateInMongoDb($endDate);
+	    $this->updateDateInMongoDb(new MongoDate(strtotime($endDate)));
     }
 
 	protected function startImport($date)
