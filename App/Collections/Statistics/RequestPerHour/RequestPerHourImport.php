@@ -26,7 +26,8 @@ class RequestPerHourImport extends Collection implements UpdateInterface
     public function __construct()
     {
 	    $this->create = new RequestPerHourCreate();
-	    $this->find =  new RequestPerHourFind(new PictorConnection);
+
+	    $this->find = new RequestPerHourFind(new PictorConnection);
 
 	    $this->mongo = new MongoConnection(RequestsPerHourSchema::COLLECTION_NAME);
     }
@@ -68,6 +69,7 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 
 			while ($result = mssql_fetch_assoc($query)) {
 
+				print_r($result);
 				$this->numberFound = $this->numberFound + 1;
 
 				$objectWasCreatedSuccessfully = $this->create->createObjectFromResult($result);

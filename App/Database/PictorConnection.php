@@ -10,5 +10,4 @@ class PictorConnection extends MSSQLDatabaseConnection
 		$this->database = getenv('PICTOR_DATABASE');
 		$this->connect();
 	}
-
 }
