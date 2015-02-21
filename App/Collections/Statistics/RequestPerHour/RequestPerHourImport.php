@@ -57,8 +57,9 @@ class RequestPerHourImport extends Collection implements UpdateInterface
         foreach ($datePeriod as $dt)
             $this->startImport($dt);
 
-	    $this->LogInfo('Found {$this->numberFound} results');
-	    $this->LogInfo('Inserted {$this->numberInserted} results');
+
+	    $this->LogInfo("Found {$this->numberFound} results");
+	    $this->LogInfo("Inserted {$this->numberInserted} results");
 
 	    $this->updateDateInMongoDb($endDate);
     }
@@ -81,6 +82,7 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 
 					if($objectWasInsertedSuccessfully == true)
 						$this->numberInserted = $this->numberInserted + 1;
+
 				} else
 					$this->LogError("Could not create object from result at {$date}");
 
