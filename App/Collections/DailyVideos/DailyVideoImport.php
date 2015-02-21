@@ -2,11 +2,11 @@
 //This collection will hold one document for each day, that contains the date and number of videos that were added
 //to db. This makes it possible to easy get statistics for how it have evolved over time.
 use MongoDate;
-use Uninett\Collections\Collection;
+use Uninett\Collections\Logging;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\DailyVideosSchema;
 
-class DailyVideoImport extends Collection
+class DailyVideoImport extends Logging
 {
     private $_log;
 

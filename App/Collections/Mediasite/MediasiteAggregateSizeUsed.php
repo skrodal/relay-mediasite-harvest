@@ -1,8 +1,8 @@
 <?php namespace Uninett\Collections\Mediasite;
 
 use MongoDate;
-use Uninett\Collections\Collection;
-use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\Logging;
+use Uninett\Collections\UpdateInterface;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
 use Uninett\Helpers\Arithmetic;
@@ -15,7 +15,7 @@ use Uninett\Schemas\MediaSiteSchema;
  *
  * Temporary file used to gather daily storage statistics for mediasite
  */
-class MediasiteAggregateSizeUsed extends Collection implements CollectionUpdateInterface
+class MediasiteAggregateSizeUsed extends Logging implements UpdateInterface
 {
 	private $numberInserted = 0;
 

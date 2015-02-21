@@ -3,15 +3,15 @@ use DateInterval;
 use DatePeriod;
 use DateTime;
 use MongoDate;
-use Uninett\Collections\Collection;
+use Uninett\Collections\Logging;
 
-use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\UpdateInterface;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\DailyVideosSchema;
 use Uninett\Schemas\PresentationSchema;
 use Uninett\Schemas\UniqueTrafficSchema;
 
-class PresentationHitsImport extends Collection implements CollectionUpdateInterface
+class PresentationHitsImport extends Logging implements UpdateInterface
 {
     private $presentations;
     private $uniqueTraffic;

@@ -10,4 +10,6 @@ class LastUpdatesSchema
     const ID = "_id";
     const USER_ID = "userId";
     const PRESENTATION_ID = "presentationId";
+
+	const LAST_IMPORTED_REQUESTS_DATE = "requestsPerHourLastImportedDate";
 }

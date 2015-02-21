@@ -1,13 +1,13 @@
 <?php namespace Uninett\Collections\Org;
 //Finds and inserts orgs. Prerequisites: Users collection is up to date
-use Uninett\Collections\Collection;
-use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\Logging;
+use Uninett\Collections\UpdateInterface;
 use Uninett\Database\MongoConnection;
 use Uninett\Models\OrgModel;
 use Uninett\Schemas\OrgSchema;
 use Uninett\Schemas\UsersSchema;
 
-class OrgImport extends  Collection implements CollectionUpdateInterface
+class OrgImport extends  Logging implements UpdateInterface
 {
     private $_usersCollection;
     private $_orgCollection;

@@ -2,13 +2,15 @@
 //Responsibility: Keep track of the ids fetched from PERSEUS that is synced with mongo
 
 use Carbon\Carbon;
+use MongoDate;
 use Monolog\Logger;
-use Uninett\Collections\Collection;
+use Uninett\Collections\Logging;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\LastUpdatesSchema;
+use Uninett\Schemas\RequestsPerHourSchema;
 
-class LastUpdates extends Collection
+class LastUpdates extends Logging
 {
     private $mongo;
     private $criteria;
@@ -50,6 +52,7 @@ class LastUpdates extends Collection
                 LastUpdatesSchema::DOCUMENT_KEY => Config::get('settings')['lastupdates_doc_key'],
                 LastUpdatesSchema::USER_ID => (int) 0,
                 LastUpdatesSchema::PRESENTATION_ID => (int) 0,
+                LastUpdatesSchema::LAST_IMPORTED_REQUESTS_DATE => new MongoDate(strtotime(Config::get('settings')['startDateToImportIISLogs']))
             );
             $success = $this->mongo->createLastUpdates($document);
 
@@ -61,7 +64,7 @@ class LastUpdates extends Collection
         return false;
     }
 
-    private function _updateFieldInCollection($field, $id)
+    private function updateFieldInCollection($field, $id)
     {
         $operation = '$set';
         $options = array
@@ -80,12 +83,12 @@ class LastUpdates extends Collection
 
     public function updateUserId($id)
     {
-        return $this->_updateFieldInCollection(LastUpdatesSchema::USER_ID, $id);
+        return $this->updateFieldInCollection(LastUpdatesSchema::USER_ID, $id);
     }
 
     public function updatePresentationId($id)
     {
-        return $this->_updateFieldInCollection(LastUpdatesSchema::PRESENTATION_ID, $id);
+        return $this->updateFieldInCollection(LastUpdatesSchema::PRESENTATION_ID, $id);
     }
 
     private function find($field)
@@ -109,4 +112,16 @@ class LastUpdates extends Collection
     {
         return $this->find(LastUpdatesSchema::PRESENTATION_ID);
     }
+
+	public function updateRequestPerHourDate($date)
+	{
+		return $this->updateFieldInCollection(
+			LastUpdatesSchema::LAST_IMPORTED_REQUESTS_DATE,
+			new MongoDate(strtotime($date)));
+	}
+
+	public function findLastInsertedRequestPerHourDate()
+	{
+		return $this->find(LastUpdatesSchema::LAST_IMPORTED_REQUESTS_DATE);
+	}
 }

@@ -4,7 +4,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use ReflectionClass;
 
-abstract class Collection
+abstract class Logging
 {
     protected $logger;
     protected $reflect;

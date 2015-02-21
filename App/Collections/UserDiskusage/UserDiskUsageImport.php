@@ -1,8 +1,8 @@
 <?php namespace Uninett\Collections\UserDiskusage;
 // Find disk usage for users from disk and insert to collection in mongodb
 use MongoDate;
-use Uninett\Collections\Collection;
-use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\Logging;
+use Uninett\Collections\UpdateInterface;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
 use Uninett\Helpers\Arithmetic;
@@ -13,7 +13,7 @@ use Uninett\Schemas\OrgSchema;
 use Uninett\Schemas\UserDiskUsageSchema;
 use Uninett\Schemas\UsersSchema;
 
-class UserDiskUsageImport extends Collection implements CollectionUpdateInterface
+class UserDiskUsageImport extends Logging implements UpdateInterface
 {
     private $userDiskUsageCollection;
     private $userCollection;

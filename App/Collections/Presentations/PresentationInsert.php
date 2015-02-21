@@ -1,11 +1,11 @@
 <?php namespace Uninett\Collections\Presentations;
 //Insert presentations to Mongodb
-use Uninett\Collections\Collection;
+use Uninett\Collections\Logging;
 use Uninett\Database\MongoConnection;
 use Uninett\Models\PresentationModel;
 use Uninett\Schemas\PresentationSchema;
 
-class PresentationInsert extends Collection
+class PresentationInsert extends Logging
 {
     private $mongo;
 

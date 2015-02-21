@@ -1,8 +1,8 @@
 <?php namespace Uninett\Collections\Org;
 //Prerequisites: orgs collection is up to date, access to directory on disk
 use MongoDate;
-use Uninett\Collections\Collection;
-use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\Logging;
+use Uninett\Collections\UpdateInterface;
 use Uninett\Database\MongoConnection;
 use Uninett\Helpers\Arithmetic;
 use Uninett\Helpers\ConvertHelper;
@@ -10,7 +10,7 @@ use Uninett\Helpers\LinuxOperationsHelper;
 use Uninett\Helpers\UserHelper;
 use Uninett\Schemas\OrgSchema;
 
-class OrgAggregateSizeUsed extends Collection implements CollectionUpdateInterface
+class OrgAggregateSizeUsed extends Logging implements UpdateInterface
 {
     private $mongo;
 	private $numberFound;

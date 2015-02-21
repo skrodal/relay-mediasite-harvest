@@ -1,6 +1,6 @@
 <?php namespace Uninett\Database;
 
-class PictorDatabaseMSSQLDatabaseConnection extends MSSQLDatabaseConnection
+class PictorConnection extends MSSQLDatabaseConnection
 {
 	public function __construct()
 	{

@@ -1,6 +1,6 @@
 <?php namespace Uninett\Collections\Users;
 // Prerequisites: None. This class manages user finding from a source database and inserting to mongodb
-use Uninett\Collections\Collection;
+use Uninett\Collections\Logging;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Database\EcampusSQLConnection;
 use Uninett\Database\MongoConnection;
@@ -9,7 +9,7 @@ use Uninett\Schemas\UserMediasiteSchema;
 use Uninett\Schemas\UsersSchema;
 
 
-class UserImport extends Collection
+class UserImport extends Logging
 {
     private $latestUserId =  0;
     private $mongo;

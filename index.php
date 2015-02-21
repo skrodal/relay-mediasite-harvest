@@ -1,10 +1,10 @@
 <?php
 require 'start/bootstrap.php';
 
-use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\UpdateInterface;
 
 $collections = [
-	new \Uninett\Collections\Mediasite\MediasiteAggregateSizeUsed,
+	new \Uninett\Collection\Statistics\RequestPerHour\RequestPerHourImport()
 /*	new \Uninett\Collections\Users\UserImport,
 	new \Uninett\Collections\Users\UserSetAffiliation,
 	new \Uninett\Collections\Users\UserCheckStatus,
@@ -16,6 +16,6 @@ $collections = [
 	new \Uninett\Collections\Presentations\PresentationCheckForDeleted*/
 ];
 
-/* @var $collection CollectionUpdateInterface */
+/* @var $collection UpdateInterface */
 foreach($collections as $collection)
 	$collection->update();

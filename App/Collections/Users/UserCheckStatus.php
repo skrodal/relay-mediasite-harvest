@@ -1,7 +1,7 @@
 <?php namespace Uninett\Collections\Users;
 
-use Uninett\Collections\Collection;
-use Uninett\Collections\CollectionUpdateInterface;
+use Uninett\Collections\Logging;
+use Uninett\Collections\UpdateInterface;
 use Uninett\Helpers\UserHelper;
 use Uninett\Config;
 use Uninett\Database\EcampusSQLConnection;
@@ -21,7 +21,7 @@ use Uninett\Schemas\UsersSchema;
 
 //Prerequisites: Users collection in mongodb is updated, access to tblUser on ecampussql
 //This class compares the updated existence of users in tblUser, disk and reflect changes in mongodb
-class UserCheckStatus extends Collection implements CollectionUpdateInterface
+class UserCheckStatus extends Logging implements UpdateInterface
 {
     private $mongo;
     private $ecampussql;
