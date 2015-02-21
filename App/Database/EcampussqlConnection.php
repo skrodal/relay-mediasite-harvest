@@ -13,19 +13,4 @@ class EcampusSQLConnection extends MSSQLDatabaseConnection
 
 		$this->connect();
 	}
-
-/*	public function userAccountExists($username)
-	{
-		$query = "
-        SELECT userName
-        FROM tblUser
-        WHERE userName LIKE '" . $username . "'";
-
-		$query = mssql_query($query);
-
-		if($query == false)
-			return false;
-
-		return true;
-	}*/
 }
