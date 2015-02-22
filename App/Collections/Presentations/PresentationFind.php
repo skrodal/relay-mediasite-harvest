@@ -6,9 +6,9 @@ class PresentationFind
 {
 	private $connection;
 
-    function __construct(EcampusSQLConnection $connection)
+    function __construct()
     {
-        $this->connection = $connection;
+        $this->connection = new EcampusSQLConnection();
     }
 
     public function findPresentationWithId($presentationId)

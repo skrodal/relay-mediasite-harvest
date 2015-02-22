@@ -26,7 +26,7 @@ class PresentationImport extends Collection implements UpdateInterface
 
         $this->currentPresentationId = $this->getLargestInsertedFileId();
 
-	    $this->find = new PresentationFind(new EcampusSQLConnection);
+	    $this->find = new PresentationFind();
 
         $this->insert = new PresentationInsert();
 
