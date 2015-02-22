@@ -26,7 +26,7 @@ class PresentationImport extends Collection implements UpdateInterface
 
         $this->currentPresentationId = $this->getLargestInsertedFileId();
 
-	    $this->find = new PresentationFind(new EcampusSQLConnection);
+	    //$this->find = new PresentationFind(new EcampusSQLConnection);
 
         $this->insert = new PresentationInsert();
 
@@ -56,6 +56,8 @@ class PresentationImport extends Collection implements UpdateInterface
 
     private function findAndInsertNewVideos()
     {
+        $this->find = new PresentationFind(new EcampusSQLConnection);
+
         $convertedPath = new ConvertHelper();
 
         $objectCreator = new PresentationCreate();

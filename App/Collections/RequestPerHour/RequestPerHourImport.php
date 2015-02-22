@@ -25,11 +25,7 @@ class RequestPerHourImport extends Collection implements UpdateInterface
     {
 	    parent::__construct(RequestsPerHourSchema::COLLECTION_NAME);
 
-	    $this->create = new RequestPerHourCreate();
-
-	    $this->find = new RequestPerHourFind(new PictorConnection);
-
-	    $this->mongo = new MongoConnection(RequestsPerHourSchema::COLLECTION_NAME);
+		$this->mongo = new MongoConnection(RequestsPerHourSchema::COLLECTION_NAME);
     }
 
     public function update()
@@ -65,7 +61,10 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 
 	protected function startImport($date)
 	{
-		$query = $this->find->findData($date);
+		$create = new RequestPerHourCreate();
+		$find = new RequestPerHourFind(new PictorConnection);
+
+		$query = $find->findData($date);
 
 		if ($this->queryContainsNewFiles($query)) {
 
@@ -73,7 +72,7 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 
 				$this->numberFound = $this->numberFound + 1;
 
-				$objectWasCreatedSuccessfully = $this->create->createObjectFromResult($result);
+				$objectWasCreatedSuccessfully = $create->createObjectFromResult($result);
 
 				if (!is_null($objectWasCreatedSuccessfully)) {
 
@@ -84,7 +83,6 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 
 				} else
 					$this->LogError("Could not create object from result at {$date}");
-
 			}
 		}
 	}
