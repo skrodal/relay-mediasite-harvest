@@ -38,7 +38,7 @@ abstract class DailyUniqueTrafficImport extends Collection implements UpdateInte
 
         foreach ($datePeriod as $dt)
         {
-	        $this->LogInfo("Importing for date {$dt->format('Y-m-d H:i:s')}");
+	        //$this->LogInfo("Importing for date {$dt->format('Y-m-d H:i:s')}");
 
 	        $this->startImport($dt);
         }
