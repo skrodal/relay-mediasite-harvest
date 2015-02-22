@@ -1,7 +1,7 @@
 <?php  namespace Uninett\Database; 
 use Exception;
 
-class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
+abstract class MSSQLDatabaseConnection
 {
 	protected $username;
 	protected $password;
@@ -24,7 +24,7 @@ class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 		return $this->connection;
 	}
 
-	public function query($query)
+/*	public function query($query)
 	{
 		if(is_bool($query)) {
 			echo __FILE__ . ": Query cannot be executed. It came in as a boolean: " .  $query . PHP_EOL . mssql_get_last_message() . PHP_EOL;
@@ -50,9 +50,9 @@ class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 		}
 
 		return $result;
-	}
+	}*/
 
-/*	public function query($query)
+	public function query($query)
 	{
 
 		if(is_bool($query)) {
@@ -73,5 +73,5 @@ class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 			echo __FILE__ . ": Query failed. Result was false " .  $query . PHP_EOL . mssql_get_last_message() . PHP_EOL;
 
 		return $result;
-	}*/
+	}
 }
