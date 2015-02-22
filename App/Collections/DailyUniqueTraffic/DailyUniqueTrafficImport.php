@@ -43,7 +43,6 @@ abstract class DailyUniqueTrafficImport extends Collection implements UpdateInte
 	        $this->startImport($dt);
         }
 
-
 	    $this->LogInfo("Storing {$endDate}");
 
 	    $this->updateDateInMongoDb($endDate);
