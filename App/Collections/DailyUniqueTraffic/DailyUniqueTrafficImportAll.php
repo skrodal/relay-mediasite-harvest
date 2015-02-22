@@ -1,4 +1,5 @@
 <?php namespace Uninett\Collections\DailyUniqueTraffic;
+use DateTime;
 use Uninett\Schemas\DailyUniqueTrafficSchema;
 
 class DailyUniqueTrafficImportAll extends DailyUniqueTrafficImport
@@ -12,9 +13,13 @@ class DailyUniqueTrafficImportAll extends DailyUniqueTrafficImport
 	{
 		$startDate = $this->findLastInsertedDate();
 
+		$start = DateTime::createFromFormat('Y-m-d', $startDate->sec);
+
+		$start = $start->modify('-1 day');
+
 		$this->prepareForImport
 		(
-			date('Y-m-d', $startDate->sec),
+			$start,
 			'today - 1 day',
 			'1 hour'
 		);

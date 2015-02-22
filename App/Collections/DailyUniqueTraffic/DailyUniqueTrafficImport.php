@@ -37,7 +37,16 @@ abstract class DailyUniqueTrafficImport extends Collection implements UpdateInte
 	    $this->logStart($startDate, $endDate);
 
         foreach ($datePeriod as $dt)
-            $this->startImport($dt);
+        {
+	        $this->LogInfo("Importing for date {$dt}");
+
+	        $this->startImport($dt);
+        }
+
+
+	    $this->LogInfo("Storing {$endDate}");
+
+	    $this->updateDateInMongoDb($endDate);
     }
 
 	protected function startImport($date)
