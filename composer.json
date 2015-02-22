@@ -6,7 +6,8 @@
   "require": {
     "monolog/monolog": "1.12.*@dev",
     "nesbot/Carbon": "*",
-    "vlucas/phpdotenv": "1.1.0"
+    "vlucas/phpdotenv": "1.1.0",
+    "geoip2/geoip2": "~0.7.0"
   },
   "autoload": {
     "psr-4": {

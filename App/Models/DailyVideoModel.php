@@ -1,4 +1,6 @@
-<?php
+<?php namespace Uninett\Models;
+use MongoDate;
+
 class DailyVideoModel
 {
     private $date;

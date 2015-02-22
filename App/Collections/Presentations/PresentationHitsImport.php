@@ -9,7 +9,7 @@ use Uninett\Collections\UpdateInterface;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\DailyVideosSchema;
 use Uninett\Schemas\PresentationSchema;
-use Uninett\Schemas\UniqueTrafficSchema;
+use Uninett\Schemas\DailyUniqueTrafficSchema;
 
 class PresentationHitsImport extends Collection implements UpdateInterface
 {
@@ -33,7 +33,7 @@ class PresentationHitsImport extends Collection implements UpdateInterface
 
         $this->presentations = new MongoConnection(PresentationSchema::COLLECTION_NAME);
 
-        $this->uniqueTraffic = new MongoConnection(UniqueTrafficSchema::COLLECTION_NAME);
+        $this->uniqueTraffic = new MongoConnection(DailyUniqueTrafficSchema::COLLECTION_NAME);
     }
 
     public function update()
@@ -70,7 +70,7 @@ class PresentationHitsImport extends Collection implements UpdateInterface
         if($cursor->count() > 0) {
             foreach($cursor as $document) {
 	            $criteria = array(
-		            PresentationSchema::FILES.'.'.PresentationSchema::PATH => $document[UniqueTrafficSchema::URI]);
+		            PresentationSchema::FILES.'.'.PresentationSchema::PATH => $document[DailyUniqueTrafficSchema::URI]);
 
 	            $this->increaseHits($criteria);
             }

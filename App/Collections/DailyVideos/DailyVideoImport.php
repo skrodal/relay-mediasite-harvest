@@ -8,12 +8,11 @@ use Uninett\Schemas\DailyVideosSchema;
 
 class DailyVideoImport extends Collection
 {
-    private $_log;
-
     public function __construct()
     {
 	    parent::__construct(DailyVideosSchema::COLLECTION_NAME);
     }
+
     public function insert($count)
     {
         $mongo = new MongoConnection(DailyVideosSchema::COLLECTION_NAME);
@@ -23,7 +22,7 @@ class DailyVideoImport extends Collection
             array
             (
                 DailyVideosSchema::DATE => new MongoDate(),
-                DailyVideosSchema::COUNT=> $count
+                DailyVideosSchema::COUNT => $count
             )
         );
         if($success)

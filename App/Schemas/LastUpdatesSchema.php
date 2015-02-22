@@ -12,4 +12,7 @@ class LastUpdatesSchema
     const PRESENTATION_ID = "presentationId";
 
 	const LAST_IMPORTED_REQUESTS_DATE = "requestsPerHourLastImportedDate";
+
+
+	const LAST_IMPORTED_DAILYUNIQUETRAFFIC_DATE = "dailyUniqueTrafficLastImportedDate";
 }
