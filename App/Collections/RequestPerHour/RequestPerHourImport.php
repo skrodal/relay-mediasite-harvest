@@ -1,10 +1,9 @@
-<?php namespace Uninett\Collection\Statistics\RequestPerHour;
+<?php namespace Uninett\Collection\RequestPerHour;
 //This class imports yesterdays related IIS-logdata
 use DateInterval;
 use DatePeriod;
 use DateTime;
 
-use MongoDate;
 use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\LastUpdates\LastUpdates;
@@ -17,10 +16,8 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 	protected $create;
 	protected $find;
 
-	protected $numberFound;
-	protected $numberInserted;
-
-	protected $date;
+	protected $numberFound = 0;
+	protected $numberInserted = 0;
 
 	protected $mongo;
 
