@@ -11,7 +11,7 @@ use Uninett\Database\MongoConnection;
 use Uninett\Database\PictorConnection;
 use Uninett\Schemas\RequestsPerHourSchema;
 
-class RequestPerHourImport extends Collection implements UpdateInterface
+abstract class RequestPerHourImport extends Collection implements UpdateInterface
 {
 	protected $create;
 	protected $find;
@@ -28,19 +28,20 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 		$this->mongo = new MongoConnection(RequestsPerHourSchema::COLLECTION_NAME);
     }
 
-    public function update()
+	public abstract function update();
+/*    public function update()
     {
 	    $startDate = $this->findLastInsertedDate();
 
         $this->prepareForImport
         (
 	        date('Y-m-d', $startDate->sec),
-            'today',
+            'today - 1 day',
             '1 hour'
         );
-    }
+    }*/
 
-    public function prepareForImport($fromDate, $toDate, $interval)
+	protected function prepareForImport($fromDate, $toDate, $interval)
     {
         $startDate = new DateTime($fromDate);
         $endDate = new DateTime($toDate);
@@ -89,7 +90,7 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 		}
 	}
 
-	private function queryContainsNewFiles($query)
+	protected function queryContainsNewFiles($query)
 	{
 		//return $query ? true : false;
 		if($query == false)
@@ -98,13 +99,13 @@ class RequestPerHourImport extends Collection implements UpdateInterface
 		return true;
 	}
 
-	private function updateDateInMongoDb($date)
+	protected function updateDateInMongoDb($date)
 	{
 		$last = new LastUpdates();
 		$last->updateRequestPerHourDate($date->format('Y-m-d'));
 	}
 
-	private function findLastInsertedDate()
+	protected function findLastInsertedDate()
 	{
 		$last = new LastUpdates();
 		return $last->findLastInsertedRequestPerHourDate();
