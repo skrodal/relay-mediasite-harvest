@@ -1,4 +1,4 @@
-<?php namespace Uninett\Collection\RequestPerHour;
+<?php namespace Uninett\Collections\RequestPerHour;
 use Uninett\Database\PictorConnection;
 use Uninett\Schemas\RequestsPerHourSchema;
 

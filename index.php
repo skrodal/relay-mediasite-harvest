@@ -6,7 +6,7 @@ use Uninett\Collections\UpdateInterface;
 
 $collections = [
 	new \Uninett\Collections\Presentations\PresentationImport(true),
-	new \Uninett\Collection\RequestPerHour\RequestPerHourImport
+	new \Uninett\Collections\RequestPerHour\RequestPerHourImport
 
 	/*new \Uninett\Collections\Users\UserImport,
 	new \Uninett\Collections\Users\UserSetAffiliation,

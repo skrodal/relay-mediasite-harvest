@@ -1,4 +1,4 @@
-<?php namespace Uninett\Collection\RequestPerHour;
+<?php namespace Uninett\Collections\RequestPerHour;
 //This class imports yesterdays related IIS-logdata
 use DateInterval;
 use DatePeriod;

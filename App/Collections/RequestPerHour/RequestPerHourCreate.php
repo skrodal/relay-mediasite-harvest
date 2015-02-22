@@ -1,4 +1,4 @@
-<?php namespace Uninett\Collection\RequestPerHour;
+<?php namespace Uninett\Collections\RequestPerHour;
 
 use Uninett\Models\RequestPerHourModel;
 
