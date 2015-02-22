@@ -13,8 +13,9 @@ class DailyUniqueTrafficImportDaily extends DailyUniqueTrafficImport
 	{
 		$startDate = $this->findLastInsertedDate();
 
+		$start = date_create();
 
-		$start = DateTime::createFromFormat('Y-m-d', $startDate->sec);
+		date_timestamp_set($start, $startDate->sec);
 
 		$start = $start->modify('-1 day')->format('Y-m-d');
 
