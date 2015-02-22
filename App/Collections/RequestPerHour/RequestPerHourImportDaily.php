@@ -30,5 +30,10 @@ class RequestPerHourImportDaily extends RequestPerHourImport implements UpdateIn
         );
     }
 
+	public function logStart($startDate, $endDate)
+	{
+		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to {$endDate->format('Y-m-d')}");
+	}
+
 
 }

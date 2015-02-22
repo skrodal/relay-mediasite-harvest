@@ -29,17 +29,7 @@ abstract class RequestPerHourImport extends Collection implements UpdateInterfac
     }
 
 	public abstract function update();
-/*    public function update()
-    {
-	    $startDate = $this->findLastInsertedDate();
-
-        $this->prepareForImport
-        (
-	        date('Y-m-d', $startDate->sec),
-            'today - 1 day',
-            '1 hour'
-        );
-    }*/
+	public abstract function logStart($startDate, $endDate);
 
 	protected function prepareForImport($fromDate, $toDate, $interval)
     {
@@ -47,9 +37,10 @@ abstract class RequestPerHourImport extends Collection implements UpdateInterfac
         $endDate = new DateTime($toDate);
 
         $dateInterval = DateInterval::createFromDateString($interval);
-        $datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
 
-		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to {$endDate->format('Y-m-d')}");
+	    $datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
+
+	    $this->logStart($startDate, $endDate);
 
         foreach ($datePeriod as $dt)
             $this->startImport($dt);
