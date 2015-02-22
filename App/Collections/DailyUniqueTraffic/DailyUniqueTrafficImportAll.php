@@ -19,7 +19,6 @@ class DailyUniqueTrafficImportAll extends DailyUniqueTrafficImport
 			'1 hour'
 		);
 
-
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");
 	}

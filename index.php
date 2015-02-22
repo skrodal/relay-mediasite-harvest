@@ -5,7 +5,7 @@ use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Collections\UpdateInterface;
 
 $collections = [
-	new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportAll()
+	new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportDaily();
 
 	/*new \Uninett\Collections\Users\UserImport,
 	new \Uninett\Collections\Users\UserSetAffiliation,

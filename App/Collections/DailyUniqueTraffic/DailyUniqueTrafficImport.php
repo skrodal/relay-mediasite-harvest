@@ -36,14 +36,8 @@ abstract class DailyUniqueTrafficImport extends Collection implements UpdateInte
 
 	    $this->logStart($startDate, $endDate);
 
-        foreach ($datePeriod as $dt) {
+        foreach ($datePeriod as $dt)
             $this->startImport($dt);
-
-            //$this->logResults(true);
-
-            //$this->resetLoggingCounters();
-        }
-
     }
 
 	protected function startImport($date)

@@ -1,8 +1,7 @@
 <?php namespace Uninett\Collections\DailyUniqueTraffic;
-
 use Uninett\Schemas\DailyUniqueTrafficSchema;
 
-class DailyUniqueTrafficImportAll extends DailyUniqueTrafficImport
+class DailyUniqueTrafficImportDaily extends DailyUniqueTrafficImport
 {
 	public function __construct()
 	{
@@ -19,7 +18,6 @@ class DailyUniqueTrafficImportAll extends DailyUniqueTrafficImport
 			'today - 1 day',
 			'1 hour'
 		);
-
 
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");
