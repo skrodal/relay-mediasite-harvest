@@ -1,4 +1,5 @@
 <?php namespace Uninett\Collections\DailyUniqueTraffic;
+use DateTime;
 use Uninett\Schemas\DailyUniqueTrafficSchema;
 
 class DailyUniqueTrafficImportDaily extends DailyUniqueTrafficImport
