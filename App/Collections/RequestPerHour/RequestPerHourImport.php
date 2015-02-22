@@ -48,10 +48,12 @@ class RequestPerHourImport extends Collection implements UpdateInterface
         $dateInterval = DateInterval::createFromDateString($interval);
         $datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
 
+		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to {$endDate->format('Y-m-d')}");
+
         foreach ($datePeriod as $dt)
             $this->startImport($dt);
 
-
+		
 	    $this->LogInfo("Found {$this->numberFound} results");
 	    $this->LogInfo("Inserted {$this->numberInserted} results");
 
