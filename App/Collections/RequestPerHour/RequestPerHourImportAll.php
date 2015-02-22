@@ -32,6 +32,6 @@ class RequestPerHourImportAll extends RequestPerHourImport implements UpdateInte
 
 	public function logStart($startDate, $endDate)
 	{
-		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to {$endDate->modify('-1')->format('Y-m-d')}");
+		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to {$endDate->modify('-1 day')->format('Y-m-d')}");
 	}
 }
