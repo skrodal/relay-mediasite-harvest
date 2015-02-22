@@ -108,7 +108,8 @@ class PresentationImport extends Collection implements UpdateInterface
 
     private function findLargestPresentationIdFromSource()
     {
-        $max = $this->find->findHighestPresentationsId();
+        $find = new PresentationFind(new EcampusSQLConnection);
+        $max = $find->findHighestPresentationsId();
 
         $maxRes = mssql_fetch_assoc($max);
 
