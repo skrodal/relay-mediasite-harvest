@@ -6,7 +6,7 @@ Uninett\Config::add(
 		'startDateToImportIISLogs' =>  '2013-05-22',
 		'lastupdates_doc_key' => '1',
 		'relaymedia' => '/home/uninett/relaymedia',
-		'root' => '/home/kim/EcampusStatistics/'
+		'root' => '/home/kim/ecampus-new'
 	],
 	'folders_to_scan_for_files' => [
 		'ansatt' => '/home/uninett/relaymedia/ansatt',

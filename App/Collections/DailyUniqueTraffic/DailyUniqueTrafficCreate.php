@@ -15,7 +15,7 @@ class DailyUniqueTrafficCreate
     {
         $this->object = new DailyUniqueTrafficModel();
 
-        $this->reader = new Reader(Config::get('settings')['root']. 'GeoLite2-City.mmdb');
+        $this->reader = new Reader(Config::get('settings')['root'] . DIRECTORY_SEPARATOR .  'GeoLite2-City.mmdb');
     }
 
     public function createObjectFromResult($result)
