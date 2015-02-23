@@ -43,9 +43,11 @@ abstract class RequestPerHourImport extends Collection implements UpdateInterfac
 	    $this->logStart($startDate, $endDate);
 
         foreach ($datePeriod as $dt)
-            $this->startImport($dt);
+	        $this->startImport($dt);
+
 
 	    $this->LogInfo("Found {$this->numberFound} results");
+
 	    $this->LogInfo("Inserted {$this->numberInserted} results");
 
 	    $this->updateDateInMongoDb($endDate);
@@ -57,6 +59,8 @@ abstract class RequestPerHourImport extends Collection implements UpdateInterfac
 		$find = new RequestPerHourFind(new PictorConnection);
 
 		$query = $find->findData($date);
+
+		$this->LogInfo("Trying to find data for date {$date->format('Y-m-d H:i:s')}");
 
 		if ($this->queryContainsNewFiles($query)) {
 
