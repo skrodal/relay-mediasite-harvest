@@ -5,7 +5,7 @@ use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Collections\UpdateInterface;
 
 $collections = [
-	new \Uninett\Collections\Users\UserImport,
+/*	new \Uninett\Collections\Users\UserImport,
 	new \Uninett\Collections\Users\UserSetAffiliation,
 	new \Uninett\Collections\Users\UserCheckStatus,
 	new \Uninett\Collections\UserDiskusage\UserDiskUsageImport,
@@ -15,7 +15,8 @@ $collections = [
 	new \Uninett\Collections\Mediasite\MediasiteAggregateSizeUsed,
 	new \Uninett\Collections\Presentations\PresentationCheckForDeleted,
 	new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily,
-	new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportDaily,
+	new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportDaily,*/
+	new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll
 ];
 
 /* @var $collection UpdateInterface */
