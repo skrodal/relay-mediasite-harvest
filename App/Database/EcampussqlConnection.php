@@ -1,7 +1,5 @@
 <?php namespace Uninett\Database;
 
-
-
 class EcampusSQLConnection extends MSSQLDatabaseConnection
 {
 	public function __construct()

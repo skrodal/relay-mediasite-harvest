@@ -2,10 +2,10 @@
 
 use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
-use Uninett\Database\EcampusSQLConnection;
+
+
 use Uninett\Helpers\UserHelper;
 use Uninett\Config;
-
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\UsersSchema;
 
@@ -34,7 +34,7 @@ class UserCheckStatus extends Collection implements UpdateInterface
         parent::__construct(UsersSchema::COLLECTION_NAME);
 
         $this->mongo = new MongoConnection(UsersSchema::COLLECTION_NAME);
-        $this->ecampussql = new EcampusSQLConnection;
+        $this->ecampussql = new \Uninett\Database\EcampusSQLConnection;
     }
 
     public function update()
@@ -42,14 +42,13 @@ class UserCheckStatus extends Collection implements UpdateInterface
         if(!$this->foundUsersInMongoDatabase())
             return 0;
 
-        $this->_updateStatusForUsers();
+        $this->updateStatusForUsers();
 
         $this->LogInfo("Changed status for " . $this->numberOfStatusChanges . " users");
     }
 
-    private function _updateStatusForUsers()
+    private function updateStatusForUsers()
     {
-
         $userStatus = Config::get('userStatus');
 
         $user = new UserHelper();
