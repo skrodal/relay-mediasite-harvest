@@ -1,6 +1,6 @@
 <?php namespace Uninett\Database;
 
-use Uninett\Config;
+
 
 class EcampusSQLConnection extends MSSQLDatabaseConnection
 {
