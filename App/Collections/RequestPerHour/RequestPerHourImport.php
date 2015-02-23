@@ -47,7 +47,6 @@ abstract class RequestPerHourImport extends Collection implements UpdateInterfac
 
 
 	    $this->LogInfo("Found {$this->numberFound} results");
-
 	    $this->LogInfo("Inserted {$this->numberInserted} results");
 
 	    $this->updateDateInMongoDb($endDate);
