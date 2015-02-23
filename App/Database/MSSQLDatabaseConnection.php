@@ -1,7 +1,7 @@
 <?php  namespace Uninett\Database; 
 use Exception;
 
-abstract class MSSQLDatabaseConnection
+abstract class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterface
 {
 	protected $username;
 	protected $password;
