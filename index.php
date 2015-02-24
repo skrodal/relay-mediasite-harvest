@@ -16,7 +16,7 @@ $collections = [
 	new \Uninett\Collections\Presentations\PresentationCheckForDeleted,
 	new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily,
 	new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportDaily,*/
-	new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll;
+	new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll
 ];
 
 /* @var $collection UpdateInterface */
