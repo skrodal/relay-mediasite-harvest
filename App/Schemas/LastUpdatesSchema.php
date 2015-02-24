@@ -15,4 +15,6 @@ class LastUpdatesSchema
 
 
 	const LAST_IMPORTED_DAILYUNIQUETRAFFIC_DATE = "dailyUniqueTrafficLastImportedDate";
+
+	const LAST_IMPORTED_DAILYUSERAGENTS_DATE = "dailyUserAgentsLastImportedDate";
 }

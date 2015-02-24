@@ -137,4 +137,17 @@ class LastUpdates extends Collection
 	{
 		return $this->find(LastUpdatesSchema::LAST_IMPORTED_DAILYUNIQUETRAFFIC_DATE);
 	}
+
+
+	public function updateDailyUserAgentcDate($date)
+	{
+		return $this->updateFieldInCollection(
+			LastUpdatesSchema::LAST_IMPORTED_DAILYUSERAGENTS_DATE,
+			new MongoDate(strtotime($date)));
+	}
+
+	public function findLastInserteDailyUserAgentcDate()
+	{
+		return $this->find(LastUpdatesSchema::LAST_IMPORTED_DAILYUSERAGENTS_DATE);
+	}
 }
