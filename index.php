@@ -1,28 +1,36 @@
 <?php
+use Uninett\Collections\Presentations\PresentationHitsImportAll;
+use Uninett\Run\RunMediasite;
+use Uninett\Run\RunRelayAll;
+use Uninett\Run\RunRelayDaily;
+
 require 'start/bootstrap.php';
 
-use Uninett\Collections\LastUpdates\LastUpdates;
-use Uninett\Collections\UpdateInterface;
+if (defined('STDIN') && isset($argv[1])) {
+	echo PHP_EOL . "Report for " . gethostname() . PHP_EOL;
 
-$collections = [
-/*	new \Uninett\Collections\Users\UserImport,
-	new \Uninett\Collections\Users\UserSetAffiliation,
-	new \Uninett\Collections\Users\UserCheckStatus,
-	new \Uninett\Collections\UserDiskusage\UserDiskUsageImport,
-	new \Uninett\Collections\Presentations\PresentationImport(true),
-	new \Uninett\Collections\Org\OrgImport,
-	new \Uninett\Collections\Org\OrgAggregateSizeUsed,
-	new \Uninett\Collections\Mediasite\MediasiteAggregateSizeUsed,
-	new \Uninett\Collections\Presentations\PresentationCheckForDeleted,
-	new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily,
-	new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportDaily,*/
-	new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll
-];
-
-/* @var $collection UpdateInterface */
-foreach($collections as $collection)
-	$collection->update();
-
-
-
+	switch ($argv[1])
+	{
+		case "init":
+			$run = new RunRelayAll();
+			$run->run();
+			break;
+		case "daily":
+			$run = new RunRelayDaily();
+			$run->run();
+			break;
+		case "mediasite":
+			$run = new RunMediasite();
+			$run->run();
+			break;
+		case "presentationhits":
+			$run = new PresentationHitsImportAll();
+			$run->update();
+			break;
+		default:
+			echo PHP_EOL . "Something went wrong. Wrong parameter?" . PHP_EOL;
+			break;
+	}
+	echo PHP_EOL . "End of " . $argv[1] . PHP_EOL;
+}
 

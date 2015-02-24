@@ -5,62 +5,66 @@ use DateTime;
 use MongoDate;
 use Uninett\Collections\Collection;
 
+use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\DailyVideosSchema;
 use Uninett\Schemas\PresentationSchema;
 use Uninett\Schemas\DailyUniqueTrafficSchema;
 
-class PresentationHitsImport extends Collection implements UpdateInterface
+abstract class PresentationHitsImport extends Collection
 {
     private $presentations;
     private $uniqueTraffic;
 
-    private $startDate;
-    private $endDate;
-    private $interval;
 
-	private $numberInserted = 0;
-	private $numberErrors = 0;
+	protected $numberInserted = 0;
+	protected $numberFound = 0;
+	protected $numberErrors = 0;
 
-    public function __construct($startDate, $endDate, $interval)
+
+	public abstract function update();
+	public abstract function logStart($startDate, $endDate);
+
+    public function __construct()
     {
 	    parent::__construct(PresentationSchema::COLLECTION_NAME);
-
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->interval = $interval;
 
         $this->presentations = new MongoConnection(PresentationSchema::COLLECTION_NAME);
 
         $this->uniqueTraffic = new MongoConnection(DailyUniqueTrafficSchema::COLLECTION_NAME);
     }
 
-    public function update()
-    {
-        $count = 0;
-        $startDate = new DateTime($this->startDate);
-        $endDate = new DateTime($this->endDate);
+	protected function prepareForImport($fromDate, $toDate, $interval)
+	{
+		$startDate = new DateTime($fromDate);
+		$endDate = new DateTime($toDate);
 
-        $dateInterval = DateInterval::createFromDateString($this->interval);
+		$dateInterval = DateInterval::createFromDateString($interval);
 
-        $datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
+		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
 
-        foreach ($datePeriod as $dt) {
-            $this->find($dt);
+		$this->logStart($startDate, $endDate);
 
-            if($this->numberInserted > 0) {
-	            $this->LogInfo("{$this->numberInserted} Updated collection with data for date " . $dt->format('Y-m-d H:i:s'));
-                $this->numberInserted = 0;
-            }
-            if($this->numberErrors > 0) {
-	            $this->LogInfo("{$this->numberErrors} Updated collection with data for date " . $dt->format('Y-m-d H:i:s'));
-	            $this->numberErrors = 0;
-            }
-            $count++;
-        }
-        $this->LogInfo("Finished with {$count} imports");
-    }
+		foreach ($datePeriod as $dt) {
+			$this->find($dt);
+
+			if($this->numberInserted > 0) {
+				$this->LogInfo("Inserted {$this->numberInserted} results for {$dt->format('Y-m-d H:i:s')}");
+				$this->numberInserted = 0;
+			}
+			if($this->numberErrors > 0) {
+				$this->LogError("Error when importing data for {$dt->format('Y-m-d H:i:s')}");
+				$this->numberErrors = 0;
+
+			}
+			$this->numberFound = $this->numberFound + 1;
+		}
+
+		$this->LogInfo("Found {$this->numberFound} results");
+
+		$this->updateDateInMongoDb($endDate);
+	}
 
     public function find($date) {
         $criteriaDaily = array(DailyVideosSchema::DATE => new MongoDate(strtotime($date->format('Y-m-d'))));
@@ -97,4 +101,16 @@ class PresentationHitsImport extends Collection implements UpdateInterface
         else
             $this->numberErrors = $this->numberErrors + 1;
     }
+
+	protected function updateDateInMongoDb($date)
+	{
+		$last = new LastUpdates();
+		$last->updatePresentationHitsDate($date->format('Y-m-d'));
+	}
+
+	protected function findLastInsertedDate()
+	{
+		$last = new LastUpdates();
+		return $last->findLastInsertedPresentationHitsDate();
+	}
 }

@@ -139,15 +139,28 @@ class LastUpdates extends Collection
 	}
 
 
-	public function updateDailyUserAgentcDate($date)
+	public function updateDailyUserAgentsDate($date)
 	{
 		return $this->updateFieldInCollection(
 			LastUpdatesSchema::LAST_IMPORTED_DAILYUSERAGENTS_DATE,
 			new MongoDate(strtotime($date)));
 	}
 
-	public function findLastInserteDailyUserAgentcDate()
+	public function findLastInsertedDailyUserAgentsDate()
 	{
 		return $this->find(LastUpdatesSchema::LAST_IMPORTED_DAILYUSERAGENTS_DATE);
+	}
+
+
+	public function updatePresentationHitsDate($date)
+	{
+		return $this->updateFieldInCollection(
+			LastUpdatesSchema::LAST_IMPORTED_PRESENTATION_HITS_DATE,
+			new MongoDate(strtotime($date)));
+	}
+
+	public function findLastInsertedPresentationHitsDate()
+	{
+		return $this->find(LastUpdatesSchema::LAST_IMPORTED_PRESENTATION_HITS_DATE);
 	}
 }

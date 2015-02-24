@@ -86,12 +86,12 @@ abstract class DailyUserAgentImport extends Collection
 	protected function updateDateInMongoDb($date)
 	{
 		$last = new LastUpdates();
-		$last->updateDailyUserAgentcDate($date->format('Y-m-d'));
+		$last->updateDailyUserAgentsDate($date->format('Y-m-d'));
 	}
 
 	protected function findLastInsertedDate()
 	{
 		$last = new LastUpdates();
-		return $last->findLastInserteDailyUserAgentcDate();
+		return $last->findLastInsertedDailyUserAgentsDate();
 	}
 }

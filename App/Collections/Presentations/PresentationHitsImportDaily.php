@@ -1,12 +1,22 @@
-<?php namespace Uninett\Collections\DailyUserAgents;
-use Uninett\Collections\UpdateInterface;
-use Uninett\Schemas\DailyUserAgentsSchema;
+<?php namespace Uninett\Collections\Presentations;
+use DateInterval;
+use DatePeriod;
+use DateTime;
+use MongoDate;
+use Uninett\Collections\Collection;
 
-class DailyUserAgentImportDaily extends DailyUserAgentImport  implements UpdateInterface
+use Uninett\Collections\LastUpdates\LastUpdates;
+use Uninett\Collections\UpdateInterface;
+use Uninett\Database\MongoConnection;
+use Uninett\Schemas\DailyVideosSchema;
+use Uninett\Schemas\PresentationSchema;
+use Uninett\Schemas\DailyUniqueTrafficSchema;
+
+class PresentationHitsImportDaily extends PresentationHitsImport  implements UpdateInterface
 {
 	public function __construct()
 	{
-		parent::__construct(DailyUserAgentsSchema::COLLECTION_NAME);
+		parent::__construct();
 	}
 
 	public function update()
@@ -17,7 +27,7 @@ class DailyUserAgentImportDaily extends DailyUserAgentImport  implements UpdateI
 		(
 			date('Y-m-d', $startDate->sec),
 			'today + 1 day',
-			'1 hour'
+			'1 day'
 		);
 	}
 
