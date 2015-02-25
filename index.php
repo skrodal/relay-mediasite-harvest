@@ -23,8 +23,8 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run = new RunMediasite();
 			$run->run();
 			break;
-		case "presentationhits":
-			$run = new \Uninett\Collections\Presentations\PresentationHitsImportDaily();
+		case "req":
+			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll()
 			$run->update();
 			break;
 		default:
