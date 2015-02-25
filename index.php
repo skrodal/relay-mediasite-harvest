@@ -44,6 +44,6 @@ $startDate = $req->getDate();
 
 $date = date('Y-m-d', $startDate->sec);
 
-$mdate = date_modify($date, '+ 1 day');
+$mdate = new DateTime($date);
 
-echo $mdate->format('Y-m-d');
+echo $mdate->modify('+ 1 day')->format('Y-m-d');

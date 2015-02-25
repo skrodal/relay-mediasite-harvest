@@ -22,9 +22,15 @@ class RequestPerHourImportDaily extends RequestPerHourImport implements UpdateIn
     {
 	    $startDate = $this->findLastInsertedDate();
 
+	    $date = date('Y-m-d', $startDate->sec);
+
+	    $mdate = new DateTime($date);
+
+	    $mdate->modify('+ 1 day');
+
         $this->prepareForImport
         (
-	        date('Y-m-d', $startDate->sec),
+	        date('Y-m-d', $mdate),
 	        'today + 1 day',
             '1 hour'
         );
