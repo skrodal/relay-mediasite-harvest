@@ -24,7 +24,7 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run->run();
 			break;
 		case "req":
-			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll()
+			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily();
 			$run->update();
 			break;
 		default:

@@ -58,8 +58,6 @@ abstract class RequestPerHourImport extends Collection implements UpdateInterfac
 
 		$query = $find->findData($date);
 
-		$this->LogInfo("Trying to find data for date {$date->format('Y-m-d H:i:s')}");
-
 		if ($this->queryContainsNewFiles($query)) {
 
 			while ($result = mssql_fetch_assoc($query)) {
