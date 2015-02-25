@@ -24,7 +24,7 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run->run();
 			break;
 		case "presentationhits":
-			$run = new PresentationHitsImportAll();
+			$run = new \Uninett\Collections\Presentations\PresentationHitsImportDaily();
 			$run->update();
 			break;
 		default:

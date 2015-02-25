@@ -19,7 +19,6 @@ class RunRelayAll implements RunnableInterface
 			new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportAll,
 			new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll,
 			new \Uninett\Collections\Presentations\PresentationHitsImportAll
-
 		];
 		/* @var $collection UpdateInterface */
 		foreach($collections as $collection)

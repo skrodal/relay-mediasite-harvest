@@ -45,7 +45,6 @@ abstract class RequestPerHourImport extends Collection implements UpdateInterfac
         foreach ($datePeriod as $dt)
 	        $this->startImport($dt);
 
-
 	    $this->LogInfo("Found {$this->numberFound} results");
 	    $this->LogInfo("Inserted {$this->numberInserted} results");
 
