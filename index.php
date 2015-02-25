@@ -24,8 +24,9 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run->run();
 			break;
 		case "reqa":
-			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll);
+			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll();
 			$run->update();
+			break;
 		case "reqd":
 			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily();
 			$run->update();
@@ -37,3 +38,12 @@ if (defined('STDIN') && isset($argv[1])) {
 	echo PHP_EOL . "End of " . $argv[1] . PHP_EOL;
 }
 
+$req =  new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily();
+
+$startDate = $req->getDate();
+
+$date = date('Y-m-d', $startDate->sec);
+
+$mdate = date_modify($date, '+ 1 day');
+
+echo $mdate->format('Y-m-d');
