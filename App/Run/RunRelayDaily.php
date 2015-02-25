@@ -17,7 +17,7 @@ class RunRelayDaily implements RunnableInterface
 			new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily,
 			new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportDaily,
 			new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportDaily,
-			new \Uninett\Collections\Presentations\PresentationHitsImport('today - 1 day', 'today', '1 day')
+			new \Uninett\Collections\Presentations\PresentationHitsImportDaily
 
 		];
 		/* @var $collection UpdateInterface */

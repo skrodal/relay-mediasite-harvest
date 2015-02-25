@@ -15,10 +15,10 @@ class RunRelayAll implements RunnableInterface
 			new \Uninett\Collections\Presentations\PresentationCheckForDeleted,
 			new \Uninett\Collections\Org\OrgImport,
 			new \Uninett\Collections\Org\OrgAggregateSizeUsed,
-			new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily,
-			new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportDaily,
-			new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportDaily,
-			new \Uninett\Collections\Presentations\PresentationHitsImport('today - 1 day', 'today', '1 day')
+			new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll,
+			new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportAll,
+			new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll,
+			new \Uninett\Collections\Presentations\PresentationHitsImportAll
 
 		];
 		/* @var $collection UpdateInterface */
