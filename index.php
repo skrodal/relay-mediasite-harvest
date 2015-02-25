@@ -23,7 +23,10 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run = new RunMediasite();
 			$run->run();
 			break;
-		case "req":
+		case "reqa":
+			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll);
+			$run->update();
+		case "reqd":
 			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily();
 			$run->update();
 			break;
