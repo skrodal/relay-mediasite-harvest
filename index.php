@@ -31,6 +31,14 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily();
 			$run->update();
 			break;
+		case "useragentsa":
+			$run = new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll();
+			$run->update();
+			break;
+		case "useragentsd":
+			$run = new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportDaily();
+			$run->update();
+			break;
 		default:
 			echo PHP_EOL . "Something went wrong. Wrong parameter?" . PHP_EOL;
 			break;
