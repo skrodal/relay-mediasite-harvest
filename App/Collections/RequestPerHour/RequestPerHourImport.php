@@ -76,7 +76,7 @@ abstract class RequestPerHourImport extends Collection implements UpdateInterfac
 						$this->numberInserted = $this->numberInserted + 1;
 
 				} else
-					$this->LogError("Could not create object from result at {$date}");
+					$this->LogError("Could not create object from result at {$date->format('Y-m-d H:i:s')}");
 			}
 		}
 	}
