@@ -11,11 +11,11 @@ class RequestPerHourModel implements JsonSerializable
 
     public function jsonSerialize()
     {
+	    // RequestsPerHourSchema::BYTES_SENT => $this->getBytesSent(),
         return
         [
             RequestsPerHourSchema::DATE => $this->getDate(),
             RequestsPerHourSchema::REQUEST => $this->getRequest(),
-            RequestsPerHourSchema::BYTES_SENT => $this->getBytesSent(),
         ];
     }
 
@@ -61,7 +61,7 @@ class RequestPerHourModel implements JsonSerializable
         return $this->_request;
     }
 
-    public function setBytesSent($totalBytesSent)
+/*    public function setBytesSent($totalBytesSent)
     {
         if(empty($totalBytesSent))
             $totalBytesSent = 0;
@@ -78,5 +78,5 @@ class RequestPerHourModel implements JsonSerializable
     public function getBytesSent()
     {
         return $this->_bytesSent;
-    }
+    }*/
 }

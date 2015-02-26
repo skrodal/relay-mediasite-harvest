@@ -7,13 +7,11 @@ class RequestPerHourCreate
 {
     private $object;
 
-	private $convert;
+	//private $convert;
 
 	function __construct()
 	{
-		$this->convert = new ConvertHelper();
-
-
+		//$this->convert = new ConvertHelper();
 	}
 
 
@@ -29,13 +27,13 @@ class RequestPerHourCreate
 
                 return null;
 
-	        $mib_sent = $this->convert->bytesToMegabytes((int)$result['BytesSent']);
+	    /*    $mib_sent = $this->convert->bytesToMegabytes((int)$result['BytesSent']);
 
             $variableWasSetSuccessfully = $this->object->setBytesSent($mib_sent);
 
             if($variableWasSetSuccessfully == false)
 
-                return null;
+                return null;*/
 
             $variableWasSetSuccessfully = $this->object->setRequest($result['Requests']);
 
