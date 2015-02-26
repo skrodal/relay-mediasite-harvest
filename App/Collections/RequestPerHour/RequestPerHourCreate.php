@@ -1,12 +1,23 @@
 <?php namespace Uninett\Collections\RequestPerHour;
 
+use Uninett\Helpers\ConvertHelper;
 use Uninett\Models\RequestPerHourModel;
 
 class RequestPerHourCreate
 {
     private $object;
 
-    public function createObjectFromResult($result)
+	private $convert;
+
+	function __construct()
+	{
+		$this->convert = new ConvertHelper();
+
+
+	}
+
+
+	public function createObjectFromResult($result)
     {
 	    $this->object = new RequestPerHourModel();
 
@@ -18,7 +29,9 @@ class RequestPerHourCreate
 
                 return null;
 
-            $variableWasSetSuccessfully = $this->object->setBytesSent($result['BytesSent']);
+	        $mib_sent = $this->convert->bytesToMegabytes((int)$result['BytesSent']);
+
+            $variableWasSetSuccessfully = $this->object->setBytesSent($mib_sent);
 
             if($variableWasSetSuccessfully == false)
 
