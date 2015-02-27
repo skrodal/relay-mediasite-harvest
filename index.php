@@ -1,5 +1,6 @@
 <?php
 use Uninett\Collections\Presentations\PresentationHitsImportAll;
+use Uninett\Collections\UpdateInterface;
 use Uninett\Run\RunMediasite;
 use Uninett\Run\RunRelayAll;
 use Uninett\Run\RunRelayDaily;
@@ -46,6 +47,17 @@ if (defined('STDIN') && isset($argv[1])) {
 		case "uniqued":
 			$run = new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportDaily();
 			$run->update();
+			break;
+		case "diverse":
+			$collections = [
+				new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportAll,
+				new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll,
+				new \Uninett\Collections\Presentations\PresentationHitsImportAll
+			];
+			/* @var $collection UpdateInterface */
+			foreach($collections as $collection)
+				$collection->update();
+
 			break;
 		default:
 			echo PHP_EOL . "Something went wrong. Wrong parameter?" . PHP_EOL;
