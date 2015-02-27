@@ -50,11 +50,11 @@ abstract class PresentationHitsImport extends Collection
 			$this->find($dt);
 
 			if($this->numberInserted > 0) {
-				$this->LogInfo("Inserted {$this->numberInserted} results for {$dt->format('Y-m-d H:i:s')}");
+				$this->LogInfo("Inserted {$this->numberInserted} results for {$dt->format('Y-m-d')}");
 				$this->numberInserted = 0;
 			}
 			if($this->numberErrors > 0) {
-				$this->LogError("Error when importing data for {$dt->format('Y-m-d H:i:s')}");
+				$this->LogError("Error when importing data for {$dt->format('Y-m-d')}");
 				$this->numberErrors = 0;
 
 			}
