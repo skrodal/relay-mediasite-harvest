@@ -1,7 +1,12 @@
 <?php namespace Uninett\Models; 
-abstract class BaseModel {
+ class BaseModel {
 
-	protected function variablesToArray(){
+
+	function __construct()
+	{
+	}
+
+	public function variablesToArray(){
 		$var = get_object_vars($this);
 		foreach($var as &$value){
 			if(is_object($value) && method_exists($value,'variablesToArray')){
@@ -10,4 +15,5 @@ abstract class BaseModel {
 		}
 		return $var;
 	}
+
 }

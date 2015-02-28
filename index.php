@@ -91,4 +91,4 @@ $newCreatedUser = $userCreate->create($res);
 //echo $result->jsonSerialize();
 
 
-echo var_dump($newCreatedUser->toArray());
+echo print_r($newCreatedUser->toArray());
