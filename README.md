@@ -4,6 +4,7 @@ This is documentation for ecampus statistics v2
 
 #TODO
 * Show a typical import, both all and daily
+* Update installed mongo packages (if new version works. yum list installed | grep mongo)
 
 
 
@@ -151,8 +152,7 @@ This is written of what I remember, something here may be wrong.
 To upgrade
 
 ```
-sudo yum update
-sudo yum upgrade
+sudo yum install mongodb-org
 
 ```
 
