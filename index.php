@@ -58,7 +58,10 @@ if (defined('STDIN') && isset($argv[1])) {
 			/* @var $collection UpdateInterface */
 			foreach($collections as $collection)
 				$collection->update();
-
+			break;
+		case "userimport":
+			$run = new \Uninett\Collections\Users\UserImport();
+			$run->update();
 			break;
 		default:
 			echo PHP_EOL . "Something went wrong. Wrong parameter?" . PHP_EOL;
