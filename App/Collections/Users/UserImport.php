@@ -87,7 +87,7 @@ class UserImport extends Collection
         return empty($cursor) ? true : false;
     }
 
-    private function insertUserToDb(UserModel2 $user, $userId)
+    private function insertUserToDb(UserModel $user, $userId)
     {
         $success = $this->insert->insertUserToMongoDb($user);
 
