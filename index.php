@@ -1,6 +1,7 @@
 <?php
 use Uninett\Collections\Presentations\PresentationHitsImportAll;
 use Uninett\Collections\UpdateInterface;
+use Uninett\Models\UserModel;
 use Uninett\Models\UserModel2;
 use Uninett\Run\RunMediasite;
 use Uninett\Run\RunRelayAll;
@@ -69,7 +70,7 @@ if (defined('STDIN') && isset($argv[1])) {
 	echo PHP_EOL . "End of " . $argv[1] . PHP_EOL;
 }
 
-$user2 = new UserModel2;
+$user2 = new UserModel;
 
 $res = [
 		     'userDisplayName' => 'Kim Syversen',
@@ -82,12 +83,4 @@ $res = [
 		     UsersSchema::STATUS => -1,
 	     ];
 
-/*$userCreate = new \Uninett\Collections\Users\UserCreate();
 
-$newCreatedUser = $userCreate->create($res);
-
-//print_r($newCreatedUser->jsonSerialize());
-//echo $result->jsonSerialize();*/
-
-
-echo print_r($newCreatedUser->toArray());

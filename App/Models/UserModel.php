@@ -8,21 +8,31 @@ use Uninett\Schemas\UsersSchema;
  */
 class UserModel implements JsonSerializable
 {
-    private $_username = "";
-    private $_username_disk = "";
-    private $_email = "";
-    private $_name = "";
+    private $username = "";
+    private $username_on_disk = "";
+    private $email = "";
+    private $name = "";
     private $created_date = "";
-    private $_org = "";
-    private $_status = "";
-    private $_affiliation = "";
+    private $org = "";
+    private $status = "";
+    private $affiliation = "";
 
-    public function jsonSerialize()
+/*	public function variablesToArray(){
+		$var = get_object_vars($this);
+		foreach($var as &$value){
+			if(is_object($value) && method_exists($value,'variablesToArray')){
+				$value = $value->variablesToArray();
+			}
+		}
+		return $var;
+	}*/
+
+	public function jsonSerialize()
     {
         return [
             UsersSchema::NAME => $this->getName(),
             UsersSchema::USERNAME => $this->getUsername(),
-            UsersSchema::USERNAME_ON_DISK => $this->getUsernameDisk(),
+            UsersSchema::USERNAME_ON_DISK => $this->getUsernameOnDisk(),
             UsersSchema::ORG => $this->getOrg(),
             UsersSchema::EMAIL => $this->getEmail(),
             UsersSchema::AFFILIATION => $this->getAffiliation(),
@@ -37,14 +47,14 @@ class UserModel implements JsonSerializable
 
             return false;
 
-        $this->_username_disk = $u;
+        $this->username_on_disk = $u;
 
         return true;
     }
 
-    public function getUsernameDisk()
+    public function getUsernameOnDisk()
     {
-        return $this->_username_disk;
+        return $this->username_on_disk;
     }
 
 
@@ -54,14 +64,14 @@ class UserModel implements JsonSerializable
 
             return false;
 
-        $this->_affiliation = $affiliation;
+        $this->affiliation = $affiliation;
 
         return true;
     }
 
     public function getAffiliation()
     {
-        return $this->_affiliation;
+        return $this->affiliation;
     }
 
     public function setCreatedDate($date)
@@ -86,14 +96,14 @@ class UserModel implements JsonSerializable
 
             return false;
 
-        $this->_email = $email;
+        $this->email = $email;
 
         return true;
     }
 
     public function getEmail()
     {
-        return $this->_email;
+        return $this->email;
     }
 
     public function setName($name)
@@ -102,14 +112,14 @@ class UserModel implements JsonSerializable
 
             return false;
 
-        $this->_name = $name;
+        $this->name = $name;
 
         return true;
     }
 
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     public function setUsername($username)
@@ -118,14 +128,14 @@ class UserModel implements JsonSerializable
 
             return false;
 
-        $this->_username = $username;
+        $this->username = $username;
 
         return true;
     }
 
     public function getUsername()
     {
-        return $this->_username;
+        return $this->username;
     }
 
     public function setOrg($org)
@@ -134,14 +144,14 @@ class UserModel implements JsonSerializable
 
             return false;
 
-        $this->_org = $org;
+        $this->org = $org;
 
         return true;
     }
 
     public function getOrg()
     {
-        return $this->_org;
+        return $this->org;
     }
 
     public function setStatus($status)
@@ -150,13 +160,13 @@ class UserModel implements JsonSerializable
 
             return false;
 
-        $this->_status = $status;
+        $this->status = $status;
 
         return true;
     }
 
     public function getStatus()
     {
-        return $this->_status;
+        return $this->status;
     }
 }
