@@ -2,7 +2,8 @@
 //Creates an User object with by using the result from UserFind
 
 use Uninett\Collections\Collection;
-use Uninett\Models\User;
+use Uninett\Models\UserModel2;
+use Uninett\Models\UserModel;
 use Uninett\Schemas\UserMediasiteSchema;
 use Uninett\Schemas\UsersSchema;
 
@@ -15,14 +16,19 @@ class UserCreate extends Collection
         parent::__construct(UsersSchema::COLLECTION_NAME);
     }
 
+	/**
+	 * Create new user
+	 * @param $res
+	 * @return null|UserModel2
+	 */
     public function create($res)
     {
-        $user = new User();
+        $user = new UserModel2();
 
         $usernameWasAnEmail = $user->setUsername($res[UserMediasiteSchema::USERNAME]);
 
         if ($usernameWasAnEmail) {
-            $user->setDate($res[UserMediasiteSchema::CREATED_ON]);
+            $user->setCreatedDate($res[UserMediasiteSchema::CREATED_ON]);
 
             $user->setName($res[UserMediasiteSchema::USERDISPLAYNAME]);
 

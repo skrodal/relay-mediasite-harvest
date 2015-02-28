@@ -6,7 +6,7 @@ use Uninett\Schemas\UsersSchema;
 /**
  * status, see UsersCheckStatus.php
  */
-class User implements JsonSerializable
+class UserModel implements JsonSerializable
 {
     private $_username = "";
     private $_username_disk = "";

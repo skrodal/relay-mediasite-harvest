@@ -1,9 +1,11 @@
 <?php
 use Uninett\Collections\Presentations\PresentationHitsImportAll;
 use Uninett\Collections\UpdateInterface;
+use Uninett\Models\UserModel2;
 use Uninett\Run\RunMediasite;
 use Uninett\Run\RunRelayAll;
 use Uninett\Run\RunRelayDaily;
+use Uninett\Schemas\UsersSchema;
 
 require 'start/bootstrap.php';
 
@@ -65,12 +67,25 @@ if (defined('STDIN') && isset($argv[1])) {
 	echo PHP_EOL . "End of " . $argv[1] . PHP_EOL;
 }
 
-$req =  new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily();
+$user2 = new UserModel2;
 
-$startDate = $req->getDate();
+$res = [
+		     'userDisplayName' => 'Kim Syversen',
+		     'userName' => 'kim@example.com',
+		     UsersSchema::USERNAME_ON_DISK => 'kimatexample.com',
+		     UsersSchema::ORG => 'example.com',
+		     'userEmail' => 'kim@example.com',
+		     UsersSchema::AFFILIATION => 'ansatt',
+		     'createdOn' => date('Y-m-d H:i:s'),
+		     UsersSchema::STATUS => -1,
+	     ];
 
-$date = date('Y-m-d', $startDate->sec);
+$userCreate = new \Uninett\Collections\Users\UserCreate();
 
-$mdate = new DateTime($date);
+$newCreatedUser = $userCreate->create($res);
 
-echo $mdate->modify('+ 1 day')->format('Y-m-d');
+//print_r($newCreatedUser->jsonSerialize());
+//echo $result->jsonSerialize();
+
+
+echo var_dump($newCreatedUser->toArray());
