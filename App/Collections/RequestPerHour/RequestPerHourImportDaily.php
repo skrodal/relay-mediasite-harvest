@@ -30,6 +30,7 @@ class RequestPerHourImportDaily extends RequestPerHourImport implements UpdateIn
 	$mdate->format('Y-m-d H:i:s'),
 	*/
 
+	    //TODO: Remove - 1 day?
         $this->prepareForImport
         (
 	        date('Y-m-d', $startDate->sec),
