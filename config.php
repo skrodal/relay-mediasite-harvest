@@ -1,4 +1,16 @@
 <?php
+/**
+ * About the fields:
+ * debug : enable this and nothing will be inserted to mongo, even if it will look like it happens. Used in testing.
+ * startDateToImportIISLogs : This was the date when it seemed that the system was used by other real people (and not just testing)
+ * lastupdates_doc_key : used as an identified in the lastupdates collection to use one document containing last user id imported etc.
+ * relaymedia: Root path to relaymedia
+ * root : Root path to project
+ * folders_to_scan_for_files : folders to scan for presentations
+ * userStatus : What the different statuses mean
+ * numberOfDecimals : Used to control how many decimalas that shall be used in calculations and stored in mongdb
+ * mediasite : Which directories that contains mediasite data
+ */
 Uninett\Config::add(
 [
 	'settings' => [
