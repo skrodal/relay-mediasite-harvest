@@ -45,13 +45,15 @@ class PresentationCreate extends Collection
 
                     $newPresentation->setDeleted((int) 0);
 
+	                $newPresentation->setRecorderName((string) $xml->recordedBy->displayName);
+
                     $newPresentation->setUsername((string) $xml->presenter->userName);
 
                     $newPresentation->setTotalDuration($convert->millisecondsToSeconds($xml->totalDuration));
 
                     $newPresentation->setTrimmedDuration($convert->millisecondsToSeconds($xml->trimmedDuration));
 
-                    $newPresentation->setHits(0);
+                    $newPresentation->setHits((int) 0);
 
                     $dUrl = $convert->convertExternalToLocalPath((string) $xml->destinationUrl);
 

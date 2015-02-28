@@ -21,6 +21,7 @@ class PresentationSchema
     const QUEUETIME = "queuetime_s";
     const DURATION = "duration_s";
     const TRIMMED = "trimmed_s";
+	const RECORDER_NAME = "recorder_name";
 
     const FILES = "files";
     const HITS = "hits";

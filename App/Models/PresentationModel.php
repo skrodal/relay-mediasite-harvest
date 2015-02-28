@@ -22,6 +22,30 @@ class PresentationModel implements JsonSerializable
     private $_description;
     private $_path;
 
+	private $recorderName;
+
+	/**
+	 * @return mixed
+	 */
+	public function getRecorderName()
+	{
+		return $this->recorderName;
+	}
+
+	/**
+	 * @param mixed $recorderName
+	 */
+	public function setRecorderName($recorderName)
+	{
+		if(!is_string($recorderName))
+			return false;
+
+		$this->recorderName = $recorderName;
+
+		 return true;
+	}
+
+
     function __construct()
     {
         $this->_files = array();
