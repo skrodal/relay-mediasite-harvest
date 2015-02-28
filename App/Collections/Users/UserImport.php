@@ -5,6 +5,7 @@ use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Database\EcampusSQLConnection;
 use Uninett\Database\MongoConnection;
 use Uninett\Models\UserModel;
+use Uninett\Models\UserModel2;
 use Uninett\Schemas\UserMediasiteSchema;
 use Uninett\Schemas\UsersSchema;
 
@@ -86,7 +87,7 @@ class UserImport extends Collection
         return empty($cursor) ? true : false;
     }
 
-    private function insertUserToDb(UserModel $user, $userId)
+    private function insertUserToDb(UserModel2 $user, $userId)
     {
         $success = $this->insert->insertUserToMongoDb($user);
 
