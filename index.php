@@ -83,12 +83,12 @@ $res = [
 		     UsersSchema::STATUS => -1,
 	     ];
 
-$userCreate = new \Uninett\Collections\Users\UserCreate();
+/*$userCreate = new \Uninett\Collections\Users\UserCreate();
 
 $newCreatedUser = $userCreate->create($res);
 
 //print_r($newCreatedUser->jsonSerialize());
-//echo $result->jsonSerialize();
+//echo $result->jsonSerialize();*/
 
 
 echo print_r($newCreatedUser->toArray());

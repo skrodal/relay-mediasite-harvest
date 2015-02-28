@@ -12,7 +12,7 @@ class UserModel implements JsonSerializable
     private $_username_disk = "";
     private $_email = "";
     private $_name = "";
-    private $_date = "";
+    private $created_date = "";
     private $_org = "";
     private $_status = "";
     private $_affiliation = "";
@@ -26,7 +26,7 @@ class UserModel implements JsonSerializable
             UsersSchema::ORG => $this->getOrg(),
             UsersSchema::EMAIL => $this->getEmail(),
             UsersSchema::AFFILIATION => $this->getAffiliation(),
-            UsersSchema::CREATED => $this->getDate(),
+            UsersSchema::CREATED => $this->getCreatedDate(),
             UsersSchema::STATUS => $this->getStatus(),
         ];
     }
@@ -64,20 +64,20 @@ class UserModel implements JsonSerializable
         return $this->_affiliation;
     }
 
-    public function setDate($date)
+    public function setCreatedDate($date)
     {
         if(!is_string($date))
 
             return false;
 
-        $this->_date = new MongoDate(strtotime($date));
+        $this->created_date = new MongoDate(strtotime($date));
 
         return true;
     }
 
-    public function getDate()
+    public function getCreatedDate()
     {
-        return $this->_date;
+        return $this->created_date;
     }
 
     public function setEmail($email)

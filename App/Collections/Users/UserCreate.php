@@ -23,7 +23,7 @@ class UserCreate extends Collection
 	 */
     public function create($res)
     {
-        $user = new UserModel2();
+        $user = new UserModel;
 
         $usernameWasAnEmail = $user->setUsername($res[UserMediasiteSchema::USERNAME]);
 
