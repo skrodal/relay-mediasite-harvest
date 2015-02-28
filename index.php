@@ -50,8 +50,7 @@ if (defined('STDIN') && isset($argv[1])) {
 			break;
 		case "diverse":
 			$collections = [
-				new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportAll,
-				new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll,
+				new \Uninett\Collections\Presentations\PresentationImport,
 				new \Uninett\Collections\Presentations\PresentationHitsImportAll
 			];
 			/* @var $collection UpdateInterface */
