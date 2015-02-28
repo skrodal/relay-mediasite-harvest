@@ -272,6 +272,7 @@ class PresentationModel implements JsonSerializable
             PresentationSchema::PRESENTATION_ID => $this->getPresentationId(),
             PresentationSchema::TITLE => $this->getTitle(),
             PresentationSchema::DESCRIPTION => $this->getDescription(),
+	        PresentationSchema::RECORDER_NAME => $this->getRecorderName(),
             PresentationSchema::PATH => $this->getPath(),
             PresentationSchema::USERNAME => $this->getUserName(),
             PresentationSchema::ORG => $this->getOrg(),
