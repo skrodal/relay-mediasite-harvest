@@ -70,7 +70,7 @@ if (defined('STDIN') && isset($argv[1])) {
 	echo PHP_EOL . "End of " . $argv[1] . PHP_EOL;
 }
 
-$user2 = new UserModel;
+
 
 $res = [
 		     'userDisplayName' => 'Kim Syversen',
