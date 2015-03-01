@@ -31,7 +31,8 @@ abstract class RequestPerHourImport extends Collection implements UpdateInterfac
 	public abstract function update();
 	public abstract function logStart($startDate, $endDate);
 
-	protected function prepareForImport($fromDate, $toDate, $interval)
+
+	protected function prepareForImport($fromDate, $toDate, $interval, $excludeStartDate)
     {
         $startDate = new DateTime($fromDate);
         $endDate = new DateTime($toDate);
@@ -39,6 +40,9 @@ abstract class RequestPerHourImport extends Collection implements UpdateInterfac
         $dateInterval = DateInterval::createFromDateString($interval);
 
 	    $datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
+
+	    if($excludeStartDate !== true)
+		    $datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
 
 	    $this->logStart($startDate, $endDate);
 

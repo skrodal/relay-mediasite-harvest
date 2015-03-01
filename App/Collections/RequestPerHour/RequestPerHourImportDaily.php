@@ -35,9 +35,12 @@ class RequestPerHourImportDaily extends RequestPerHourImport implements UpdateIn
         (
 	        date('Y-m-d', $startDate->sec),
 	        'today - 1 day' ,
-            '1 hour'
+            '1 hour',
+	        true
         );
     }
+
+
 
 	public function getDate()
 	{
