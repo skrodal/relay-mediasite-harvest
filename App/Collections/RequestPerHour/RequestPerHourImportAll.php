@@ -25,7 +25,7 @@ class RequestPerHourImportAll extends RequestPerHourImport implements UpdateInte
         $this->prepareForImport
         (
 	        date('Y-m-d', $startDate->sec),
-            'today',
+            'today - 1 day',
             '1 hour'
         );
     }
