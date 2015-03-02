@@ -67,7 +67,7 @@ abstract class DailyUserAgentImport extends Collection
 		$this->LogInfo("Inserted {$this->numberInserted} results");
 
 		$this->updateDateInMongoDb($endDate);
-	}g
+	}
 	protected function startImport($date)
 	{
 		$create = new DailyUserAgentCreate;
