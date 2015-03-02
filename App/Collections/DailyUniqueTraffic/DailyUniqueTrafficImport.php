@@ -26,7 +26,7 @@ abstract class DailyUniqueTrafficImport extends Collection implements UpdateInte
 	public abstract function update();
 	public abstract function logStart($startDate, $endDate);
 
-    public function prepareForImport($fromDate, $toDate, $interval)
+/*    public function prepareForImport($fromDate, $toDate, $interval)
     {
         $startDate = new DateTime($fromDate);
         $endDate = new DateTime($toDate);
@@ -46,7 +46,31 @@ abstract class DailyUniqueTrafficImport extends Collection implements UpdateInte
 	    //$this->LogInfo("Storing {$endDate->format('Y-m-d')}");
 
 	    $this->updateDateInMongoDb($endDate);
-    }
+    }*/
+
+	protected function prepareForImport($fromDate, $toDate, $interval, $excludeStartDate)
+	{
+		$startDate = new DateTime($fromDate);
+		$endDate = new DateTime($toDate);
+
+		$dateInterval = DateInterval::createFromDateString($interval);
+
+		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
+
+		if($excludeStartDate !== true)
+			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
+
+		$this->logStart($startDate, $endDate);
+
+		foreach ($datePeriod as $dt)
+			$this->startImport($dt);
+
+		$this->LogInfo("Found {$this->numberFound} results");
+		$this->LogInfo("Inserted {$this->numberInserted} results");
+
+		$this->updateDateInMongoDb($endDate);
+	}
+
 
 	protected function startImport($date)
 	{

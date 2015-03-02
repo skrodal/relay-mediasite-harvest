@@ -24,7 +24,7 @@ class DailyUserAgentImportDaily extends DailyUserAgentImport  implements UpdateI
 		(
 			date('Y-m-d', $startDate->sec),
 			'today' ,
-			'1 hour',
+			'1 day',
 			true
 		);
 	}
