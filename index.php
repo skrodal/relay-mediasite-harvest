@@ -53,9 +53,6 @@ if (defined('STDIN') && isset($argv[1])) {
 			break;
 		case "diverse":
 			$collections = [
-				new \Uninett\Collections\Users\UserImport,
-				new \Uninett\Collections\Users\UserSetAffiliation,
-				new \Uninett\Collections\Users\UserCheckStatus,
 				new \Uninett\Collections\Presentations\PresentationImport,
 				new \Uninett\Collections\Presentations\PresentationHitsImportAll
 			];

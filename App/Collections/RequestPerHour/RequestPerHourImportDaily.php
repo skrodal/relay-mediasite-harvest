@@ -22,15 +22,6 @@ class RequestPerHourImportDaily extends RequestPerHourImport implements UpdateIn
     {
 	    $startDate = $this->findLastInsertedDate();
 
-	  /*  $date = date('Y-m-d', $startDate->sec);
-
-	    $mdate = new DateTime($date);
-
-	    $mdate->modify('- 1 day');
-		$mdate->format('Y-m-d H:i:s');*/
-
-
-
         $this->prepareForImport
         (
 	        date('Y-m-d', $startDate->sec),
@@ -39,14 +30,6 @@ class RequestPerHourImportDaily extends RequestPerHourImport implements UpdateIn
 	        true
         );
     }
-
-
-
-	public function getDate()
-	{
-		return $this->findLastInsertedDate();
-
-	}
 
 	public function logStart($startDate, $endDate)
 	{
