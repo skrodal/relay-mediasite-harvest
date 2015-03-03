@@ -35,7 +35,7 @@ abstract class PresentationHitsImport extends Collection
         $this->uniqueTraffic = new MongoConnection(DailyUniqueTrafficSchema::COLLECTION_NAME);
     }
 
-	protected function prepareForImport($fromDate, $toDate, $interval)
+	protected function prepareForImport($fromDate, $toDate, $interval, $excludeStartDate)
 	{
 		$startDate = new DateTime($fromDate);
 		$endDate = new DateTime($toDate);
@@ -44,10 +44,13 @@ abstract class PresentationHitsImport extends Collection
 
 		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
 
+		if($excludeStartDate !== true)
+			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
+
 		$this->logStart($startDate, $endDate);
 
 		foreach ($datePeriod as $dt) {
-			$this->find($dt);
+			$this->startImport($dt);
 
 			if($this->numberInserted > 0) {
 				$this->LogInfo("Inserted {$this->numberInserted} results for {$dt->format('Y-m-d')}");
@@ -66,7 +69,8 @@ abstract class PresentationHitsImport extends Collection
 		$this->updateDateInMongoDb($endDate);
 	}
 
-    public function find($date) {
+
+	public function startImport($date) {
         $criteriaDaily = array(DailyVideosSchema::DATE => new MongoDate(strtotime($date->format('Y-m-d'))));
 
         $cursor = $this->uniqueTraffic->collection->find($criteriaDaily);

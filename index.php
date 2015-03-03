@@ -84,25 +84,3 @@ $res = [
 	     ];
 
 
-$startDate = new DateTime('2015-02-20');
-$endDate = new DateTime('today - 1 day');
-
-$dateInterval = DateInterval::createFromDateString('1 day');
-
-$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
-
-
-foreach ($datePeriod as $dt)
-	echo $dt->format('Y-m-d') . PHP_EOL;
-
-echo "----------Ny dag---------\n";
-$startDate2 = $endDate;
-$endDate2 = new DateTime('today');
-
-
-$datePeriod = new DatePeriod($startDate2, $dateInterval, $endDate2);
-
-foreach ($datePeriod as $dt)
-	echo $dt->format('Y-m-d') . PHP_EOL;
-
-

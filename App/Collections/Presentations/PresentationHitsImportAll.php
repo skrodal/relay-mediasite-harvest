@@ -27,7 +27,8 @@ class PresentationHitsImportAll extends PresentationHitsImport implements Update
 		(
 			date('Y-m-d', $startDate->sec),
 			'today',
-			'1 day'
+			'1 day',
+			false
 		);
 	}
 

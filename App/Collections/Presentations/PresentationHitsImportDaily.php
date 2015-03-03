@@ -26,8 +26,9 @@ class PresentationHitsImportDaily extends PresentationHitsImport  implements Upd
 		$this->prepareForImport
 		(
 			date('Y-m-d', $startDate->sec),
-			'today - 1 day',
-			'1 day'
+			'today',
+			'1 day',
+			true
 		);
 	}
 
