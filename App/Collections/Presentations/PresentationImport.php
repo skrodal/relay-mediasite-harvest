@@ -64,8 +64,6 @@ class PresentationImport extends Collection implements UpdateInterface
 
         $largestPresentationIdFromSource = $this->findLargestPresentationIdFromSource();
 
-	    $this->LogInfo("Largest presentationid from source is {$largestPresentationIdFromSource} ");
-
         if($largestPresentationIdFromSource === false)
         {
             $this->LogError("Could not retrieve largest presentationId from database");
