@@ -30,7 +30,7 @@ class RequestPerHourImportDaily extends RequestPerHourImport implements UpdateIn
 		$mdate->format('Y-m-d H:i:s');*/
 
 
-	    //TODO: Remove - 1 day?
+
         $this->prepareForImport
         (
 	        date('Y-m-d', $startDate->sec),
@@ -50,6 +50,6 @@ class RequestPerHourImportDaily extends RequestPerHourImport implements UpdateIn
 
 	public function logStart($startDate, $endDate)
 	{
-		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to {$endDate->format('Y-m-d')}");
+		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to {$endDate->modify('- 1 day')->format('Y-m-d')}");
 	}
 }

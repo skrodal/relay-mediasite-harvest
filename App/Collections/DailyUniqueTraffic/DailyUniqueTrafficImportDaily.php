@@ -19,11 +19,19 @@ class DailyUniqueTrafficImportDaily extends DailyUniqueTrafficImport
 
 		$start = $start->modify('-1 day')->format('Y-m-d');*/
 
-		$this->prepareForImport
+/*		$this->prepareForImport
 		(
 			date('Y-m-d', $startDate->sec),
 			'today - 1 day',
 			'1 day'
+		);*/
+
+		$this->prepareForImport
+		(
+			date('Y-m-d', $startDate->sec),
+			'today' ,
+			'1 day',
+			true
 		);
 
 		$this->LogInfo("Found {$this->numberFound} results");

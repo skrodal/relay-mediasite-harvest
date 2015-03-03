@@ -13,11 +13,19 @@ class DailyUserAgentImportDaily extends DailyUserAgentImport  implements UpdateI
 	{
 		$startDate = $this->findLastInsertedDate();
 
-		$this->prepareForImport
+/*		$this->prepareForImport
 		(
 			date('Y-m-d', $startDate->sec),
 			'today - 1 day',
 			'1 day'
+		);*/
+
+		$this->prepareForImport
+		(
+			date('Y-m-d', $startDate->sec),
+			'today' ,
+			'1 day',
+			true
 		);
 	}
 
