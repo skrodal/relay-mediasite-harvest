@@ -42,41 +42,10 @@ abstract class PresentationHitsImport extends Collection
 
 		$dateInterval = DateInterval::createFromDateString($interval);
 
-		if($excludeStartDate)
+		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
+
+		if($excludeStartDate !== true)
 			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
-		else
-			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
-
-		$this->logStart($startDate, $endDate);
-
-		foreach ($datePeriod as $dt) {
-			$this->startImport($dt);
-
-			if($this->numberInserted > 0) {
-				$this->LogInfo("Inserted {$this->numberInserted} results for {$dt->format('Y-m-d')}");
-				$this->numberInserted = 0;
-			}
-			if($this->numberErrors > 0) {
-				$this->LogError("Error when importing data for {$dt->format('Y-m-d')}");
-				$this->numberErrors = 0;
-
-			}
-			$this->numberFound = $this->numberFound + 1;
-		}
-
-		$this->LogInfo("Found {$this->numberFound} results");
-
-		$this->updateDateInMongoDb($endDate);
-	}
-
-	protected function prepareForImportWithOutStartDate($fromDate, $toDate, $interval)
-	{
-		$startDate = new DateTime($fromDate);
-		$endDate = new DateTime($toDate);
-
-		$dateInterval = DateInterval::createFromDateString($interval);
-
-		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
 
 		$this->logStart($startDate, $endDate);
 
