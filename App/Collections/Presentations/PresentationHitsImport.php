@@ -44,7 +44,7 @@ abstract class PresentationHitsImport extends Collection
 
 
 
-		if($excludeStartDate !== true)
+		if($excludeStartDate)
 			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
 		else
 			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
