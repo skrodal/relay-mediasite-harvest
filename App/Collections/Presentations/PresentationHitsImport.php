@@ -44,7 +44,7 @@ abstract class PresentationHitsImport extends Collection
 
 		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
 
-		if($excludeStartDate !== true)
+		if($excludeStartDate)
 			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
 
 		$this->logStart($startDate, $endDate);
@@ -63,9 +63,6 @@ abstract class PresentationHitsImport extends Collection
 			}
 			$this->numberFound = $this->numberFound + 1;
 		}
-
-		$this->LogInfo("Found {$this->numberFound} results");
-
 		$this->updateDateInMongoDb($endDate);
 	}
 

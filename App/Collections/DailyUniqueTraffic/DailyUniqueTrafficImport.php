@@ -57,13 +57,17 @@ abstract class DailyUniqueTrafficImport extends Collection implements UpdateInte
 
 		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
 
-		if($excludeStartDate !== true)
+		if ($excludeStartDate !== true)
 			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
 
 		$this->logStart($startDate, $endDate);
 
 		foreach ($datePeriod as $dt)
+		{
+			$this->LogInfo("Starting import for {$dt->format('Y-m-d')} ");
 			$this->startImport($dt);
+		}
+
 
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");

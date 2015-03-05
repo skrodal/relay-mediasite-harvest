@@ -13,19 +13,6 @@ class DailyUniqueTrafficImportDaily extends DailyUniqueTrafficImport
 	{
 		$startDate = $this->findLastInsertedDate();
 
-/*		$start = date_create();
-
-		date_timestamp_set($start, $startDate->sec);
-
-		$start = $start->modify('-1 day')->format('Y-m-d');*/
-
-/*		$this->prepareForImport
-		(
-			date('Y-m-d', $startDate->sec),
-			'today - 1 day',
-			'1 day'
-		);*/
-
 		$this->prepareForImport
 		(
 			date('Y-m-d', $startDate->sec),
@@ -33,9 +20,6 @@ class DailyUniqueTrafficImportDaily extends DailyUniqueTrafficImport
 			'1 day',
 			true
 		);
-
-		$this->LogInfo("Found {$this->numberFound} results");
-		$this->LogInfo("Inserted {$this->numberInserted} results");
 	}
 
 	public function logStart($startDate, $endDate)
