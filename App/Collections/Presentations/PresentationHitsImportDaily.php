@@ -23,12 +23,11 @@ class PresentationHitsImportDaily extends PresentationHitsImport  implements Upd
 	{
 		$startDate = $this->findLastInsertedDate();
 
-		$this->prepareForImport
+		$this->prepareForImportWithOutStartDate
 		(
 			date('Y-m-d', $startDate->sec),
 			'today',
 			'1 day',
-			true
 		);
 	}
 
