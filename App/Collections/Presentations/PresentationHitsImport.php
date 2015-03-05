@@ -42,10 +42,12 @@ abstract class PresentationHitsImport extends Collection
 
 		$dateInterval = DateInterval::createFromDateString($interval);
 
-		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
+
 
 		if($excludeStartDate !== true)
 			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
+		else
+			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
 
 		$this->logStart($startDate, $endDate);
 
