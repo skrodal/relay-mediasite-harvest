@@ -68,7 +68,6 @@ abstract class DailyUniqueTrafficImport extends Collection implements UpdateInte
 			$this->startImport($dt);
 		}
 
-
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");
 
