@@ -4,6 +4,7 @@ use DatePeriod;
 use DateTime;
 use Uninett\Collections\Collection;
 use Uninett\Collections\LastUpdates\LastUpdates;
+use Uninett\Collections\StatisticsDateImporterTrait;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Database\MongoConnection;
 use Uninett\Database\PictorConnection;
@@ -13,8 +14,7 @@ abstract class DailyUniqueTrafficImport extends Collection implements UpdateInte
 {
 	protected $mongo;
 
-	protected $numberFound = 0;
-	protected $numberInserted = 0;
+	use StatisticsDateImporterTrait;
 
 	public function __construct()
     {
@@ -25,55 +25,6 @@ abstract class DailyUniqueTrafficImport extends Collection implements UpdateInte
 
 	public abstract function update();
 	public abstract function logStart($startDate, $endDate);
-
-/*    public function prepareForImport($fromDate, $toDate, $interval)
-    {
-        $startDate = new DateTime($fromDate);
-        $endDate = new DateTime($toDate);
-
-        $dateInterval = DateInterval::createFromDateString($interval);
-        $datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
-
-	    $this->logStart($startDate, $endDate);
-
-        foreach ($datePeriod as $dt)
-        {
-	        //$this->LogInfo("Importing for date {$dt->format('Y-m-d H:i:s')}");
-
-	        $this->startImport($dt);
-        }
-
-	    //$this->LogInfo("Storing {$endDate->format('Y-m-d')}");
-
-	    $this->updateDateInMongoDb($endDate);
-    }*/
-
-	protected function prepareForImport($fromDate, $toDate, $interval, $excludeStartDate)
-	{
-		$startDate = new DateTime($fromDate);
-		$endDate = new DateTime($toDate);
-
-		$dateInterval = DateInterval::createFromDateString($interval);
-
-		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
-
-		if ($excludeStartDate !== true)
-			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
-
-		$this->logStart($startDate, $endDate);
-
-		foreach ($datePeriod as $dt)
-		{
-			$this->LogInfo("Starting import for {$dt->format('Y-m-d')} ");
-			$this->startImport($dt);
-		}
-
-		$this->LogInfo("Found {$this->numberFound} results");
-		$this->LogInfo("Inserted {$this->numberInserted} results");
-
-		$this->updateDateInMongoDb($endDate);
-	}
-
 
 	protected function startImport($date)
 	{

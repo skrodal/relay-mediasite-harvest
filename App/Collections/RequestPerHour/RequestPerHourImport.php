@@ -1,8 +1,5 @@
 <?php namespace Uninett\Collections\RequestPerHour;
 //This class imports yesterdays related IIS-logdata
-use DateInterval;
-use DatePeriod;
-use DateTime;
 
 use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
@@ -10,14 +7,14 @@ use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Database\MongoConnection;
 use Uninett\Database\PictorConnection;
 use Uninett\Schemas\RequestsPerHourSchema;
+use Uninett\Collections\StatisticsDateImporterTrait;
 
 abstract class RequestPerHourImport extends Collection implements UpdateInterface
 {
 	protected $create;
 	protected $find;
 
-	protected $numberFound = 0;
-	protected $numberInserted = 0;
+	use StatisticsDateImporterTrait;
 
 	protected $mongo;
 
@@ -30,47 +27,6 @@ abstract class RequestPerHourImport extends Collection implements UpdateInterfac
 
 	public abstract function update();
 	public abstract function logStart($startDate, $endDate);
-
-
-	protected function prepareForImport($fromDate, $toDate, $interval)
-    {
-        $startDate = new DateTime($fromDate);
-        $endDate = new DateTime($toDate);
-
-        $dateInterval = DateInterval::createFromDateString($interval);
-
-	    $datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
-
-	    $this->logStart($startDate, $endDate);
-
-        foreach ($datePeriod as $dt)
-	        $this->startImport($dt);
-
-	    $this->LogInfo("Found {$this->numberFound} results");
-	    $this->LogInfo("Inserted {$this->numberInserted} results");
-
-	    $this->updateDateInMongoDb($endDate);
-    }
-
-	protected function prepareForImportAndExludeStartDate($fromDate, $toDate, $interval)
-	{
-		$startDate = new DateTime($fromDate);
-		$endDate = new DateTime($toDate);
-
-		$dateInterval = DateInterval::createFromDateString($interval);
-
-		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
-
-		$this->logStart($startDate, $endDate);
-
-		foreach ($datePeriod as $dt)
-			$this->startImport($dt);
-
-		$this->LogInfo("Found {$this->numberFound} results");
-		$this->LogInfo("Inserted {$this->numberInserted} results");
-
-		$this->updateDateInMongoDb($endDate);
-	}
 
 	protected function startImport($date)
 	{

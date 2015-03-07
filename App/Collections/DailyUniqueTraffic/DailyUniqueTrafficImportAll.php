@@ -17,8 +17,7 @@ class DailyUniqueTrafficImportAll extends DailyUniqueTrafficImport
 		(
 			date('Y-m-d', $startDate->sec),
 			'today',
-			'1 hour',
-			false
+			'1 day'
 		);
 
 	}

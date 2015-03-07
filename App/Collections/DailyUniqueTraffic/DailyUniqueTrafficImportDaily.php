@@ -13,12 +13,11 @@ class DailyUniqueTrafficImportDaily extends DailyUniqueTrafficImport
 	{
 		$startDate = $this->findLastInsertedDate();
 
-		$this->prepareForImport
+		$this->prepareForImportAndExludeStartDate
 		(
 			date('Y-m-d', $startDate->sec),
 			'today' ,
-			'1 day',
-			true
+			'1 day'
 		);
 	}
 

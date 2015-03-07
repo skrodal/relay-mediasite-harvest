@@ -1,20 +1,18 @@
 <?php namespace Uninett\Collections\DailyUserAgents;
 
-use DateInterval;
-use DatePeriod;
-use DateTime;
+
 use Uninett\Collections\Collection;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Database\MongoConnection;
 use Uninett\Database\PictorConnection;
 use Uninett\Schemas\DailyUserAgentsSchema;
+use Uninett\Collections\StatisticsDateImporterTrait;
 
 abstract class DailyUserAgentImport extends Collection
 {
 	protected $mongo;
 
-	protected $numberFound = 0;
-	protected $numberInserted = 0;
+	use StatisticsDateImporterTrait;
 
     public function __construct()
     {
@@ -26,28 +24,6 @@ abstract class DailyUserAgentImport extends Collection
 	public abstract function update();
 	public abstract function logStart($startDate, $endDate);
 
-	protected function prepareForImport($fromDate, $toDate, $interval, $excludeStartDate)
-	{
-		$startDate = new DateTime($fromDate);
-		$endDate = new DateTime($toDate);
-
-		$dateInterval = DateInterval::createFromDateString($interval);
-
-		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
-
-		if($excludeStartDate !== true)
-			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
-
-		$this->logStart($startDate, $endDate);
-
-		foreach ($datePeriod as $dt)
-			$this->startImport($dt);
-
-		$this->LogInfo("Found {$this->numberFound} results");
-		$this->LogInfo("Inserted {$this->numberInserted} results");
-
-		$this->updateDateInMongoDb($endDate);
-	}
 	protected function startImport($date)
 	{
 		$create = new DailyUserAgentCreate;

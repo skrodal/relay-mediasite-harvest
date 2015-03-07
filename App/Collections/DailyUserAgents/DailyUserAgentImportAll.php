@@ -17,8 +17,7 @@ class DailyUserAgentImportAll extends DailyUserAgentImport implements UpdateInte
 		(
 			date('Y-m-d', $startDate->sec),
 			'today',
-			'1 day',
-			false
+			'1 day'
 		);
 	}
 
