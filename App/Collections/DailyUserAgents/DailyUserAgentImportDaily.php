@@ -16,7 +16,7 @@ class DailyUserAgentImportDaily extends DailyUserAgentImport  implements UpdateI
 		$this->prepareForImportAndExludeStartDate
 		(
 			date('Y-m-d', $startDate->sec),
-			'today' ,
+			'today',
 			'1 day'
 		);
 	}

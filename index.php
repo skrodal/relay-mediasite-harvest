@@ -60,6 +60,16 @@ if (defined('STDIN') && isset($argv[1])) {
 			foreach($collections as $collection)
 				$collection->update();
 			break;
+		case "diverse2":
+			$collections = [
+				new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll(),
+				new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll(),
+				new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportAll()
+			];
+			/* @var $collection UpdateInterface */
+			foreach($collections as $collection)
+				$collection->update();
+			break;
 		default:
 			echo PHP_EOL . "Something went wrong. Wrong parameter?" . PHP_EOL;
 			break;
