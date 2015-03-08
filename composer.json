@@ -9,6 +9,10 @@
     "vlucas/phpdotenv": "1.1.0",
     "geoip2/geoip2": "~0.7.0"
   },
+  "require-dev": {
+    "robmorgan/phinx": "dev-master",
+    "fzaninotto/faker": "1.5.*@dev"
+  },
   "autoload": {
     "psr-4": {
       "Uninett\\": "App"

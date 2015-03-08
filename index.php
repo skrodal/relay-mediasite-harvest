@@ -31,8 +31,16 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll();
 			$run->update();
 			break;
+		case "reqa2":
+			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll2();
+			$run->update();
+			break;
 		case "reqd":
 			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily();
+			$run->update();
+			break;
+		case "reqd2":
+			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily2();
 			$run->update();
 			break;
 		case "useragentsa":
