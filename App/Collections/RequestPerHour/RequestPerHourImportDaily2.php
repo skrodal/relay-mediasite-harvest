@@ -31,11 +31,6 @@ class RequestPerHourImportDaily2 extends StatisticDateImporter implements Update
         );
     }
 
-	public function setup()
-	{
-		$this->create = new RequestPerHourCreate;
-		$this->find = new RequestPerHourFind(new PictorConnection);
-	}
 
 	public function updateDateInMongoDb($date)
 	{

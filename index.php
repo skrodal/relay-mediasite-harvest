@@ -47,6 +47,10 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run = new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll();
 			$run->update();
 			break;
+		case "useragentsa2":
+			$run = new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll2();
+			$run->update();
+			break;
 		case "useragentsd":
 			$run = new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportDaily();
 			$run->update();
