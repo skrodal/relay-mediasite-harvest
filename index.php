@@ -55,6 +55,10 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run = new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportDaily();
 			$run->update();
 			break;
+		case "useragentsd2":
+			$run = new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportDaily2();
+			$run->update();
+			break;
 		case "uniquea":
 			$run = new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportAll();
 			$run->update();
@@ -74,8 +78,8 @@ if (defined('STDIN') && isset($argv[1])) {
 			break;
 		case "diverse2":
 			$collections = [
-				new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll(),
-				new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll(),
+				new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll2(),
+				new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll2(),
 				new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportAll()
 			];
 			/* @var $collection UpdateInterface */
