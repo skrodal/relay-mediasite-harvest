@@ -33,12 +33,13 @@ class DailyUserAgentImportDaily2 extends StatisticDateImporter implements Update
 	public function updateDateInMongoDb($date)
 	{
 		$last = new LastUpdates();
-		$last->updateRequestPerHourDate($date->format('Y-m-d'));
+		$last->updateDailyUserAgentsDate($date->format('Y-m-d'));
 	}
 
 	public function findLastInsertedDate()
 	{
 		$last = new LastUpdates();
-		return $last->findLastInsertedRequestPerHourDate();
+
+		return $last->findLastInsertedDailyUserAgentsDate();
 	}
 }
