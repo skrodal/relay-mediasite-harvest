@@ -13,7 +13,6 @@ abstract class StatisticDateImporter extends Collection {
 
 	protected $mongo;
 
-	use StatisticsDateImporterTrait;
 
 	public function __construct($collection)
 	{
