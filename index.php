@@ -6,6 +6,7 @@ use Uninett\Models\UserModel2;
 use Uninett\Run\RunMediasite;
 use Uninett\Run\RunRelayAll;
 use Uninett\Run\RunRelayDaily;
+use Uninett\Run\RunRelayDaily2;
 use Uninett\Schemas\UsersSchema;
 
 require 'start/bootstrap.php';
@@ -20,7 +21,7 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run->run();
 			break;
 		case "daily":
-			$run = new RunRelayDaily();
+			$run = new RunRelayDaily2();
 			$run->run();
 			break;
 		case "mediasite":
