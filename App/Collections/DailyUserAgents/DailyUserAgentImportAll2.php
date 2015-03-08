@@ -9,7 +9,7 @@ class DailyUserAgentImportAll2 extends StatisticDateImporter implements UpdateIn
 {
 	public function __construct()
 	{
-		parent::__construct(DailyUserAgentsSchema::COLLECTION_NAME,   new DailyUserAgentCreate, new DailyUserAgentFind(new PictorConnection));
+		parent::__construct(DailyUserAgentsSchema::COLLECTION_NAME,  new DailyUserAgentCreate, new DailyUserAgentFind(new PictorConnection));
 	}
 
 	public function update()
@@ -39,6 +39,7 @@ class DailyUserAgentImportAll2 extends StatisticDateImporter implements UpdateIn
 	public function findLastInsertedDate()
 	{
 		$last = new LastUpdates();
+		$this->LogInfo($last->findLastInsertedRequestPerHourDate());
 		return $last->findLastInsertedRequestPerHourDate();
 	}
 }
