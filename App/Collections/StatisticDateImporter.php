@@ -14,17 +14,18 @@ abstract class StatisticDateImporter extends Collection {
 	protected $mongo;
 
 
-	public function __construct($collection)
+	public function __construct($collection, $create, $find)
 	{
 		parent::__construct($collection);
+
+		$this->find = $find;
+		$this->create = $create;
 
 		$this->mongo = new MongoConnection($collection);
 	}
 
 	public abstract function update();
 	public abstract function logStart($startDate, $endDate);
-
-	public abstract function setup();
 
 	public abstract function updateDateInMongoDb($date);
 	public abstract function findLastInsertedDate();
@@ -56,6 +57,7 @@ abstract class StatisticDateImporter extends Collection {
 			}
 		}
 	}
+
 
 	protected function queryContainsNewFiles($query)
 	{

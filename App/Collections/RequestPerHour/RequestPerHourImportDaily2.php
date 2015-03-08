@@ -16,7 +16,7 @@ class RequestPerHourImportDaily2 extends StatisticDateImporter implements Update
 {
     public function __construct()
     {
-	    parent::__construct(RequestsPerHourSchema::COLLECTION_NAME);
+	    parent::__construct(RequestsPerHourSchema::COLLECTION_NAME,  new RequestPerHourCreate, new RequestPerHourFind(new PictorConnection));
     }
 
     public function update()

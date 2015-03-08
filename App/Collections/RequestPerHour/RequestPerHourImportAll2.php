@@ -16,7 +16,7 @@ class RequestPerHourImportAll2 extends StatisticDateImporter implements UpdateIn
 {
     public function __construct()
     {
-	    parent::__construct(RequestsPerHourSchema::COLLECTION_NAME);
+	    parent::__construct(RequestsPerHourSchema::COLLECTION_NAME,  new RequestPerHourCreate, new RequestPerHourFind(new PictorConnection));
     }
 
     public function update()
@@ -34,12 +34,6 @@ class RequestPerHourImportAll2 extends StatisticDateImporter implements UpdateIn
 	public function logStart($startDate, $endDate)
 	{
 		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to {$endDate->format('Y-m-d')}");
-	}
-
-	public function setup()
-	{
-		$this->create = new RequestPerHourCreate;
-		$this->find = new RequestPerHourFind(new PictorConnection);
 	}
 
 	public function updateDateInMongoDb($date)
