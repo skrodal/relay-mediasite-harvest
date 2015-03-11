@@ -43,7 +43,7 @@ abstract class StatisticDateImporter extends Collection {
 			$this->run(
 				$startDate,
 				$endDate,
-				new DatePeriod($startDate, $dateInterval, $endDate)
+				new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE)
 			);
 		}
 	}
