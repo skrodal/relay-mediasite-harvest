@@ -8,34 +8,49 @@ abstract class StatisticDateImporter extends Collection {
 	protected $numberFound = 0;
 	protected $numberInserted = 0;
 
-	protected $create;
-	protected $find;
-
 	protected $mongo;
 
-
-	public function __construct($collection, $create, $find)
+	public function __construct($collection)
 	{
 		parent::__construct($collection);
-
-		$this->find = $find;
-		$this->create = $create;
 
 		$this->mongo = new MongoConnection($collection);
 	}
 
-	public abstract function update();
 	public abstract function logStart($startDate, $endDate);
-
 	public abstract function updateDateInMongoDb($date);
-	public abstract function findLastInsertedDate();
+	public abstract function run($startDate, $endDate, $datePeriod);
 
-	protected function startImport($date)
+	public function import($fromDate, $toDate, $interval, $includeStartDate)
 	{
-	/*	$create = new DailyUserAgentCreate;*/
-/*		$find = new DailyUserAgentFind(new PictorConnection);*/
+		$startDate = new DateTime($fromDate);
+		$endDate = new DateTime($toDate);
+		$dateInterval = DateInterval::createFromDateString($interval);
 
-		$query = $this->find->findData($date);
+		if($includeStartDate)
+		{
+			$this->LogError("Including start date");
+			$this->run(
+				$startDate,
+				$endDate,
+				new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE)
+			);
+		}
+
+		else
+		{
+			$this->LogError("Excluding start date");
+			$this->run(
+				$startDate,
+				$endDate,
+				new DatePeriod($startDate, $dateInterval, $endDate)
+			);
+		}
+	}
+
+	protected function startImport($date, $create, $find)
+	{
+		$query = $find->findData($date);
 
 		if ($this->queryContainsNewFiles($query)) {
 
@@ -43,7 +58,7 @@ abstract class StatisticDateImporter extends Collection {
 
 				$this->numberFound = $this->numberFound + 1;
 
-				$objectWasCreatedSuccessfully = $this->create->createObjectFromResult($result);
+				$objectWasCreatedSuccessfully = $create->createObjectFromResult($result);
 
 				if (!is_null($objectWasCreatedSuccessfully)) {
 
@@ -58,7 +73,6 @@ abstract class StatisticDateImporter extends Collection {
 		}
 	}
 
-
 	protected function queryContainsNewFiles($query)
 	{
 		//return $query ? true : false;
@@ -67,45 +81,4 @@ abstract class StatisticDateImporter extends Collection {
 
 		return true;
 	}
-
-	public function prepareForImport($fromDate, $toDate, $interval)
-	{
-		$startDate = new DateTime($fromDate);
-		$endDate = new DateTime($toDate);
-
-		$dateInterval = DateInterval::createFromDateString($interval);
-
-		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
-
-		$this->logStart($startDate, $endDate);
-
-		foreach ($datePeriod as $dt)
-			$this->startImport($dt);
-
-		$this->LogInfo("Found {$this->numberFound} results");
-		$this->LogInfo("Inserted {$this->numberInserted} results");
-
-		$this->updateDateInMongoDb($endDate);
-	}
-
-	public function prepareForImportAndExludeStartDate($fromDate, $toDate, $interval)
-	{
-		$startDate = new DateTime($fromDate);
-		$endDate = new DateTime($toDate);
-
-		$dateInterval = DateInterval::createFromDateString($interval);
-
-		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
-
-		$this->logStart($startDate, $endDate);
-
-		foreach ($datePeriod as $dt)
-			$this->startImport($dt);
-
-		$this->LogInfo("Found {$this->numberFound} results");
-		$this->LogInfo("Inserted {$this->numberInserted} results");
-
-		$this->updateDateInMongoDb($endDate);
-	}
-
 }
