@@ -16,13 +16,16 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 
 	public function update()
 	{
-		date_default_timezone_set('Australia/Sydney');
+		//date_default_timezone_set('Australia/Sydney');
 		$startDate = $this->findLastInsertedDate();
+
+		// TODO: First, see correct date is imported in DB
+		// THen, adjust the values here
 
 		$this->import
 		(
 			date('Y-m-d', $startDate->sec),
-			'today + 1 day' ,
+			'today' ,
 			'1 hour',
 			true
 		);
