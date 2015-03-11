@@ -32,32 +32,20 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll();
 			$run->update();
 			break;
-		case "reqa2":
-			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll2();
-			$run->update();
-			break;
 		case "reqd":
 			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily();
-			$run->update();
-			break;
-		case "reqd2":
-			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily2();
 			$run->update();
 			break;
 		case "useragentsa":
 			$run = new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll();
 			$run->update();
 			break;
-		case "useragentsa2":
-			$run = new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll2();
-			$run->update();
-			break;
 		case "useragentsd":
 			$run = new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportDaily();
 			$run->update();
 			break;
-		case "useragentsd2":
-			$run = new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportDaily2();
+		case "presentations":
+			$run = new \Uninett\Collections\Presentations\PresentationImport(false);
 			$run->update();
 			break;
 		case "uniquea":
@@ -77,11 +65,11 @@ if (defined('STDIN') && isset($argv[1])) {
 			foreach($collections as $collection)
 				$collection->update();
 			break;
-		case "diverse2":
+		case "statistics":
 			$collections = [
-				new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll2(),
-				new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll2(),
-				new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportAll()
+				new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll(),
+				new \Uninett\Collections\DailyUserAgents\DailyUserAgentImportAll(),
+				new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportAll
 			];
 			/* @var $collection UpdateInterface */
 			foreach($collections as $collection)
