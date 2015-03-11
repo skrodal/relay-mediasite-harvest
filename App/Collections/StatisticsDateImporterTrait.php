@@ -7,8 +7,6 @@ trait StatisticsDateImporterTrait {
 	protected $numberFound = 0;
 	protected $numberInserted = 0;
 
-
-
 	public function prepareForImport($fromDate, $toDate, $interval)
 	{
 		$startDate = new DateTime($fromDate);

@@ -37,7 +37,6 @@ class RequestPerHourImportAll extends StatisticDateImporter implements UpdateInt
 
 		foreach ($datePeriod as $dt)
 		{
-			$this->LogInfo("Importing {$dt->format('Y-m-d H:i:s')} ");
 			$this->startImport(
 				$dt,
 				new RequestPerHourCreate,

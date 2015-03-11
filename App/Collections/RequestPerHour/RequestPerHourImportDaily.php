@@ -21,7 +21,7 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 		$this->import
 		(
 			date('Y-m-d', $startDate->sec),
-			'today' ,
+			'today + 1 day' ,
 			'1 hour',
 			true
 		);
