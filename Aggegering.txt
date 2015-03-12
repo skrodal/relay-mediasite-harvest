@@ -32,7 +32,7 @@ $collection->find(array('name'=> array('$regex' => 'sometext'));
 
 
 
-db.lastupdates.update({ _id : new ObjectId("54a2d5890b41c08e4e8b4567") }, {$set : {presentationId : NumberLong(0) } })
+db.lastupdates.update({ _id : new ObjectId("54e60cc9c316825f0a8b4567") }, {$set : {presentationId : NumberLong(0) } })
 db.lastupdates.update({ _id : new ObjectId("54a2d5890b41c08e4e8b4567") }, {$set : {userId : NumberLong(0) } })
 --example ---
 db.users.insert({name: 'paulo'})
