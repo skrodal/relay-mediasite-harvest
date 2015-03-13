@@ -22,11 +22,13 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 		// TODO: First, see correct date is imported in DB
 		// THen, adjust the values here
 
+		//TODO: Ekskluderer bare første time hvis 1 hour brukes i intervallet
+
 		$this->import
 		(
 			date('Y-m-d', $startDate->sec),
 			'today' ,
-			'1 hour',
+			'1 day',
 			true
 		);
 	}
