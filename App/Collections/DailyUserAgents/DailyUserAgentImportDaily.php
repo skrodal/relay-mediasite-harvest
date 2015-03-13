@@ -28,12 +28,16 @@ class DailyUserAgentImportDaily extends StatisticDateImporter implements UpdateI
 	public function run($startDate, $endDate, $datePeriod) {
 		$this->logStart($startDate, $endDate);
 
-		foreach ($datePeriod as $dt)
+		foreach ($datePeriod as $dt) {
+			$this->LogInfo("Importing {$dt->format('Y-m-d H:i:s')} results");
+
 			$this->startImport(
 				$dt,
 				new DailyUserAgentCreate,
 				new DailyUserAgentFind(new PictorConnection)
 			);
+		}
+
 
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");

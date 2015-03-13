@@ -28,7 +28,7 @@ class RequestPerHourImportAll extends StatisticDateImporter implements UpdateInt
 			date('Y-m-d', $startDate->sec),
 			'today',
 			'1 hour',
-			false
+			true
 		);
 	}
 
