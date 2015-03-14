@@ -48,7 +48,7 @@ class StatisticDate {
 	/**
 	 * @param mixed $endDate
 	 */
-	public function setEndDate($endDate)
+	public function setEndDateBystring($endDate)
 	{
 		$this->endDate = new DateTime($endDate);
 
