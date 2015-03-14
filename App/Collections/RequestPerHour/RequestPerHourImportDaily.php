@@ -35,12 +35,15 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 
 	public function test()
 	{
-		$startDate = $this->findLastInsertedDate();
+		$startDateFromDb = $this->findLastInsertedDate();
 
-		echo "Start date is " . $startDate . PHP_EOL;;
-		$date = date('Y-m-d', $startDate->sec . + "1 day");
+		$start_date = date('Y-m-d', $startDateFromDb->sec) . PHP_EOL;
 
-		echo "next date is " . $date . PHP_EOL;
+		echo "Start date is " . $start_date . PHP_EOL;
+
+		$next_day = date('Y-m-d', $start_date . + "1 day");
+
+		echo "next date is " . $next_day . PHP_EOL;
 	}
 
 	public function run($startDate, $endDate, $datePeriod) {
