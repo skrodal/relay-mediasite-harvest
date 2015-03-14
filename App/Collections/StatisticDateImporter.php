@@ -18,10 +18,10 @@ abstract class StatisticDateImporter extends Collection {
 		$this->mongo = new MongoConnection($collection);
 	}
 
-	public abstract function logStart($startDate, $endDate);
+	public abstract function log($startDate, $endDate);
+
 	public abstract function updateDateInMongoDb($date);
-	/*public abstract function run($startDate, $endDate, $datePeriod);*/
-	public abstract function run(StatisticDate $date);
+
 
 
 	protected function import($date, $create, $find)

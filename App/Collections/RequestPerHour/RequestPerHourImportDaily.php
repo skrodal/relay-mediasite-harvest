@@ -8,6 +8,7 @@ use Uninett\Collections\StatisticDateImporter;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Database\PictorConnection;
+use Uninett\Helpers\StatisticDate;
 use Uninett\Schemas\RequestsPerHourSchema;
 
 class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateInterface
@@ -21,35 +22,27 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 	{
 		$lastImportedDateInDb = $this->findLastInsertedDate();
 
-		$fromDate = $this->getNextDayDateFromUnixTimestamp($lastImportedDateInDb->sec);
+		$date = (new StatisticDate)
+			->setStartDateNextDayByTimestamp($lastImportedDateInDb->sec)
+			->setEndDateBystring('today')
+			->setDateIntervalFromString('1 day')
+			->setDatePeriod();
 
-		$toDate = new DateTime('today');
-		$interval = DateInterval::createFromDateString('1 hour');
-		$period = new DatePeriod($fromDate, $interval, $toDate);
+		$this->log($date->getStartDate(), $date->getEndDate());
 
-		$this->run($fromDate, $toDate, $period);
-	}
-
-
-	public function run($startDate, $endDate, $datePeriod) {
-		$this->logStart($startDate, $endDate);
-
-		foreach ($datePeriod as $dt)
-		{
-			$this->LogInfo("Importing {$dt->format('Y-m-d H:i:s')} results");
-
+		foreach ($date->getDatePeriod() as $dt)
 			$this->import(
 				$dt,
 				new RequestPerHourCreate,
 				new RequestPerHourFind(new PictorConnection)
 			);
-		}
 
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");
 
-		$this->updateDateInMongoDb($startDate);
+		$this->updateDateInMongoDb($date->getStartDate());
 	}
+
 
 	public function updateDateInMongoDb($date)
 	{
@@ -63,7 +56,7 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 		return $last->findLastInsertedRequestPerHourDate();
 	}
 
-	public function logStart($startDate, $endDate)
+	public function log($startDate, $endDate)
 	{
 		$this->LogInfo("Starting to import data for {$endDate->modify('- 1 day')->format('Y-m-d')}");
 	}

@@ -6,6 +6,7 @@ use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Collections\StatisticDateImporter;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Database\PictorConnection;
+use Uninett\Helpers\StatisticDate;
 use Uninett\Schemas\DailyUniqueTrafficSchema;
 
 class DailyUniqueTrafficImportAll extends StatisticDateImporter implements UpdateInterface
@@ -19,18 +20,15 @@ class DailyUniqueTrafficImportAll extends StatisticDateImporter implements Updat
 	{
 		$lastImportedDateInDb = $this->findLastInsertedDate();
 
-		$fromDate = $this->getTodaysDateFromUnixTimestamp($lastImportedDateInDb->sec);
-		$toDate = new DateTime('today');
-		$interval = DateInterval::createFromDateString('1 day');
-		$period = new DatePeriod($fromDate, $interval, $toDate);
+		$date = (new StatisticDate)
+			->setStartDateTodayByTimestamp($lastImportedDateInDb->sec)
+			->setEndDateBystring('today')
+			->setDateIntervalFromString('1 day')
+			->setDatePeriod();
 
-		$this->run($fromDate, $toDate, $period);
-	}
+		$this->log($date->getStartDate(), $date->getEndDate());
 
-	public function run($startDate, $endDate, $datePeriod) {
-		$this->logStart($startDate, $endDate);
-
-		foreach ($datePeriod as $dt)
+		foreach ($date->getDatePeriod() as $dt)
 			$this->import(
 				$dt,
 				new DailyUniqueTrafficCreate,
@@ -40,10 +38,11 @@ class DailyUniqueTrafficImportAll extends StatisticDateImporter implements Updat
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");
 
-		$this->updateDateInMongoDb($endDate);
+		$this->updateDateInMongoDb($date->getEndDate());
+
 	}
 
-	public function logStart($startDate, $endDate)
+	public function log($startDate, $endDate)
 	{
 		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to (including) {$endDate->modify('- 1 day')->format('Y-m-d')}");
 	}
