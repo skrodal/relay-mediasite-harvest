@@ -8,8 +8,8 @@ class StatisticDate {
 	private $startDate;
 	private $endDate;
 	private $dateInterval;
-
 	private $datePeriod;
+
 	/**
 	 * @return mixed
 	 */
@@ -21,14 +21,14 @@ class StatisticDate {
 	/**
 	 * @param mixed $startDate
 	 */
-	public function setStartDateByTimestamp($timestamp)
+	public function setStartDateTodayByTimestamp($timestamp)
 	{
 		$this->startDate = (new DateTime())->setTimestamp($timestamp);
 
 		return $this;
 	}
 
-	public function setStartDateNextDay($timestamp)
+	public function setStartDateNextDayByTimestamp($timestamp)
 	{
 		$this->startDate = (new DateTime())->setTimestamp($timestamp);
 
@@ -66,7 +66,7 @@ class StatisticDate {
 	/**
 	 * @param mixed $dateInterval
 	 */
-	public function setDateInterval($dateInterval)
+	public function setDateIntervalFromString($dateInterval)
 	{
 		$this->dateInterval = DateInterval::createFromDateString($dateInterval);
 
