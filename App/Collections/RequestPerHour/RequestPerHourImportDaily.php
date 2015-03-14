@@ -23,8 +23,6 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 
 		$fromDate = $this->getNextDayDateFromUnixTimestamp($lastImportedDateInDb->sec);
 
-		echo "The next date is " . $fromDate->format('Y-m-d H:i:s');
-
 		$toDate = new DateTime('today');
 		$interval = DateInterval::createFromDateString('1 hour');
 		$period = new DatePeriod($fromDate, $interval, $toDate);

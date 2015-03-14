@@ -21,8 +21,6 @@ class DailyUniqueTrafficImportDaily extends StatisticDateImporter implements Upd
 
 		$fromDate = $this->getNextDayDateFromUnixTimestamp($lastImportedDateInDb->sec);
 
-		echo "The next date is " . $fromDate->format('Y-m-d H:i:s');
-
 		$toDate = new DateTime('today');
 		$interval = DateInterval::createFromDateString('1 day');
 		$period = new DatePeriod($fromDate, $interval, $toDate);
