@@ -72,6 +72,14 @@ if (defined('STDIN') && isset($argv[1])) {
 			foreach($collections as $collection)
 				$collection->update();
 			break;
+		case "test":
+			$date = new \Uninett\Helpers\StatisticDate();
+
+			$date->setStartDateByTimestamp(1426318732)->setEndDate('today')->setDateInterval('1 day')->setDatePeriod();
+
+			foreach($date as $dt)
+				echo $dt->format('Y-m-d H:i:s');
+			break;
 		default:
 			echo PHP_EOL . "Something went wrong. Wrong parameter?" . PHP_EOL;
 			break;
@@ -79,11 +87,6 @@ if (defined('STDIN') && isset($argv[1])) {
 	echo PHP_EOL . "End of " . $argv[1] . PHP_EOL;
 }
 
-$date = new \Uninett\Helpers\StatisticDate();
 
-$date->setStartDateByTimestamp(1426318732)->setEndDate('today')->setDateInterval('1 day')->setDatePeriod();
-
-foreach($date as $dt)
-	echo $dt->format('Y-m-d H:i:s');
 
 
