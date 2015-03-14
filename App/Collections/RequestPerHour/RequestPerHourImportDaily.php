@@ -1,6 +1,7 @@
 <?php namespace Uninett\Collections\RequestPerHour;
 //This class imports yesterdays related IIS-logdata
 
+use DateTime;
 use Uninett\Collections\StatisticDateImporter;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\LastUpdates\LastUpdates;
@@ -37,11 +38,14 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 	{
 		$startDateFromDb = $this->findLastInsertedDate();
 
-		$start_date = date('Y-m-d', $startDateFromDb->sec) . PHP_EOL;
+		$start_date = new DateTime($startDateFromDb->sec);
 
-		echo "Start date is " . $start_date . PHP_EOL;
+		echo "Start date is " . $start_date->format('Y-m-d H:i:s') . PHP_EOL;
 
-		$next_day = date('Y-m-d', $start_date . + "1 day");
+
+		$next_date = $start_date->modify('+ 1 day');
+
+		echo "Next date is " . $next_date->format('Y-m-d H:i:s') . PHP_EOL;
 
 		echo "next date is " . $next_day . PHP_EOL;
 	}
