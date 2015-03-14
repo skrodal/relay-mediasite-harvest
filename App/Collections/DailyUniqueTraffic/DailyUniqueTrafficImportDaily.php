@@ -29,11 +29,15 @@ class DailyUniqueTrafficImportDaily extends StatisticDateImporter implements Upd
 		$this->log($date->getStartDate(), $date->getEndDate());
 
 		foreach ($date->getDatePeriod() as $dt)
+		{
+			$this->LogInfo("Importing data for {$dt->format('Y-m-d H:i:s')}");
+
 			$this->import(
 				$dt,
 				new DailyUniqueTrafficCreate,
 				new DailyUniqueTrafficFind(new PictorConnection)
 			);
+		}
 
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");
