@@ -61,4 +61,10 @@ abstract class StatisticDateImporter extends Collection {
 
 		return $start_date->modify('+ 1 day');
 	}
+
+	protected function getToday($timestamp) {
+		$start_date = (new DateTime())->setTimestamp($timestamp);
+
+		return $start_date;
+	}
 }

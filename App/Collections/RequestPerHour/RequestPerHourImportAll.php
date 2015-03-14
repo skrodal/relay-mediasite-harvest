@@ -23,7 +23,7 @@ class RequestPerHourImportAll extends StatisticDateImporter implements UpdateInt
 	{
 		$lastImportedDateInDb = $this->findLastInsertedDate();
 
-		$fromDate = $lastImportedDateInDb->sec;
+		$fromDate = $this->getToday($lastImportedDateInDb->sec);
 		$toDate = new DateTime('today');
 		$interval = DateInterval::createFromDateString('1 hour');
 		$period = new DatePeriod($fromDate, $interval, $toDate);
