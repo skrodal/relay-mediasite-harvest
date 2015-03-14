@@ -81,7 +81,7 @@ if (defined('STDIN') && isset($argv[1])) {
 
 
 
-$res = [
+/*$res = [
 		     'userDisplayName' => 'Kim Syversen',
 		     'userName' => 'kim@example.com',
 		     UsersSchema::USERNAME_ON_DISK => 'kimatexample.com',
@@ -90,6 +90,10 @@ $res = [
 		     UsersSchema::AFFILIATION => 'ansatt',
 		     'createdOn' => date('Y-m-d H:i:s'),
 		     UsersSchema::STATUS => -1,
-	     ];
+	     ];*/
 
+
+$asdf = new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily();
+
+$asdf->test();
 
