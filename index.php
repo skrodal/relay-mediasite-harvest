@@ -93,7 +93,3 @@ if (defined('STDIN') && isset($argv[1])) {
 	     ];*/
 
 
-$asdf = new \Uninett\Collections\RequestPerHour\RequestPerHourImportDaily();
-
-$asdf->test();
-

@@ -23,7 +23,7 @@ class RequestPerHourImportAll extends StatisticDateImporter implements UpdateInt
 	{
 		$lastImportedDateInDb = $this->findLastInsertedDate();
 
-		$fromDate = $this->getToday($lastImportedDateInDb->sec);
+		$fromDate = $this->getTodaysDateFromUnixTimestamp($lastImportedDateInDb->sec);
 		$toDate = new DateTime('today');
 		$interval = DateInterval::createFromDateString('1 hour');
 		$period = new DatePeriod($fromDate, $interval, $toDate);
@@ -37,7 +37,7 @@ class RequestPerHourImportAll extends StatisticDateImporter implements UpdateInt
 
 		foreach ($datePeriod as $dt)
 		{
-			$this->startImport(
+			$this->import(
 				$dt,
 				new RequestPerHourCreate,
 				new RequestPerHourFind(new PictorConnection)

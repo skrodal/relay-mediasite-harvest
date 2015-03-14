@@ -22,7 +22,7 @@ abstract class StatisticDateImporter extends Collection {
 	public abstract function run($startDate, $endDate, $datePeriod);
 
 
-	protected function startImport($date, $create, $find)
+	protected function import($date, $create, $find)
 	{
 		$query = $find->findData($date);
 
@@ -56,13 +56,13 @@ abstract class StatisticDateImporter extends Collection {
 		return true;
 	}
 
-	protected function getNextDay($timestamp) {
+	protected function getNextDayDateFromUnixTimestamp($timestamp) {
 		$start_date = (new DateTime())->setTimestamp($timestamp);
 
 		return $start_date->modify('+ 1 day');
 	}
 
-	protected function getToday($timestamp) {
+	protected function getTodaysDateFromUnixTimestamp($timestamp) {
 		$start_date = (new DateTime())->setTimestamp($timestamp);
 
 		return $start_date;

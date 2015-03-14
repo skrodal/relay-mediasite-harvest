@@ -1,4 +1,7 @@
 <?php namespace Uninett\Collections\DailyUserAgents;
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Collections\StatisticDateImporter;
 use Uninett\Collections\UpdateInterface;
@@ -14,15 +17,17 @@ class DailyUserAgentImportDaily extends StatisticDateImporter implements UpdateI
 
 	public function update()
 	{
-		$startDate = $this->findLastInsertedDate();
+		$lastImportedDateInDb = $this->findLastInsertedDate();
 
-		$this->import
-		(
-			date('Y-m-d', $startDate->sec),
-			'today',
-			'1 day',
-			true
-		);
+		$fromDate = $this->getNextDayDateFromUnixTimestamp($lastImportedDateInDb->sec);
+
+		echo "The next date is " . $fromDate->format('Y-m-d H:i:s');
+
+		$toDate = new DateTime('today');
+		$interval = DateInterval::createFromDateString('1 hour');
+		$period = new DatePeriod($fromDate, $interval, $toDate);
+
+		$this->run($fromDate, $toDate, $period);
 	}
 
 	public function run($startDate, $endDate, $datePeriod) {
@@ -31,7 +36,7 @@ class DailyUserAgentImportDaily extends StatisticDateImporter implements UpdateI
 		foreach ($datePeriod as $dt) {
 			$this->LogInfo("Importing {$dt->format('Y-m-d H:i:s')} results");
 
-			$this->startImport(
+			$this->import(
 				$dt,
 				new DailyUserAgentCreate,
 				new DailyUserAgentFind(new PictorConnection)

@@ -21,7 +21,10 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 	{
 		$lastImportedDateInDb = $this->findLastInsertedDate();
 
-		$fromDate = $this->getNextDay($lastImportedDateInDb->sec);
+		$fromDate = $this->getNextDayDateFromUnixTimestamp($lastImportedDateInDb->sec);
+
+		echo "The next date is " . $fromDate->format('Y-m-d H:i:s');
+
 		$toDate = new DateTime('today');
 		$interval = DateInterval::createFromDateString('1 hour');
 		$period = new DatePeriod($fromDate, $interval, $toDate);
@@ -37,7 +40,7 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 		{
 			$this->LogInfo("Importing {$dt->format('Y-m-d H:i:s')} results");
 
-			$this->startImport(
+			$this->import(
 				$dt,
 				new RequestPerHourCreate,
 				new RequestPerHourFind(new PictorConnection)
