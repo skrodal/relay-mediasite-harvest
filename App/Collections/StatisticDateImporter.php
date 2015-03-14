@@ -21,32 +21,6 @@ abstract class StatisticDateImporter extends Collection {
 	public abstract function updateDateInMongoDb($date);
 	public abstract function run($startDate, $endDate, $datePeriod);
 
-	public function import($fromDate, $toDate, $interval, $includeStartDate)
-	{
-		$startDate = new DateTime($fromDate);
-		$endDate = new DateTime($toDate);
-		$dateInterval = DateInterval::createFromDateString($interval);
-
-		if($includeStartDate)
-		{
-			$this->LogError("Including start date");
-			$this->run(
-				$startDate,
-				$endDate,
-				new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE)
-			);
-		}
-
-		else
-		{
-			$this->LogError("Excluding start date");
-			$this->run(
-				$startDate,
-				$endDate,
-				new DatePeriod($startDate, $dateInterval, $endDate)
-			);
-		}
-	}
 
 	protected function startImport($date, $create, $find)
 	{
@@ -80,5 +54,11 @@ abstract class StatisticDateImporter extends Collection {
 			return false;
 
 		return true;
+	}
+
+	protected function getNextDay($timestamp) {
+		$start_date = (new DateTime())->setTimestamp($timestamp);
+
+		return $start_date->modify('+ 1 day');
 	}
 }

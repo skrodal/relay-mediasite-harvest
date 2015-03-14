@@ -1,7 +1,9 @@
 <?php namespace Uninett\Collections\RequestPerHour;
 //This class imports yesterdays related IIS-logdata
 
+use DatePeriod;
 use DateTime;
+use DateInterval;
 use Uninett\Collections\StatisticDateImporter;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\LastUpdates\LastUpdates;
@@ -17,38 +19,16 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 
 	public function update()
 	{
-		//date_default_timezone_set('Australia/Sydney');
-		$startDate = $this->findLastInsertedDate();
+		$lastImportedDateInDb = $this->findLastInsertedDate();
 
-		// TODO: First, see correct date is imported in DB
-		// THen, adjust the values here
+		$fromDate = $this->getNextDay($lastImportedDateInDb->sec);
+		$toDate = new DateTime('today');
+		$interval = DateInterval::createFromDateString('1 hour');
+		$period = new DatePeriod($fromDate, $interval, $toDate);
 
-		//TODO: Ekskluderer bare første time hvis 1 hour brukes i intervallet
-
-		$this->import
-		(
-			date('Y-m-d', $startDate->sec),
-			'today' ,
-			'1 hour',
-			false
-		);
+		$this->run($fromDate, $toDate, $period);
 	}
 
-	public function test()
-	{
-		$startDateFromDb = $this->findLastInsertedDate();
-
-		$start_date = (new DateTime())->setTimestamp($startDateFromDb->sec);
-
-		echo "Start date is " . $start_date->format('Y-m-d H:i:s') . PHP_EOL;
-
-
-		$next_date = $start_date->modify('+ 1 day');
-
-		echo "Next date is " . $next_date->format('Y-m-d H:i:s') . PHP_EOL;
-
-
-	}
 
 	public function run($startDate, $endDate, $datePeriod) {
 		$this->logStart($startDate, $endDate);
@@ -63,7 +43,6 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 				new RequestPerHourFind(new PictorConnection)
 			);
 		}
-
 
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");
