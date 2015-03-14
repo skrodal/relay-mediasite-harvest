@@ -60,6 +60,4 @@ class DailyUniqueTrafficImportDaily extends StatisticDateImporter implements Upd
 		$last = new LastUpdates();
 		return $last->findLastInsertedDailyUniqueTrafficDate();
 	}
-
-
 }

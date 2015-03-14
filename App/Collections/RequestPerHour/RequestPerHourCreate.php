@@ -7,14 +7,6 @@ class RequestPerHourCreate
 {
     private $object;
 
-	//private $convert;
-
-	function __construct()
-	{
-		//$this->convert = new ConvertHelper();
-	}
-
-
 	public function createObjectFromResult($result)
     {
 	    $this->object = new RequestPerHourModel();
@@ -27,13 +19,17 @@ class RequestPerHourCreate
 
                 return null;
 
-	    /*    $mib_sent = $this->convert->bytesToMegabytes((int)$result['BytesSent']);
 
+	        /* This is removed because BytesSent ends up being negative.
+	         * The believed reason is that the script uses 32 bit integers that the number
+	         * from log file needs a 64 bit integer. Anyway, it was not used for anything anyway.
+	         */
+
+
+	        /*$mib_sent = $this->convert->bytesToMegabytes((int)$result['BytesSent']);
             $variableWasSetSuccessfully = $this->object->setBytesSent($mib_sent);
-
             if($variableWasSetSuccessfully == false)
-
-                return null;*/
+				return null;*/
 
             $variableWasSetSuccessfully = $this->object->setRequest($result['Requests']);
 
