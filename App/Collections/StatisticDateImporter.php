@@ -3,6 +3,7 @@ use DateInterval;
 use DatePeriod;
 use DateTime;
 use Uninett\Database\MongoConnection;
+use Uninett\Helpers\StatisticDate;
 
 abstract class StatisticDateImporter extends Collection {
 	protected $numberFound = 0;
@@ -19,7 +20,8 @@ abstract class StatisticDateImporter extends Collection {
 
 	public abstract function logStart($startDate, $endDate);
 	public abstract function updateDateInMongoDb($date);
-	public abstract function run($startDate, $endDate, $datePeriod);
+	/*public abstract function run($startDate, $endDate, $datePeriod);*/
+	public abstract function run(StatisticDate $date);
 
 
 	protected function import($date, $create, $find)

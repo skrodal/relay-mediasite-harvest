@@ -47,8 +47,7 @@ class DailyUserAgentImportAll extends StatisticDateImporter implements UpdateInt
 	public function logStart($startDate, $endDate)
 	{
 		//Modify endDate by - 1 day because prepareImport does not include endDate.
-		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to
-		(including) {$endDate->modify('- 1 day')->format('Y-m-d')}");
+		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to (including) {$endDate->modify('- 1 day')->format('Y-m-d')}");
 	}
 
 	public function updateDateInMongoDb($date)
