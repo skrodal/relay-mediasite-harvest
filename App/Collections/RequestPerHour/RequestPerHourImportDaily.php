@@ -50,9 +50,7 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");
 
-
-		//TODO: Update with startDate?
-		$this->updateDateInMongoDb($endDate);
+		$this->updateDateInMongoDb($startDate);
 	}
 
 	public function updateDateInMongoDb($date)

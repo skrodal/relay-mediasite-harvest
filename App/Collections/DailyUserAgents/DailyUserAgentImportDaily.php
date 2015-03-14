@@ -24,7 +24,7 @@ class DailyUserAgentImportDaily extends StatisticDateImporter implements UpdateI
 		echo "The next date is " . $fromDate->format('Y-m-d H:i:s');
 
 		$toDate = new DateTime('today');
-		$interval = DateInterval::createFromDateString('1 hour');
+		$interval = DateInterval::createFromDateString('1 day');
 		$period = new DatePeriod($fromDate, $interval, $toDate);
 
 		$this->run($fromDate, $toDate, $period);
@@ -43,11 +43,10 @@ class DailyUserAgentImportDaily extends StatisticDateImporter implements UpdateI
 			);
 		}
 
-
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");
 
-		$this->updateDateInMongoDb($endDate);
+		$this->updateDateInMongoDb($startDate);
 	}
 
 	public function logStart($startDate, $endDate)

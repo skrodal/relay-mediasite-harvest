@@ -21,7 +21,7 @@ class DailyUserAgentImportAll extends StatisticDateImporter implements UpdateInt
 
 		$fromDate = $this->getTodaysDateFromUnixTimestamp($lastImportedDateInDb->sec);
 		$toDate = new DateTime('today');
-		$interval = DateInterval::createFromDateString('1 hour');
+		$interval = DateInterval::createFromDateString('1 day');
 		$period = new DatePeriod($fromDate, $interval, $toDate);
 
 		$this->run($fromDate, $toDate, $period);

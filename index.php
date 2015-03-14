@@ -4,7 +4,7 @@ use Uninett\Collections\UpdateInterface;
 use Uninett\Run\RunMediasite;
 use Uninett\Run\RunRelayAll;
 use Uninett\Run\RunRelayDaily;
-use Uninett\Schemas\UsersSchema;
+
 
 require 'start/bootstrap.php';
 
@@ -79,17 +79,11 @@ if (defined('STDIN') && isset($argv[1])) {
 	echo PHP_EOL . "End of " . $argv[1] . PHP_EOL;
 }
 
+$date = new \Uninett\Helpers\StatisticDate();
 
+$date->setStartDateByTimestamp(1426318732)->setEndDate('today')->setDateInterval('1 day')->setDatePeriod();
 
-/*$res = [
-		     'userDisplayName' => 'Kim Syversen',
-		     'userName' => 'kim@example.com',
-		     UsersSchema::USERNAME_ON_DISK => 'kimatexample.com',
-		     UsersSchema::ORG => 'example.com',
-		     'userEmail' => 'kim@example.com',
-		     UsersSchema::AFFILIATION => 'ansatt',
-		     'createdOn' => date('Y-m-d H:i:s'),
-		     UsersSchema::STATUS => -1,
-	     ];*/
+foreach($date as $dt)
+	echo $dt->format('Y-m-d H:i:s');
 
 
