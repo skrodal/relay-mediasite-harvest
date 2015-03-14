@@ -52,7 +52,7 @@ class RequestPerHourImportAll extends StatisticDateImporter implements UpdateInt
 
 	public function logStart($startDate, $endDate)
 	{
-		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} to {$endDate->modify('-1 day')->format('Y-m-d')}");
+		$this->LogInfo("Starting to import data from {$startDate->format('Y-m-d')} including {$endDate->modify('-1 day')->format('Y-m-d')}");
 	}
 
 	public function updateDateInMongoDb($date)
