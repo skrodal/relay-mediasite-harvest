@@ -84,7 +84,7 @@ class StatisticDate {
 	/**
 	 * @param mixed $datePeriod
 	 */
-	public function setDatePeriod()
+	public function createDatePeriod()
 	{
 		$this->datePeriod = new DatePeriod($this->getStartDate(), $this->getDateInterval(), $this->getEndDate());
 

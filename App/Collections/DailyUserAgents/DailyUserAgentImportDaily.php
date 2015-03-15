@@ -24,7 +24,7 @@ class DailyUserAgentImportDaily extends StatisticDateImporter implements UpdateI
 			->setStartDateNextDayByTimestamp($lastImportedDateInDb->sec)
 			->setEndDateBystring('today')
 			->setDateIntervalFromString('1 day')
-			->setDatePeriod();
+			->createDatePeriod();
 
 		$this->log($date->getStartDate(), $date->getEndDate());
 

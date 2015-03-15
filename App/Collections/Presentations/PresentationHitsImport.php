@@ -35,49 +35,16 @@ abstract class PresentationHitsImport extends Collection
         $this->uniqueTraffic = new MongoConnection(DailyUniqueTrafficSchema::COLLECTION_NAME);
     }
 
-	protected function prepareForImport($fromDate, $toDate, $interval, $excludeStartDate)
-	{
-		$startDate = new DateTime($fromDate);
-		$endDate = new DateTime($toDate);
-
-		$dateInterval = DateInterval::createFromDateString($interval);
-
-		$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate);
-
-		if($excludeStartDate)
-			$datePeriod = new DatePeriod($startDate, $dateInterval, $endDate, DatePeriod::EXCLUDE_START_DATE);
-
-		$this->logStart($startDate, $endDate);
-
-		foreach ($datePeriod as $dt) {
-			$this->startImport($dt);
-
-			if($this->numberInserted > 0) {
-				$this->LogInfo("Inserted {$this->numberInserted} results for {$dt->format('Y-m-d')}");
-				$this->numberInserted = 0;
-			}
-			if($this->numberErrors > 0) {
-				$this->LogError("Error when importing data for {$dt->format('Y-m-d')}");
-				$this->numberErrors = 0;
-
-			}
-			$this->numberFound = $this->numberFound + 1;
-		}
-		$this->updateDateInMongoDb($endDate);
-	}
-
-
-	public function startImport($date) {
+	public function import($date) {
         $criteriaDaily = array(DailyVideosSchema::DATE => new MongoDate(strtotime($date->format('Y-m-d'))));
 
         $cursor = $this->uniqueTraffic->collection->find($criteriaDaily);
 
         if($cursor->count() > 0) {
             foreach($cursor as $document) {
-	            $criteria = array(
-		            PresentationSchema::FILES.'.'.PresentationSchema::PATH => $document[DailyUniqueTrafficSchema::URI]);
-
-	            $this->increaseHits($criteria);
+	            $this->increaseHits([
+		            PresentationSchema::FILES.'.'.PresentationSchema::PATH => $document[DailyUniqueTrafficSchema::URI]
+	            ]);
             }
         } else {
             $this->LogError("Did not find hits for " . $date->format('Y-m-d'));
@@ -114,4 +81,6 @@ abstract class PresentationHitsImport extends Collection
 		$last = new LastUpdates();
 		return $last->findLastInsertedPresentationHitsDate();
 	}
+
+
 }

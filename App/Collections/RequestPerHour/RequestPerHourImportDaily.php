@@ -26,7 +26,7 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 			->setStartDateNextDayByTimestamp($lastImportedDateInDb->sec)
 			->setEndDateBystring('today')
 			->setDateIntervalFromString('1 hour')
-			->setDatePeriod();
+			->createDatePeriod();
 
 		$this->log($date->getStartDate(), $date->getEndDate());
 

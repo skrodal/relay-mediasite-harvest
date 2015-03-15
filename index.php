@@ -76,7 +76,7 @@ if (defined('STDIN') && isset($argv[1])) {
 		case "test":
 			$date = new \Uninett\Helpers\StatisticDate();
 
-			$date->setStartDateTodayByTimestamp(1426318732)->setEndDateBystring('today')->setDateIntervalFromString('1 day')->setDatePeriod();
+			$date->setStartDateTodayByTimestamp(1426318732)->setEndDateBystring('today')->setDateIntervalFromString('1 day')->createDatePeriod();
 
 			foreach($date->getDateInterval() as $dt)
 				echo $dt->format('Y-m-d H:i:s');

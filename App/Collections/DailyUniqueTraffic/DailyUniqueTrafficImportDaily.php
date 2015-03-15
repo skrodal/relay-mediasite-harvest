@@ -24,7 +24,7 @@ class DailyUniqueTrafficImportDaily extends StatisticDateImporter implements Upd
 			->setStartDateNextDayByTimestamp($lastImportedDateInDb->sec)
 			->setEndDateBystring('today')
 			->setDateIntervalFromString('1 day')
-			->setDatePeriod();
+			->createDatePeriod();
 
 		$this->log($date->getStartDate(), $date->getEndDate());
 
