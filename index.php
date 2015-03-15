@@ -1,8 +1,7 @@
 <?php
 
-use Uninett\Collections\LastUpdates\LastUpdates;
+
 use Uninett\Collections\UpdateInterface;
-use Uninett\Helpers\StatisticDate;
 use Uninett\Run\RunMediasite;
 use Uninett\Run\RunRelayAll;
 use Uninett\Run\RunRelayDaily;
@@ -88,15 +87,3 @@ if (defined('STDIN') && isset($argv[1])) {
 	}
 	echo PHP_EOL . "End of " . $argv[1] . PHP_EOL;
 }
-
-
-
-
-
-$last = new LastUpdates();
-$lastImportedDateInDb =  $last->findLastInsertedRequestPerHourDate();
-
-
-$date = (new StatisticDate)->setStartDateNextDayByTimestamp($lastImportedDateInDb->sec);
-
-$date->getStartDate()->format('Y-m-d H:i:s');
