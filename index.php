@@ -46,6 +46,10 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run = new \Uninett\Collections\Presentations\PresentationImport(false);
 			$run->update();
 			break;
+		case "phits":
+			$run = new \Uninett\Collections\Presentations\PresentationHitsImportAll();
+			$run->update();
+			break;
 		case "uniquea":
 			$run = new \Uninett\Collections\DailyUniqueTraffic\DailyUniqueTrafficImportAll();
 			$run->update();
