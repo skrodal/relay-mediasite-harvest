@@ -56,7 +56,6 @@ db.userDiskUsage.find({'storage.1' : {$exists : true}}).pretty()
 db.org.find({'storage.1' : {$exists : true}}).pretty()
 
 
-g
 
 
 db.lastupdates.update({ _id : new ObjectId("54e60cc9c316825f0a8b4567") }, {$set : {"requestsPerHourLastImportedDate" : new Date('2013-05-22') } })
