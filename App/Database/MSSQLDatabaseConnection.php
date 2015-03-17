@@ -55,6 +55,10 @@ abstract class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterfa
 	public function query($query)
 	{
 
+		//TODO: Fjerne?
+		//http://forums.iis.net/t/1170679.aspx?Issue+connecting+to+MSSQL+via+PDO
+		//mssql_select_db($this->database);
+
 		if(is_bool($query)) {
 			echo __FILE__ . ": Query cannot be executed. It came in as a boolean: " . PHP_EOL;
 			return false;
