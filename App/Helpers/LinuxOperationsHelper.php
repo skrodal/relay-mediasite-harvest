@@ -30,7 +30,7 @@ class LinuxOperationsHelper
 		//$output = shell_exec('du --block-size=1 -s '. $directory.$org . " | awk '{s+=$1} END {print s}' ");
 
 		//2>/dev/null sends errors to /dev/null
-		$output = shell_exec('du --block-size=1 -s '. $directory.$org . "2>/dev/null | awk '{s+=$1} END {print s}' ");
+		$output = shell_exec('du --block-size=1 -s '. $directory.$org . " 2>/dev/null | awk '{s+=$1} END {print s}' ");
 
 		return (int) $output;
 	}

@@ -30,8 +30,6 @@ class MediasiteAggregateSizeUsed extends Collection implements UpdateInterface
     {
         $directories = Config::get('mediasite')['directories'];
 
-        //'$directory = "/home/uninett/mediasite/";
-
 	    $math = new Arithmetic();
         $disk = new LinuxOperationsHelper();
 
