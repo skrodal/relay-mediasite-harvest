@@ -1,9 +1,16 @@
 <?php namespace Uninett\Run;
 use Uninett\Collections\UpdateInterface;
 
+/**
+ * Class RunRelayAll
+ * @package Uninett\Run
+ */
 class RunRelayAll implements RunnableInterface
 {
 
+	/**
+	 * Create and run a new collection of jobs
+	 */
 	public function run()
 	{
 		$collections = [

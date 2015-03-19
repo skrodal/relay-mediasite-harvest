@@ -1,4 +1,6 @@
 <?php namespace Uninett\Helpers; 
+use Uninett\Config;
+
 class LinuxOperationsHelper
 {
 
@@ -48,7 +50,7 @@ class LinuxOperationsHelper
 	{
 		$arr = array();
 
-		foreach (Config::Instance()['folders_to_scan_for_files'] as $directory) {
+		foreach (Config::get('folders_to_scan_for_files') as $directory) {
 			exec('ls -l '. $directory .  '| egrep ^d |  cut -d "@" -f2 | sort | uniq', $y);
 
 			foreach($y as $value)

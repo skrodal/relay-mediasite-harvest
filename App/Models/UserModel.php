@@ -3,19 +3,46 @@ use JsonSerializable;
 use MongoDate;
 use Uninett\Schemas\UsersSchema;
 
+
 /**
- * status, see UsersCheckStatus.php
+ * Class UserModel
+ * @package Uninett\Models
  */
 class UserModel implements JsonSerializable
 {
-    private $username = "";
-    private $username_on_disk = "";
-    private $email = "";
-    private $name = "";
-    private $created_date = "";
-    private $org = "";
-    private $status = "";
-    private $affiliation = "";
+
+	/**
+	 * @var string
+	 */
+	private $username = "";
+	/**
+	 * @var string
+	 */
+	private $username_on_disk = "";
+	/**
+	 * @var string
+	 */
+	private $email = "";
+	/**
+	 * @var string
+	 */
+	private $name = "";
+	/**
+	 * @var string
+	 */
+	private $created_date = "";
+	/**
+	 * @var string
+	 */
+	private $org = "";
+	/**
+	 * @var string
+	 */
+	private $status = "";
+	/**
+	 * @var string
+	 */
+	private $affiliation = "";
 
 /*	public function variablesToArray(){
 		$var = get_object_vars($this);
@@ -27,6 +54,9 @@ class UserModel implements JsonSerializable
 		return $var;
 	}*/
 
+	/**
+	 * @return array
+	 */
 	public function jsonSerialize()
     {
         return [
@@ -41,7 +71,11 @@ class UserModel implements JsonSerializable
         ];
     }
 
-    public function setUsernameOnDisk($u)
+	/**
+	 * @param $u
+	 * @return bool
+	 */
+	public function setUsernameOnDisk($u)
     {
         if(!is_string($u))
 
@@ -52,13 +86,20 @@ class UserModel implements JsonSerializable
         return true;
     }
 
-    public function getUsernameOnDisk()
+	/**
+	 * @return string
+	 */
+	public function getUsernameOnDisk()
     {
         return $this->username_on_disk;
     }
 
 
-    public function setAffiliation($affiliation)
+	/**
+	 * @param $affiliation
+	 * @return bool
+	 */
+	public function setAffiliation($affiliation)
     {
         if(!is_string($affiliation))
 
@@ -69,12 +110,19 @@ class UserModel implements JsonSerializable
         return true;
     }
 
-    public function getAffiliation()
+	/**
+	 * @return string
+	 */
+	public function getAffiliation()
     {
         return $this->affiliation;
     }
 
-    public function setCreatedDate($date)
+	/**
+	 * @param $date
+	 * @return bool
+	 */
+	public function setCreatedDate($date)
     {
         if(!is_string($date))
 
@@ -85,12 +133,19 @@ class UserModel implements JsonSerializable
         return true;
     }
 
-    public function getCreatedDate()
+	/**
+	 * @return string
+	 */
+	public function getCreatedDate()
     {
         return $this->created_date;
     }
 
-    public function setEmail($email)
+	/**
+	 * @param $email
+	 * @return bool
+	 */
+	public function setEmail($email)
     {
         if(!filter_var($email, FILTER_VALIDATE_EMAIL))
 
@@ -101,12 +156,19 @@ class UserModel implements JsonSerializable
         return true;
     }
 
-    public function getEmail()
+	/**
+	 * @return string
+	 */
+	public function getEmail()
     {
         return $this->email;
     }
 
-    public function setName($name)
+	/**
+	 * @param $name
+	 * @return bool
+	 */
+	public function setName($name)
     {
         if(!is_string($name))
 
@@ -117,12 +179,19 @@ class UserModel implements JsonSerializable
         return true;
     }
 
-    public function getName()
+	/**
+	 * @return string
+	 */
+	public function getName()
     {
         return $this->name;
     }
 
-    public function setUsername($username)
+	/**
+	 * @param $username
+	 * @return bool
+	 */
+	public function setUsername($username)
     {
         if(!filter_var($username, FILTER_VALIDATE_EMAIL))
 
@@ -133,12 +202,19 @@ class UserModel implements JsonSerializable
         return true;
     }
 
-    public function getUsername()
+	/**
+	 * @return string
+	 */
+	public function getUsername()
     {
         return $this->username;
     }
 
-    public function setOrg($org)
+	/**
+	 * @param $org
+	 * @return bool
+	 */
+	public function setOrg($org)
     {
         if(!is_string($org))
 
@@ -149,12 +225,19 @@ class UserModel implements JsonSerializable
         return true;
     }
 
-    public function getOrg()
+	/**
+	 * @return string
+	 */
+	public function getOrg()
     {
         return $this->org;
     }
 
-    public function setStatus($status)
+	/**
+	 * @param $status
+	 * @return bool
+	 */
+	public function setStatus($status)
     {
         if(!is_int($status))
 
@@ -165,7 +248,10 @@ class UserModel implements JsonSerializable
         return true;
     }
 
-    public function getStatus()
+	/**
+	 * @return string
+	 */
+	public function getStatus()
     {
         return $this->status;
     }
