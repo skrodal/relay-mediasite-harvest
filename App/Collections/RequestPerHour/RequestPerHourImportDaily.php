@@ -45,7 +45,6 @@ class RequestPerHourImportDaily extends StatisticDateImporter implements UpdateI
 
 		$this->LogInfo("Updating startDate for requestPerHour with {$date->getDateForDatabase()->format('Y-m-d')}");
 
-
 		$this->updateDateInMongoDb($date->getDateForDatabase());
 	}
 
