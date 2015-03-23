@@ -10,6 +10,15 @@ class StatisticDate {
 	private $dateInterval;
 	private $datePeriod;
 
+
+	/**
+	 * If the diff if larger than one day, it means that it has not been imported statistics for 'a while' and storing
+	 * the startDate to database would not be correct.
+	 * @return mixed
+	 */
+	public function getDateForDatabase() {
+		return $this->startDate->diff($this->endDate) > 1 ? $this->getEndDate() : $this->getStartDate();
+	}
 	/**
 	 * @return mixed
 	 */
@@ -69,6 +78,8 @@ class StatisticDate {
 	public function setDateIntervalFromString($dateInterval)
 	{
 		$this->dateInterval = DateInterval::createFromDateString($dateInterval);
+
+
 
 		return $this;
 	}
