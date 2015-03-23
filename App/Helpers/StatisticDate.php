@@ -17,7 +17,13 @@ class StatisticDate {
 	 * @return mixed
 	 */
 	public function getDateForDatabase() {
-		return $this->startDate->diff($this->endDate)->days > 1 ? $this->getStartDate() : $this->getEndDate();
+		$days = $this->startDate->diff($this->endDate);
+
+		if($days > 1)
+			return $this->getEndDate();
+
+		return $this->getStartDate();
+
 	}
 	/**
 	 * @return mixed
