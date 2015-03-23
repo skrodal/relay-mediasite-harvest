@@ -4,73 +4,137 @@ use JsonSerializable;
 use MongoDate;
 use Uninett\Schemas\DailyUniqueTrafficSchema;
 
+/**
+ * Class DailyUniqueTrafficModel
+ * @package Uninett\Models
+ */
 class DailyUniqueTrafficModel implements JsonSerializable
 {
-    private $_referer = "";
-    private $_ip = "";
-    private $_date = "";
-    private $_uri = "";
 
-    private $_country;
-    private $_city;
-    private $_region;
+	/**
+	 * @var string
+	 */
+	private $_referer = "";
+	/**
+	 * @var string
+	 */
+	private $_ip = "";
+	/**
+	 * @var string
+	 */
+	private $_date = "";
+	/**
+	 * @var string
+	 */
+	private $_uri = "";
 
-    private $_latitude;
-    private $_longtitude;
+	/**
+	 * @var
+	 */
+	private $_country;
+	/**
+	 * @var
+	 */
+	private $_city;
+	/**
+	 * @var
+	 */
+	private $_region;
 
-    public function setCity($city)
+	/**
+	 * @var
+	 */
+	private $_latitude;
+	/**
+	 * @var
+	 */
+	private $_longtitude;
+
+	/**
+	 * @param $city
+	 */
+	public function setCity($city)
     {
         $this->_city = $city;
     }
 
-    public function getCity()
+	/**
+	 * @return mixed
+	 */
+	public function getCity()
     {
         return $this->_city;
     }
 
-    public function setCountry($country)
+	/**
+	 * @param $country
+	 */
+	public function setCountry($country)
     {
         $this->_country = $country;
     }
 
-    public function getCountry()
+	/**
+	 * @return mixed
+	 */
+	public function getCountry()
     {
         return $this->_country;
     }
 
-    public function setLatitude($latitude)
+	/**
+	 * @param $latitude
+	 */
+	public function setLatitude($latitude)
     {
         $this->_latitude = $latitude;
     }
 
-    public function getLatitude()
+	/**
+	 * @return mixed
+	 */
+	public function getLatitude()
     {
         return $this->_latitude;
     }
 
-    public function setLongtitude($longtitude)
+	/**
+	 * @param $longtitude
+	 */
+	public function setLongtitude($longtitude)
     {
         $this->_longtitude = $longtitude;
     }
 
-    public function getLongtitude()
+	/**
+	 * @return mixed
+	 */
+	public function getLongtitude()
     {
         return $this->_longtitude;
     }
 
-    public function setRegion($region)
+	/**
+	 * @param $region
+	 */
+	public function setRegion($region)
     {
         $this->_region = $region;
     }
 
-    public function getRegion()
+	/**
+	 * @return mixed
+	 */
+	public function getRegion()
     {
         return $this->_region;
     }
 
 
-
-    public function jsonSerialize()
+	/**
+	 * @return array
+	 */
+	public function jsonSerialize()
     {
         return [
             DailyUniqueTrafficSchema::DATE => $this->getDate(),
@@ -88,7 +152,11 @@ class DailyUniqueTrafficModel implements JsonSerializable
         ];
     }
 
-    public function setUri($uri)
+	/**
+	 * @param $uri
+	 * @return bool
+	 */
+	public function setUri($uri)
     {
         if(is_array($uri))
 
@@ -110,12 +178,19 @@ class DailyUniqueTrafficModel implements JsonSerializable
         return true;
     }
 
-    public function getUri()
+	/**
+	 * @return string
+	 */
+	public function getUri()
     {
         return $this->_uri;
     }
 
-    public function setDate($date)
+	/**
+	 * @param $date
+	 * @return bool
+	 */
+	public function setDate($date)
     {
         if(is_array($date))
 
@@ -138,12 +213,19 @@ class DailyUniqueTrafficModel implements JsonSerializable
         return true;
     }
 
-    public function getDate()
+	/**
+	 * @return string
+	 */
+	public function getDate()
     {
         return $this->_date;
     }
 
-    public function setIp($ip)
+	/**
+	 * @param $ip
+	 * @return bool
+	 */
+	public function setIp($ip)
     {
         if(is_array($ip))
 
@@ -165,12 +247,19 @@ class DailyUniqueTrafficModel implements JsonSerializable
         return true;
     }
 
-    public function getIp()
+	/**
+	 * @return string
+	 */
+	public function getIp()
     {
         return $this->_ip;
     }
 
-    public function setReferer($referer)
+	/**
+	 * @param $referer
+	 * @return bool
+	 */
+	public function setReferer($referer)
     {
         if(is_array($referer))
 
@@ -192,7 +281,10 @@ class DailyUniqueTrafficModel implements JsonSerializable
         return true;
     }
 
-    public function getReferer()
+	/**
+	 * @return string
+	 */
+	public function getReferer()
     {
         return $this->_referer;
     }

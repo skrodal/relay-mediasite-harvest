@@ -1,18 +1,36 @@
 <?php namespace Uninett\Models;
 use MongoDate;
 
+/**
+ * Class DailyVideoModel
+ * @package Uninett\Models
+ */
 class DailyVideoModel
 {
-    private $date;
-    private $count;
 
-    public function __construct()
+	/**
+	 * @var MongoDate
+	 */
+	private $date;
+	/**
+	 * @var int
+	 */
+	private $count;
+
+	/**
+	 *
+	 */
+	public function __construct()
     {
         $this->date = new MongoDate();
         $this->count = 0;
     }
 
-    public function setCount($count)
+	/**
+	 * @param $count
+	 * @return bool
+	 */
+	public function setCount($count)
     {
         if(empty($count))
             $count = 0;
@@ -26,12 +44,18 @@ class DailyVideoModel
         return true;
     }
 
-    public function getCount()
+	/**
+	 * @return int
+	 */
+	public function getCount()
     {
         return $this->count;
     }
 
-    public function getDate()
+	/**
+	 * @return MongoDate
+	 */
+	public function getDate()
     {
         return $this->date;
     }

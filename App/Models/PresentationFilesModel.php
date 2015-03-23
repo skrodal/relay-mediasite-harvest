@@ -3,27 +3,65 @@
 use JsonSerializable;
 use Uninett\Schemas\PresentationSchema;
 
+/**
+ * Class PresentationFilesModel
+ * @package Uninett\Models
+ */
 class PresentationFilesModel implements JsonSerializable{
-    private $_encodingPreset = "";
-    private $_timeToEncode = 0;
-    private $_timeInQueue = 0;
 
-    private $_size;
-    private $_path = "";
+	/**
+	 * @var string
+	 */
+	private $_encodingPreset = "";
+	/**
+	 * @var int
+	 */
+	private $_timeToEncode = 0;
+	/**
+	 * @var int
+	 */
+	private $_timeInQueue = 0;
+
+	/**
+	 * @var float
+	 */
+	private $_size;
+	/**
+	 * @var string
+	 */
+	private $_path = "";
 
 
-    private $_hits;
+	/**
+	 * @var
+	 */
+	private $_hits;
 
-    private $_resolution = "";
-    private $_x;
-    private $_y;
+	/**
+	 * @var string
+	 */
+	private $_resolution = "";
+	/**
+	 * @var
+	 */
+	private $_x;
+	/**
+	 * @var
+	 */
+	private $_y;
 
-    function __construct()
+	/**
+	 *
+	 */
+	function __construct()
     {
         $this->_size = 0.0;
     }
 
-    public function jsonSerialize()
+	/**
+	 * @return array
+	 */
+	public function jsonSerialize()
     {
         return
         [
@@ -36,7 +74,12 @@ class PresentationFilesModel implements JsonSerializable{
             PresentationSchema::HITS => $this->getHits()
         ];
     }
-    public function setHits($hits)
+
+	/**
+	 * @param $hits
+	 * @return bool
+	 */
+	public function setHits($hits)
     {
         if(!is_int($hits))
 
@@ -47,13 +90,20 @@ class PresentationFilesModel implements JsonSerializable{
         return true;
     }
 
-    public function getHits()
+	/**
+	 * @return mixed
+	 */
+	public function getHits()
     {
         return $this->_hits;
     }
 
 
-    public function setPath($fileName)
+	/**
+	 * @param $fileName
+	 * @return bool
+	 */
+	public function setPath($fileName)
     {
         if(!is_string($fileName))
 
@@ -64,17 +114,27 @@ class PresentationFilesModel implements JsonSerializable{
         return true;
     }
 
-    public function getPath()
+	/**
+	 * @return string
+	 */
+	public function getPath()
     {
         return $this->_path;
     }
 
-    public function getEncodingPreset()
+	/**
+	 * @return string
+	 */
+	public function getEncodingPreset()
     {
         return $this->_encodingPreset;
     }
 
-    public function setEncodingPreset($encodingPreset)
+	/**
+	 * @param $encodingPreset
+	 * @return bool
+	 */
+	public function setEncodingPreset($encodingPreset)
     {
         if(!is_string($encodingPreset))
 
@@ -89,12 +149,19 @@ class PresentationFilesModel implements JsonSerializable{
         return true;
     }
 
-    public function getTimeToEncode()
+	/**
+	 * @return int
+	 */
+	public function getTimeToEncode()
     {
         return $this->_timeToEncode;
     }
 
-    public function setTimeToEncode($timeToEncode)
+	/**
+	 * @param $timeToEncode
+	 * @return bool
+	 */
+	public function setTimeToEncode($timeToEncode)
     {
         if(!is_int($timeToEncode))
 
@@ -105,12 +172,19 @@ class PresentationFilesModel implements JsonSerializable{
         return true;
     }
 
-    public function getTimeInQueue()
+	/**
+	 * @return int
+	 */
+	public function getTimeInQueue()
     {
         return $this->_timeInQueue;
     }
 
-    public function setTimeInQueue($timeInQueue)
+	/**
+	 * @param $timeInQueue
+	 * @return bool
+	 */
+	public function setTimeInQueue($timeInQueue)
     {
         if(!is_int($timeInQueue))
 
@@ -122,7 +196,11 @@ class PresentationFilesModel implements JsonSerializable{
     }
 
 
-    public function setSize($size)
+	/**
+	 * @param $size
+	 * @return bool
+	 */
+	public function setSize($size)
     {
         if(!is_double($size))
 
@@ -133,17 +211,27 @@ class PresentationFilesModel implements JsonSerializable{
         return true;
     }
 
-    public function getSize()
+	/**
+	 * @return float
+	 */
+	public function getSize()
     {
         return $this->_size;
     }
 
-    public function getResolution()
+	/**
+	 * @return string
+	 */
+	public function getResolution()
     {
         return $this->_resolution;
     }
 
-    public function setResolution($resolution)
+	/**
+	 * @param $resolution
+	 * @return bool
+	 */
+	public function setResolution($resolution)
     {
         if(!is_array($resolution))
 
@@ -154,7 +242,11 @@ class PresentationFilesModel implements JsonSerializable{
         return true;
     }
 
-    public function setX($x)
+	/**
+	 * @param $x
+	 * @return bool
+	 */
+	public function setX($x)
     {
         if(!is_int($x))
 
@@ -165,12 +257,19 @@ class PresentationFilesModel implements JsonSerializable{
         return true;
     }
 
-    public function getX()
+	/**
+	 * @return mixed
+	 */
+	public function getX()
     {
         return $this->_x;
     }
 
-    public function setY($y)
+	/**
+	 * @param $y
+	 * @return bool
+	 */
+	public function setY($y)
     {
         if(!is_int($y))
 
@@ -181,7 +280,10 @@ class PresentationFilesModel implements JsonSerializable{
         return true;
     }
 
-    public function getY()
+	/**
+	 * @return mixed
+	 */
+	public function getY()
     {
         return $this->_y;
     }

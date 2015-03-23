@@ -1,27 +1,75 @@
 <?php namespace Uninett\Models;
-//This is a model class for one presentation.
+
 use JsonSerializable;
 use MongoDate;
 use Uninett\Schemas\PresentationSchema;
 
+/**
+ * Class PresentationModel
+ * //This is a model class for one presentation.
+ * @package Uninett\Models
+ */
 class PresentationModel implements JsonSerializable
 {
-    private $_presentationId;
-    private $_created = "";
-    private $_deleted = "";
-    private $_userName = "";
-    private $_totalDuration = 0;
-    private $_trimmedDuration = 0;
+
+	/**
+	 * @var
+	 */
+	private $_presentationId;
+	/**
+	 * @var string
+	 */
+	private $_created = "";
+	/**
+	 * @var string
+	 */
+	private $_deleted = "";
+	/**
+	 * @var string
+	 */
+	private $_userName = "";
+	/**
+	 * @var int
+	 */
+	private $_totalDuration = 0;
+	/**
+	 * @var int
+	 */
+	private $_trimmedDuration = 0;
 
 
-    private $_files;
-    private $_org;
-    private $_hits;
-    private $_size = 0.0;
-    private $_title;
-    private $_description;
-    private $_path;
+	/**
+	 * @var array
+	 */
+	private $_files;
+	/**
+	 * @var
+	 */
+	private $_org;
+	/**
+	 * @var
+	 */
+	private $_hits;
+	/**
+	 * @var float
+	 */
+	private $_size = 0.0;
+	/**
+	 * @var
+	 */
+	private $_title;
+	/**
+	 * @var
+	 */
+	private $_description;
+	/**
+	 * @var
+	 */
+	private $_path;
 
+	/**
+	 * @var
+	 */
 	private $recorderName;
 
 	/**
@@ -46,12 +94,19 @@ class PresentationModel implements JsonSerializable
 	}
 
 
-    function __construct()
+	/**
+	 *
+	 */
+	function __construct()
     {
         $this->_files = array();
     }
 
-    public function setOrg($org)
+	/**
+	 * @param $org
+	 * @return bool
+	 */
+	public function setOrg($org)
     {
         if(!is_string($org))
             return false;
@@ -61,12 +116,19 @@ class PresentationModel implements JsonSerializable
         return true;
     }
 
-    public function getOrg()
+	/**
+	 * @return mixed
+	 */
+	public function getOrg()
     {
         return $this->_org;
     }
 
-    public function setPath($p)
+	/**
+	 * @param $p
+	 * @return bool
+	 */
+	public function setPath($p)
     {
         if(!is_string($p))
             return false;
@@ -76,12 +138,19 @@ class PresentationModel implements JsonSerializable
         return true;
     }
 
-    public function getPath()
+	/**
+	 * @return mixed
+	 */
+	public function getPath()
     {
         return $this->_path;
     }
 
-    public function setPresentationId($presentationId)
+	/**
+	 * @param $presentationId
+	 * @return bool
+	 */
+	public function setPresentationId($presentationId)
     {
         if(!is_int($presentationId))
             return false;
@@ -91,44 +160,59 @@ class PresentationModel implements JsonSerializable
         return true;
     }
 
-    public function getPresentationId()
+	/**
+	 * @return mixed
+	 */
+	public function getPresentationId()
     {
         return $this->_presentationId;
     }
 
-    public function setDescription($description)
+	/**
+	 * @param $description
+	 * @return bool
+	 */
+	public function setDescription($description)
     {
-        if(!is_string(($description)))
-            return false;
-
         $this->_description = $description;
 
         return true;
     }
 
-    public function getDescription()
+	/**
+	 * @return mixed
+	 */
+	public function getDescription()
     {
         return $this->_description;
     }
 
 
-    public function setTitle($title)
+	/**
+	 * @param $title
+	 * @return bool
+	 */
+	public function setTitle($title)
     {
-        if(!is_string($title))
-            return false;
-
         $this->_title = $title;
 
         return true;
     }
 
 
-    public function getTitle()
+	/**
+	 * @return mixed
+	 */
+	public function getTitle()
     {
         return $this->_title;
     }
 
-    public function setSize($size)
+	/**
+	 * @param $size
+	 * @return bool
+	 */
+	public function setSize($size)
     {
         if(!is_double($size))
             return false;
@@ -138,12 +222,19 @@ class PresentationModel implements JsonSerializable
         return true;
     }
 
-    public function getSize()
+	/**
+	 * @return float
+	 */
+	public function getSize()
     {
         return $this->_size;
     }
 
-    public function setHits($hits)
+	/**
+	 * @param $hits
+	 * @return bool
+	 */
+	public function setHits($hits)
     {
         if(!is_int($hits))
 
@@ -154,12 +245,19 @@ class PresentationModel implements JsonSerializable
         return true;
     }
 
-    public function getHits()
+	/**
+	 * @return mixed
+	 */
+	public function getHits()
     {
         return $this->_hits;
     }
 
-    public function addFileToFilesArray($file)
+	/**
+	 * @param $file
+	 * @return bool
+	 */
+	public function addFileToFilesArray($file)
     {
         if(!is_object($file))
             return false;
@@ -169,12 +267,19 @@ class PresentationModel implements JsonSerializable
         return true;
     }
 
-    public function getFiles()
+	/**
+	 * @return array
+	 */
+	public function getFiles()
     {
         return $this->_files;
     }
 
-    public function setCreated($created)
+	/**
+	 * @param $created
+	 * @return bool
+	 */
+	public function setCreated($created)
     {
         if(!is_string($created))
 
@@ -189,12 +294,19 @@ class PresentationModel implements JsonSerializable
         return true;
     }
 
-    public function getCreated()
+	/**
+	 * @return string
+	 */
+	public function getCreated()
     {
         return $this->_created;
     }
 
-    public function setDeleted($deleted)
+	/**
+	 * @param $deleted
+	 * @return bool
+	 */
+	public function setDeleted($deleted)
     {
         if(!is_int($deleted))
 
@@ -205,17 +317,27 @@ class PresentationModel implements JsonSerializable
         return true;
     }
 
-    public function getDeleted()
+	/**
+	 * @return string
+	 */
+	public function getDeleted()
     {
         return $this->_deleted;
     }
 
-    public function getUserName()
+	/**
+	 * @return string
+	 */
+	public function getUserName()
     {
         return $this->_userName;
     }
 
-    public function setUserName($userName)
+	/**
+	 * @param $userName
+	 * @return bool
+	 */
+	public function setUserName($userName)
     {
         if(!filter_var($userName, FILTER_VALIDATE_EMAIL))
 
@@ -226,12 +348,19 @@ class PresentationModel implements JsonSerializable
         return true;
     }
 
-    public function getTotalDuration()
+	/**
+	 * @return int
+	 */
+	public function getTotalDuration()
     {
         return $this->_totalDuration;
     }
 
-    public function setTotalDuration($totalDuration)
+	/**
+	 * @param $totalDuration
+	 * @return bool
+	 */
+	public function setTotalDuration($totalDuration)
     {
         if(!is_int($totalDuration))
 
@@ -242,12 +371,19 @@ class PresentationModel implements JsonSerializable
         return true;
     }
 
-    public function getTrimmedDuration()
+	/**
+	 * @return int
+	 */
+	public function getTrimmedDuration()
     {
         return $this->_trimmedDuration;
     }
 
-    public function setTrimmedDuration($trimmedDuration)
+	/**
+	 * @param $trimmedDuration
+	 * @return bool
+	 */
+	public function setTrimmedDuration($trimmedDuration)
     {
         if(!is_int($trimmedDuration))
 
@@ -258,7 +394,10 @@ class PresentationModel implements JsonSerializable
         return true;
     }
 
-    public function serializeFiles() {
+	/**
+	 * @return array
+	 */
+	public function serializeFiles() {
         $arr = array();
         foreach($this->_files as $file)
             $arr[] = $file->jsonSerialize();
@@ -266,7 +405,10 @@ class PresentationModel implements JsonSerializable
         return $arr;
     }
 
-    public function jsonSerialize()
+	/**
+	 * @return array
+	 */
+	public function jsonSerialize()
     {
         return [
             PresentationSchema::PRESENTATION_ID => $this->getPresentationId(),

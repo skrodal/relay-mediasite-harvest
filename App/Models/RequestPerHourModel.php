@@ -3,12 +3,26 @@ use JsonSerializable;
 use MongoDate;
 use Uninett\Schemas\RequestsPerHourSchema;
 
+/**
+ * Class RequestPerHourModel
+ * @package Uninett\Models
+ */
 class RequestPerHourModel implements JsonSerializable
 {
-    private $_date;
-    private $_request;
 
-    public function jsonSerialize()
+	/**
+	 * @var
+	 */
+	private $_date;
+	/**
+	 * @var
+	 */
+	private $_request;
+
+	/**
+	 * @return array
+	 */
+	public function jsonSerialize()
     {
         return
         [
@@ -17,7 +31,11 @@ class RequestPerHourModel implements JsonSerializable
         ];
     }
 
-    public function setDate($date)
+	/**
+	 * @param $date
+	 * @return bool
+	 */
+	public function setDate($date)
     {
         if (empty($date)) {
             return false;
@@ -35,12 +53,19 @@ class RequestPerHourModel implements JsonSerializable
         return true;
     }
 
-    public function getDate()
+	/**
+	 * @return mixed
+	 */
+	public function getDate()
     {
         return $this->_date;
     }
 
-    public function setRequest($request)
+	/**
+	 * @param $request
+	 * @return bool
+	 */
+	public function setRequest($request)
     {
         if(empty($request))
             $request = 0;
@@ -54,7 +79,10 @@ class RequestPerHourModel implements JsonSerializable
         return true;
     }
 
-    public function getRequest()
+	/**
+	 * @return mixed
+	 */
+	public function getRequest()
     {
         return $this->_request;
     }

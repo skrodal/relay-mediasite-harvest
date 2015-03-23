@@ -3,14 +3,28 @@
 use JsonSerializable;
 use Uninett\Schemas\OrgSchema;
 
+/**
+ * Class OrgModel
+ * @package Uninett\Models
+ */
 class OrgModel implements JsonSerializable
 {
-    private $_org;
+
+	/**
+	 * @var
+	 */
+	private $_org;
 
     //Empty array when created. orgsAggregateSizeUsed take care of this.
-    private $_storage;
+	/**
+	 * @var array
+	 */
+	private $_storage;
 
-    public function __construct()
+	/**
+	 *
+	 */
+	public function __construct()
     {
         $this->_storage = array
         (
@@ -18,7 +32,11 @@ class OrgModel implements JsonSerializable
         );
     }
 
-    public function setOrg($org)
+	/**
+	 * @param $org
+	 * @return bool
+	 */
+	public function setOrg($org)
     {
         if(empty($org))
 
@@ -37,12 +55,19 @@ class OrgModel implements JsonSerializable
         return true;
     }
 
-    public function getOrg()
+	/**
+	 * @return mixed
+	 */
+	public function getOrg()
     {
         return $this->_org;
     }
 
-    public function setStorageSize($size)
+	/**
+	 * @param $size
+	 * @return bool
+	 */
+	public function setStorageSize($size)
     {
         if(!is_int($size))
 
@@ -53,7 +78,10 @@ class OrgModel implements JsonSerializable
         return true;
     }
 
-    public function jsonSerialize()
+	/**
+	 * @return array
+	 */
+	public function jsonSerialize()
     {
         return
             [
@@ -66,7 +94,11 @@ class OrgModel implements JsonSerializable
             ];
     }
 
-    private function _looksLikeEmail($org)
+	/**
+	 * @param $org
+	 * @return mixed
+	 */
+	private function _looksLikeEmail($org)
     {
         return filter_var($org, FILTER_VALIDATE_EMAIL);
     }

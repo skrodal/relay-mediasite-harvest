@@ -4,13 +4,30 @@ use JsonSerializable;
 use MongoDate;
 use Uninett\Schemas\DailyUserAgentsSchema;
 
+/**
+ * Class DailyUserAgentModel
+ * @package Uninett\Models
+ */
 class DailyUserAgentModel implements JsonSerializable
 {
-    private $_userAgent = "";
-    private $_hits = 0;
-    private $_date = "";
 
-    public function jsonSerialize()
+	/**
+	 * @var string
+	 */
+	private $_userAgent = "";
+	/**
+	 * @var int
+	 */
+	private $_hits = 0;
+	/**
+	 * @var string
+	 */
+	private $_date = "";
+
+	/**
+	 * @return array
+	 */
+	public function jsonSerialize()
     {
         return [
             DailyUserAgentsSchema::DATE => $this->getDate(),
@@ -19,7 +36,11 @@ class DailyUserAgentModel implements JsonSerializable
         ];
     }
 
-    public function setDate($date)
+	/**
+	 * @param $date
+	 * @return bool
+	 */
+	public function setDate($date)
     {
         if(empty($date))
 
@@ -38,12 +59,19 @@ class DailyUserAgentModel implements JsonSerializable
         return true;
     }
 
-    public function getDate()
+	/**
+	 * @return string
+	 */
+	public function getDate()
     {
         return $this->_date;
     }
 
-    public function setHits($hits)
+	/**
+	 * @param $hits
+	 * @return bool
+	 */
+	public function setHits($hits)
     {
         if(empty($hits))
             $hits = 0;
@@ -57,12 +85,19 @@ class DailyUserAgentModel implements JsonSerializable
         return true;
     }
 
-    public function getHits()
+	/**
+	 * @return int
+	 */
+	public function getHits()
     {
         return $this->_hits;
     }
 
-    public function setUserAgent($userAgent)
+	/**
+	 * @param $userAgent
+	 * @return bool
+	 */
+	public function setUserAgent($userAgent)
     {
         if(empty($userAgent))
             $userAgent = "Unknown";
@@ -80,7 +115,10 @@ class DailyUserAgentModel implements JsonSerializable
         return true;
     }
 
-    public function getUserAgent()
+	/**
+	 * @return string
+	 */
+	public function getUserAgent()
     {
         return $this->_userAgent;
     }

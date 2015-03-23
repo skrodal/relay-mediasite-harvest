@@ -1,27 +1,109 @@
 <?php
-//Test-file for Video
+
+use Uninett\Models\PresentationModel;
+
 class PresentationTest extends PHPUnit_Framework_TestCase
 {
-    private $_presentation;
+    private $presentation;
 
     public function setUp()
     {
-        require_once 'Video.php';
-        $this->_presentation = new PresentationModel();
+        $this->presentation = new PresentationModel;
     }
 
     public function tearDown()
     {
-        $this->_presentation = null;
+        $this->presentation = null;
     }
 
-    public function testSetOutputFilesSizeInt()
-    {
-        $equals = $this->_presentation->setOutputFilesSize(1);
-        $this->assertEquals(false, $equals);
-    }
+	public function test_setting_wrong_recorder_name()
+	{
+		$equals = $this->presentation->setRecorderName(1);
+		$this->assertEquals(false, $equals);
+	}
 
-    public function testSetOutputFilesSizeString()
+	public function test_setting_correct_recorder_name()
+	{
+		$equals = $this->presentation->setRecorderName('Karl');
+		$this->assertEquals(true, $equals);
+	}
+
+
+	public function test_setting_correct_org_name()
+	{
+		$equals = $this->presentation->setOrg('example.com');
+		$this->assertEquals(true, $equals);
+	}
+
+
+	public function test_setting_wrong_org_name()
+	{
+		$equals = $this->presentation->setOrg(123);
+		$this->assertEquals(false, $equals);
+	}
+
+
+	public function test_setting_correct_path()
+	{
+		$equals = $this->presentation->setPath('example.com');
+		$this->assertEquals(true, $equals);
+	}
+
+
+	public function test_setting_wrong_path()
+	{
+		$equals = $this->presentation->setOrg(123);
+		$this->assertEquals(false, $equals);
+	}
+
+
+	public function test_setting_correct_presentationId()
+	{
+		$equals = $this->presentation->setPresentationId(123);
+		$this->assertEquals(true, $equals);
+	}
+
+
+	public function test_setting_wrong_presentationId()
+	{
+		$equals = $this->presentation->setPresentationId('asdf');
+		$this->assertEquals(false, $equals);
+	}
+
+	public function test_setting_correct_description()
+	{
+		$equals = $this->presentation->setDescription('asdf');
+		$this->assertEquals(true, $equals);
+	}
+
+	public function test_setting_correct_title()
+	{
+		$equals = $this->presentation->setDescription('asdf');
+		$this->assertEquals(true, $equals);
+	}
+
+
+	public function test_setting_correct_size()
+	{
+		$equals = $this->presentation->setSize(12.12);
+		$this->assertEquals(true, $equals);
+	}
+
+	public function test_setting_wrong_size()
+	{
+		$equals = $this->presentation->setSize('asdf');
+		$this->assertEquals(false, $equals);
+	}
+
+
+
+	/*    public function testSetOutputFilesSizeInt()
+		{
+			$equals = $this->presentation->setOutputFilesSize(1);
+			$this->assertEquals(false, $equals);
+		}*/
+
+  /*  public function testSetOutputFilesSizeString()
     {
         $equals = $this->_presentation->setOutputFilesSize("asdf");
         $this->assertEquals(false, $equals);
@@ -510,5 +592,5 @@ class PresentationTest extends PHPUnit_Framework_TestCase
     {
         $equals = $this->_presentation->setTrimmedDuration(array());
         $this->assertEquals(false, $equals);
-    }
+    }*/
 }
