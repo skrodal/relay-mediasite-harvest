@@ -43,7 +43,7 @@ class DailyUserAgentImportDaily extends StatisticDateImporter implements UpdateI
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");
 
-		$this->updateDateInMongoDb($date->getStartDate());
+		$this->updateDateInMongoDb($date->getDateForDatabase());
 	}
 
 	public function log($startDate, $endDate)

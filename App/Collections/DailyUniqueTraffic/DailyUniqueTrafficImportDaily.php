@@ -42,7 +42,7 @@ class DailyUniqueTrafficImportDaily extends StatisticDateImporter implements Upd
 		$this->LogInfo("Found {$this->numberFound} results");
 		$this->LogInfo("Inserted {$this->numberInserted} results");
 
-		$this->updateDateInMongoDb($date->getStartDate());
+		$this->updateDateInMongoDb($date->getDateForDatabase());
 	}
 
 	public function run($startDate, $endDate, $datePeriod) {
