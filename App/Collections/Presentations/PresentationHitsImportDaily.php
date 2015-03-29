@@ -39,7 +39,7 @@ class PresentationHitsImportDaily extends PresentationHitsImport  implements Upd
 			$this->logAndResetCounters($dt);
 		}
 
-		$this->updateDateInMongoDb($date->getStartDate());
+		$this->updateDateInMongoDb($date->getDateForDatabase());
 	}
 
 	public function logStart($startDate, $endDate)
