@@ -44,7 +44,7 @@ class PresentationHitsImportDaily extends PresentationHitsImport  implements Upd
 
 	public function logStart($startDate, $endDate)
 	{
-		$this->LogInfo("Importing data for {$startDate->format('Y-m-d')}");
+		$this->LogInfo("Importing data for {$endDate->modify('- 1 day')->format('Y-m-d')}");
 	}
 
 	private function logAndResetCounters($dt)
