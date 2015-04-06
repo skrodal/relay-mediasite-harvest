@@ -7,7 +7,9 @@
     "monolog/monolog": "1.12.*@dev",
     "nesbot/Carbon": "*",
     "vlucas/phpdotenv": "1.1.0",
-    "geoip2/geoip2": "~0.7.0"
+    "geoip2/geoip2": "~0.7.0",
+    "lichtner/fluentpdo": "dev-master",
+    "simple-validator/simple-validator": "dev-master"
   },
   "require-dev": {
     "robmorgan/phinx": "0.4.*",
@@ -15,6 +17,9 @@
     "phpunit/phpunit": "4.7.*@dev"
   },
   "autoload": {
+      "classmap": [
+        "database/seeds/"
+      ],
     "psr-4": {
       "Uninett\\": "App"
     }

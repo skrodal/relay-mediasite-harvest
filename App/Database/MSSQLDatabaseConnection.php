@@ -47,6 +47,21 @@ abstract class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterfa
 	}
 
 	public function insert($model){
+		$fields = $values = array();
 
+		foreach($model->attributes as $field => $value)
+		{
+			$fields[] = $field;
+			$values[] = $value;
+		}
+
+		$fields = implode(",", $fields);
+		$values = implode(",", $values);
+
+		$statement = "INSERT INTO {$model->TABLE_NAME} {$fields} VALUES {$values}";
+
+		if($this->query($statement)) return true;
+
+		return false;
 	}
 }

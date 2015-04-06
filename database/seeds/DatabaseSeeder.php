@@ -2,20 +2,36 @@
 class DatabaseSeeder{
 
 	protected $seeders = array(
-		'TblUsersTableSeeder'
+		'TblUserTableSeeder'
 	);
 
 	protected $tables = array(
 		'tblUser'
 	);
 
-	public function seed(){
+	public function truncate()
+	{
+		$db = new \Uninett\Database\EcampusSQLConnection2();
 
-		foreach($this->tables as $table)
-			$table->truncate();
+		/*	$db->connection->getPdo()->exec("SET FOREIGN_KEY_CHECKS = 0;");*/
+		/*	$db->connection->getPdo()->exec("SET FOREIGN_KEY_CHECKS = 1;");*/
 
-		foreach($this->seeders as $seed)
-			$seed->run();
+		$db->disableForeignkeyChecks();
+
+		foreach($this->tables as $table) {
+			$db->connection->getPdo()->exec("TRUNCATE TABLE {$table}");
+		}
+
+		$db->enableForeignkeyChecks();
 	}
 
+	public function seed()
+	{
+		/* @var $seed Seeder */
+		foreach($this->seeders as $seeder)
+		{
+			$seed = new ReflectionClass($seeder);
+			$seed->run();
+		}
+	}
 }

@@ -19,7 +19,7 @@ sqlsrv_configure ( "LogSeverity" , 1 ); //SQLSRV_LOG_SEVERITY_ERROR*/
  *
  * Source http://forum.symfony-project.org/viewtopic.php?t=9958&p=40272
  */
-mssql_min_error_severity(16);
+/*mssql_min_error_severity(16);*/
 //TODO: Experimental!
 ini_set('memory_limit', '1536M');
 ini_set('mssql.timeout', 60 * 10);

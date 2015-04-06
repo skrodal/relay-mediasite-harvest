@@ -1,20 +1,27 @@
 <?php namespace Uninett\Models\Ecampussql; 
 
-class TblUser {
+class TblUser extends Model {
 
-	const TABLE_NAME = "tblUser";
+	public static $table = "tblUser";
 
-	public $attributes = [];
-
-	/*public $id;
-	public $userName;
-	public $userEmail;
-	public $userDisplayName;
-	public $createdOn;*/
-
-
-	public function setAttributes($attributes) {
-		$this->attributes = $attributes;
-	}
+	public static $rules = array(
+		'userId' => array(
+			'required',
+			'integer',
+		),
+		'userName' => array(
+			'required'
+		),
+		'userEmail' => array(
+			'required',
+			'email'
+		),
+		'userDisplayName' => array(
+			'required'
+		),
+		'createdOn' => array(
+			'required'
+		),
+	);
 
 }

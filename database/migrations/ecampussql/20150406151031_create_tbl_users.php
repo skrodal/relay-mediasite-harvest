@@ -30,7 +30,8 @@ class CreateTblUsers extends AbstractMigration
 		    ->addColumn('userEmail', 'string')
 		    ->addColumn('userDisplayName', 'string')
 		    ->addColumn('createdOn', 'datetime')
-
+		    ->addIndex(array('userEmail'), array('unique' => true))
+		    ->addIndex(array('userName'), array('unique' => true))
 		    ->create();
     }
 
@@ -39,6 +40,6 @@ class CreateTblUsers extends AbstractMigration
      */
     public function down()
     {
-	    $this->table($this->tableName)->drop();
+	    $this->dropTable($this->tableName);
     }
 }
