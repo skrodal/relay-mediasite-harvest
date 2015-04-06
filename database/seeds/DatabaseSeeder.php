@@ -4,11 +4,13 @@ use Uninett\Core\Seeders\Seeder;
 class DatabaseSeeder {
 
 	protected $seeders = array(
-		'TblUserTableSeeder'
+		'TblUserTableSeeder',
+		'TblFileTableSeeder'
 	);
 
 	protected $tables = array(
-		'tblUser'
+		'tblUser',
+		'tblFile'
 	);
 
 	public function truncate()
