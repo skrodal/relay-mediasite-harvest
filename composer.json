@@ -18,7 +18,8 @@
   },
   "autoload": {
       "classmap": [
-        "database/seeds/"
+        "database/seeds/",
+        "database/seeds/ecampus/"
       ],
     "psr-4": {
       "Uninett\\": "App"

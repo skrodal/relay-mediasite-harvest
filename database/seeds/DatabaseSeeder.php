@@ -1,5 +1,7 @@
-<?php 
-class DatabaseSeeder{
+<?php
+use Uninett\Core\Seeders\Seeder;
+
+class DatabaseSeeder {
 
 	protected $seeders = array(
 		'TblUserTableSeeder'
@@ -12,9 +14,6 @@ class DatabaseSeeder{
 	public function truncate()
 	{
 		$db = new \Uninett\Database\EcampusSQLConnection2();
-
-		/*	$db->connection->getPdo()->exec("SET FOREIGN_KEY_CHECKS = 0;");*/
-		/*	$db->connection->getPdo()->exec("SET FOREIGN_KEY_CHECKS = 1;");*/
 
 		$db->disableForeignkeyChecks();
 
