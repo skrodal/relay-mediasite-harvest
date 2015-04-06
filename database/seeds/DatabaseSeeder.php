@@ -31,8 +31,9 @@ class DatabaseSeeder {
 		/* @var $seed Seeder */
 		foreach($this->seeders as $seeder)
 		{
-			$seed = new ReflectionClass($seeder);
+			$seed = new $seeder();
 			$seed->run();
+
 		}
 	}
 }

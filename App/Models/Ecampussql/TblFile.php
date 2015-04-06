@@ -9,10 +9,10 @@ class TblFile extends Model {
 			'required',
 			'integer',
 		),
-		'fileId' => array(
+/*		'fileId' => array(
 			'required',
 			'integer',
-		),
+		),*/
 		'filePath' => array(
 			'required'
 		),

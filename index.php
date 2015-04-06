@@ -96,11 +96,12 @@ if (defined('STDIN') && isset($argv[1])) {
 	echo PHP_EOL . "End of " . $argv[1] . PHP_EOL;
 }
 
-/*$a = new DatabaseSeeder();
+$a = new DatabaseSeeder();
+$a->truncate();
 $a->seed();
-$a->truncate();*/
 
 
 
-$b = new TblFileTableSeeder();
-$b->run();
+
+/*$b = new TblFileTableSeeder();
+$b->run();*/

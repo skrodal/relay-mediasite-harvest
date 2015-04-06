@@ -25,7 +25,9 @@ class CreatetblFile extends AbstractMigration
      */
 	public function up()
 	{
-		$table = $this->table($this->tableName, array('primary_key' => array('id' => 'filePresentation_presId'), 'id' => array('filePresentation_presId') ));
+
+		//array('id' => false, 'primary_key' => array('user_id', 'follower_id')));
+		$table = $this->table($this->tableName);
 
 		$table
 			->addColumn('filePresentation_presId', 'integer')
@@ -33,6 +35,15 @@ class CreatetblFile extends AbstractMigration
 			->addColumn('filePath', 'string')
 			->addColumn('createdOn', 'datetime')
 			->create();
+
+/*		$table = $this->table($this->tableName);
+
+		$table
+			->addColumn('filePresentation_presId', 'integer')
+			->addColumn('fileId', 'integer')
+			->addColumn('filePath', 'string')
+			->addColumn('createdOn', 'datetime')
+			->create();*/
 	}
 
 	/**
