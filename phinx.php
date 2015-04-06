@@ -4,7 +4,7 @@ Dotenv::load(__DIR__);
 
 return array(
 	"paths" => array(
-		"migrations" => "migrations"
+		"migrations" => "database/migrations"
 	),
 	"environments" => array(
 		"default_migration_table" => "phinxlog",

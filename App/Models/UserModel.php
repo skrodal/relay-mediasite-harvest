@@ -11,6 +11,9 @@ use Uninett\Schemas\UsersSchema;
 class UserModel implements JsonSerializable
 {
 
+	public function create(){
+
+	}
 	/**
 	 * @var string
 	 */

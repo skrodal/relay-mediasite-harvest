@@ -1,6 +1,6 @@
 <?php
 
-
+echo __DIR__;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Run\RunMediasite;
 use Uninett\Run\RunRelayAll;
@@ -95,3 +95,5 @@ if (defined('STDIN') && isset($argv[1])) {
 	}
 	echo PHP_EOL . "End of " . $argv[1] . PHP_EOL;
 }
+
+

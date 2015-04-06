@@ -45,4 +45,8 @@ abstract class MSSQLDatabaseConnection implements MSSQLDatabaseConnectionInterfa
 
 		return $result;
 	}
+
+	public function insert($model){
+
+	}
 }
