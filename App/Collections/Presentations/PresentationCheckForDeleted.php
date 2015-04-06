@@ -42,8 +42,19 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface
 			    $pathOnDisk = $this->convertToLocalPath($shortPath);
 
 			    if($this->onePresentationFileDoesNotExist($pathOnDisk)) {
-				    $this->changeDeletedAttribute($criteria, $pathOnDisk);
-				    $this->LogInfo("Presentation at {$pathOnDisk} with id {$id} is marked as deleted");
+
+				    //IF one out of four files are deleted, the whole presentation is marked as deleted
+				    $this->changeDeletedAttribute(array(
+					    PresentationSchema::PRESENTATION_ID => $id,
+					    PresentationSchema::DELETED => 0
+				    ), $pathOnDisk);
+
+
+				    //Change criteria to be the path
+				    /*$this->changeDeletedAttribute($criteria, $pathOnDisk);*/
+
+
+				    $this->LogInfo("{$pathOnDisk} with id {$id} is marked as deleted");
 			    }
 		    }
 	    }

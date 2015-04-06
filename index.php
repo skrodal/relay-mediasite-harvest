@@ -26,6 +26,10 @@ if (defined('STDIN') && isset($argv[1])) {
 			$run = new RunMediasite();
 			$run->run();
 			break;
+		case "pdeleted":
+			$pcd = new \Uninett\Collections\Presentations\PresentationCheckForDeleted();
+			$pcd->update();
+			break;
 		case "reqa":
 			$run = new \Uninett\Collections\RequestPerHour\RequestPerHourImportAll();
 			$run->update();
