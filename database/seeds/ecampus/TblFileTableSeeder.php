@@ -8,7 +8,6 @@ class TblFileTableSeeder implements Seeder{
 
 		$db = new \Uninett\Database\EcampusSQLConnection2();
 
-
 		foreach (range(1, 3) as $fileID)
 		{
 			$id = $fileID;
@@ -17,11 +16,14 @@ class TblFileTableSeeder implements Seeder{
 				$file = (new \Uninett\Models\Ecampussql\TblFile())->withAttributes([
 					'filePresentation_presId'  => $filePresentation_presId,
 					'fileId'    => $id,
-					'filePath' => 'Jadda',
+					'filePath' => $faker->text(10),
 					'createdOn' => \Carbon\Carbon::now(),
 				]);
 
 				$db->insert($file);
+
+
+				$xml = (new \Uninett\Core\XmlCreator())->createFile($file);
 			}
 		}
 	}

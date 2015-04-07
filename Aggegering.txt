@@ -81,3 +81,30 @@ db.lastupdates.update({ _id : new ObjectId("54e60cc9c316825f0a8b4567") }, {$set 
 db.lastupdates.update({ _id : new ObjectId("54e60cc9c316825f0a8b4567") }, {$set : {"requestsPerHourLastImportedDate" : new Date('2015-03-13') } })
 db.lastupdates.update({ _id : new ObjectId("54e60cc9c316825f0a8b4567") }, {$set : {"dailyUniqueTrafficLastImportedDate" : new Date('2015-03-13') } })
 db.lastupdates.update({ _id : new ObjectId("54e60cc9c316825f0a8b4567") }, {$set : {"dailyUserAgentsLastImportedDate" : new Date('2015-03-13') } })
+
+
+
+
+
+
+
+
+#PHINX
+##Migrations
+
+New
+```
+vendor/bin/phinx create CreateTableTblUser
+
+```
+Run
+
+```
+vendor/bin/phinx migrate -c eccampussql.php
+```
+
+Rollback
+
+```
+vendor/bin/phinx rollback -t 0 -c eccampussql.php
+```
