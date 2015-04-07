@@ -8,14 +8,18 @@ class TblFileTableSeeder implements Seeder{
 	{
 		$db = new \Uninett\Database\EcampusSQLConnection2();
 
-		$files = [];
+
 
 		foreach (range(1, 6) as $filePresentation_presId) {
+
+			$files = [];
 
 			$presentationName = substr(md5(rand()), 0, 7);
 
 			$someMonth= \Carbon\Carbon::now()->format('m');
+
 			$someDay  = \Carbon\Carbon::now()->format('d');
+
 			$date =  $someMonth . "." . $someDay;
 
 			$dir = substr(md5(rand()), 0, 7);
@@ -34,7 +38,6 @@ class TblFileTableSeeder implements Seeder{
 
 			(new XmlPresentation)->create($files);
 
-			$files = [];
 		}
 
 	}
