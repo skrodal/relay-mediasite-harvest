@@ -1,17 +1,17 @@
 <?php
 use Uninett\Core\Seeders\Seeder;
 use Uninett\Core\XmlPresentation;
+use Uninett\Models\Ecampussql\TblFile;
 
 class TblFileTableSeeder implements Seeder{
 	public function run()
 	{
-		$faker = Faker\Factory::create();
-
 		$db = new \Uninett\Database\EcampusSQLConnection2();
 
 		$files = [];
-		foreach (range(1, 1) as $filePresentation_presId)
-		{
+
+		foreach (range(1, 6) as $filePresentation_presId) {
+
 			$presentationName = substr(md5(rand()), 0, 7);
 
 			$someMonth= \Carbon\Carbon::now()->format('m');
@@ -20,8 +20,7 @@ class TblFileTableSeeder implements Seeder{
 
 			$dir = substr(md5(rand()), 0, 7);
 
-			foreach (range(1, 4) as $fileID)
-			{
+			foreach (range(1, 4) as $fileID) {
 				$file = [
 					'filePresentation_presId'  => $filePresentation_presId,
 					'fileId'    => $fileID,
@@ -30,10 +29,13 @@ class TblFileTableSeeder implements Seeder{
 				];
 
 				$files[] = $file;
-				$db->insert((new \Uninett\Models\Ecampussql\TblFile())->withAttributes($file));
+				$db->insert((new TblFile)->withAttributes($file));
 			}
+
+			(new XmlPresentation)->create($files);
+
+			$files = [];
 		}
 
-		$xml = (new XmlPresentation())->create($files);
 	}
 }
