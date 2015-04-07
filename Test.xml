@@ -1,45 +1,44 @@
 <?xml version="1.0"?>
 <presentation relayVersion="4.4.1">
-  <title>a563665500d667994782e125780ef6ac</title>
-  <description>Excepturi voluptatem ex ut nisi qui soluta dignissimos qui. Omnis eum vitae animi facere illo. Et vel amet ut veniam ex placeat. Repellendus veniam sed ut facere suscipit.</description>
-  <date>2015-04-07 07:38:51</date>
-  <utcDate>2015-04-07 07:38:51</utcDate>
+  <title>f0d068ace2246290c75357e2c2574d38</title>
+  <description>Earum et rem odio et non. Impedit nam laudantium consequatur cupiditate. Aut non quis iusto et explicabo non eos optio. Libero corrupti consectetur hic.</description>
+  <date>2015-04-07 08:02:34</date>
+  <utcDate>2015-04-07 08:02:34</utcDate>
   <profile>PC | Nettbrett | Mobil | Lyd</profile>
-  <destinationUrl/>
-  <totalDuration/>
-  <trimmedDuration/>
-  <startTrimTime/>
+  <destinationUrl>http://example.com/relay/ansatt//f0d068ace2246290c75357e2c2574d38</destinationUrl>
+  <totalDuration>22979</totalDuration>
+  <trimmedDuration>590</trimmedDuration>
+  <startTrimTime>453</startTrimTime>
   <recordedBy>
-    <displayName/>
-    <email/>
+    <displayName>bb5b77e</displayName>
+    <email>bb5b77e@example.com</email>
   </recordedBy>
   <clientInfo>
-    <clientIP/>
-    <clientComputerName/>
+    <clientIP>188.115.191.3</clientIP>
+    <clientComputerName>doloremque</clientComputerName>
   </clientInfo>
   <serverInfo>
-    <serverHostname/>
-    <encodingPreset/>
-    <timeToEncode/>
-    <timeInQueue/>
+    <serverHostname>http://doesnotmatter.example.com</serverHostname>
+    <encodingPreset>MP4 with Smart Player (1080p)</encodingPreset>
+    <timeToEncode>163</timeToEncode>
+    <timeInQueue>923</timeInQueue>
   </serverInfo>
   <sourceRecording>
-    <resolution/>
+    <resolution>1920x1080</resolution>
     <fileList>
-      <file/>
-      <file/>
-      <file/>
+      <file clientPath="excepturi" serverPath="ut" size="34788" sequence="0" resolution="0x0" duration="0"/>
+      <file clientPath="aut" serverPath="ad" size="59474" sequence="0" resolution="0x0" duration="0"/>
+      <file clientPath="beatae" serverPath="quisquam" size="40199" sequence="0" resolution="0x0" duration="0"/>
     </fileList>
   </sourceRecording>
-  <startTrimTime/>
-  <startTrimTime/>
-  <startTrimTime/>
-  <startTrimTime/>
-  <startTrimTime/>
   <encodeFiles>
     <fileList>
-      <file/>
+      <file clientPath="asperiores" serverPath="asperiores" size="43239" sequence="0" resolution="0x0" duration="0"/>
     </fileList>
   </encodeFiles>
-  <outputFiles/>
+  <outputFiles>
+    <fileList>
+      <file clientPath="accusamus" serverPath="illum" size="4039" sequence="0" resolution="0x0" duration="0"/>
+    </fileList>
+  </outputFiles>
 </presentation>

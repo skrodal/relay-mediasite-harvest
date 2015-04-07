@@ -1,5 +1,6 @@
 <?php
 use Uninett\Core\Seeders\Seeder;
+use Uninett\Core\XmlPresentation;
 
 class TblFileTableSeeder implements Seeder{
 	public function run()
@@ -8,23 +9,25 @@ class TblFileTableSeeder implements Seeder{
 
 		$db = new \Uninett\Database\EcampusSQLConnection2();
 
-		foreach (range(1, 3) as $fileID)
+		$files = [];
+		foreach (range(1, 1) as $filePresentation_presId)
 		{
-			$id = $fileID;
-			foreach (range(1, 4) as $filePresentation_presId)
+			$presentationName = substr(md5(rand()), 0, 7);
+
+			foreach (range(1, 4) as $fileID)
 			{
-				$file = (new \Uninett\Models\Ecampussql\TblFile())->withAttributes([
+				$file = [
 					'filePresentation_presId'  => $filePresentation_presId,
-					'fileId'    => $id,
-					'filePath' => $faker->text(10),
+					'fileId'    => $fileID,
+					'filePath' => getenv('APP_PATH') . '/storage/xml/' . 'ansatt/04.04/' . substr(md5(rand()), 0, 7) . '/' . $presentationName . '_' . $fileID .'.xml',
 					'createdOn' => \Carbon\Carbon::now(),
-				]);
+				];
 
-				$db->insert($file);
-
-
-				$xml = (new \Uninett\Core\XmlCreator())->createFile($file);
+				$files[] = $file;
+				$db->insert((new \Uninett\Models\Ecampussql\TblFile())->withAttributes($file));
 			}
 		}
+
+		$xml = (new XmlPresentation())->create($files);
 	}
 }
