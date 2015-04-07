@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<presentation relayVersion="4.4.1">
+  <title>12c0cf20f4039aa500062fa86478dde0</title>
+  <description>Ut quasi distinctio iste dolores similique. Libero rerum voluptatem incidunt nemo quas numquam. Beatae quo voluptas error consequatur. Dolor deleniti non architecto voluptas eaque consequuntur.</description>
+  <date>2015-04-07 09:56:44</date>
+  <utcDate>2015-04-07 09:56:44</utcDate>
+  <profile>PC | Nettbrett | Mobil | Lyd</profile>
+  <destinationUrl>http://example.com/relay/ansatt//12c0cf20f4039aa500062fa86478dde0</destinationUrl>
+  <totalDuration>2843</totalDuration>
+  <trimmedDuration>190</trimmedDuration>
+  <startTrimTime>976</startTrimTime>
+  <recordedBy>
+    <displayName>2648420</displayName>
+    <email>2648420@example.com</email>
+  </recordedBy>
+  <clientInfo>
+    <clientIP>179.120.173.154</clientIP>
+    <clientComputerName>qui</clientComputerName>
+  </clientInfo>
+  <serverInfo>
+    <serverHostname>http://doesnotmatter.example.com</serverHostname>
+    <encodingPreset>MP3 (Audio Only)</encodingPreset>
+    <timeToEncode>717</timeToEncode>
+    <timeInQueue>471</timeInQueue>
+  </serverInfo>
+  <sourceRecording>
+    <resolution>-1x-1</resolution>
+    <fileList>
+      <file clientPath="incidunt" serverPath="consectetur" size="42485" sequence="0" resolution="0x0" duration="0"/>
+      <file clientPath="asperiores" serverPath="inventore" size="99720" sequence="0" resolution="0x0" duration="0"/>
+      <file clientPath="praesentium" serverPath="blanditiis" size="85603" sequence="0" resolution="0x0" duration="0"/>
+    </fileList>
+  </sourceRecording>
+  <encodeFiles>
+    <fileList>
+      <file clientPath="ea" serverPath="facilis" size="60085" sequence="0" resolution="0x0" duration="0"/>
+    </fileList>
+  </encodeFiles>
+  <outputFiles>
+    <fileList>
+      <file clientPath="inventore" serverPath="quod" size="19181" sequence="0" resolution="0x0" duration="0"/>
+    </fileList>
+  </outputFiles>
+</presentation>

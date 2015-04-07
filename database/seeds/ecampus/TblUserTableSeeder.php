@@ -8,7 +8,7 @@ class TblUserTableSeeder implements Seeder{
 
 		$db = new \Uninett\Database\EcampusSQLConnection2();
 
-		foreach (range(0, 12) as $index)
+		foreach (range(1, 5) as $index)
 		{
 			$userName = $faker->userName . $index;
 

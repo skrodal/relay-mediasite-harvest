@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<presentation relayVersion="4.4.1">
+  <title>12c0cf20f4039aa500062fa86478dde0</title>
+  <description>Voluptates aut aut nisi reiciendis est. Maxime nihil ex officiis amet eius omnis quo rerum. In iure iusto aliquid.</description>
+  <date>2015-04-07 09:56:44</date>
+  <utcDate>2015-04-07 09:56:44</utcDate>
+  <profile>PC | Nettbrett | Mobil | Lyd</profile>
+  <destinationUrl>http://example.com/relay/ansatt//12c0cf20f4039aa500062fa86478dde0</destinationUrl>
+  <totalDuration>2843</totalDuration>
+  <trimmedDuration>4990</trimmedDuration>
+  <startTrimTime>909</startTrimTime>
+  <recordedBy>
+    <displayName>2648420</displayName>
+    <email>2648420@example.com</email>
+  </recordedBy>
+  <clientInfo>
+    <clientIP>179.120.173.154</clientIP>
+    <clientComputerName>qui</clientComputerName>
+  </clientInfo>
+  <serverInfo>
+    <serverHostname>http://doesnotmatter.example.com</serverHostname>
+    <encodingPreset>MP4 with Smart Player (1080p)</encodingPreset>
+    <timeToEncode>250</timeToEncode>
+    <timeInQueue>923</timeInQueue>
+  </serverInfo>
+  <sourceRecording>
+    <resolution>1920x1080</resolution>
+    <fileList>
+      <file clientPath="ipsum" serverPath="commodi" size="16712" sequence="0" resolution="0x0" duration="0"/>
+      <file clientPath="est" serverPath="quia" size="40897" sequence="0" resolution="0x0" duration="0"/>
+      <file clientPath="quam" serverPath="voluptas" size="44291" sequence="0" resolution="0x0" duration="0"/>
+    </fileList>
+  </sourceRecording>
+  <encodeFiles>
+    <fileList>
+      <file clientPath="deleniti" serverPath="voluptatem" size="96175" sequence="0" resolution="0x0" duration="0"/>
+    </fileList>
+  </encodeFiles>
+  <outputFiles>
+    <fileList>
+      <file clientPath="dolor" serverPath="aut" size="96791" sequence="0" resolution="0x0" duration="0"/>
+    </fileList>
+  </outputFiles>
+</presentation>
