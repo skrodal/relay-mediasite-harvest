@@ -31,8 +31,6 @@ class DirectoryTest extends UninettTestCase {
 	public function it_can_blabla()
 	{
 
-
-
 	}
 
 }
