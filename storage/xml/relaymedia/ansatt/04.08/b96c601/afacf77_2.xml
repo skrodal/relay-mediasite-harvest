@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<presentation relayVersion="4.4.1">
+  <title>abd08bd807</title>
+  <description>Architecto ut eius ab et rerum odio. Libero aspernatur tempore voluptas minima voluptatem quas.</description>
+  <date>2015-04-08 08:59:52</date>
+  <utcDate>2015-04-08 08:59:52</utcDate>
+  <profile>PC | Nettbrett | Mobil | Lyd</profile>
+  <destinationUrl>http://example.com/relay/ansatt//abd08bd807</destinationUrl>
+  <totalDuration>17753</totalDuration>
+  <trimmedDuration>4369</trimmedDuration>
+  <startTrimTime>278</startTrimTime>
+  <recordedBy>
+    <displayName>0e133eb</displayName>
+    <email>0e133eb0</email>
+  </recordedBy>
+  <clientInfo>
+    <clientIP>100.131.236.29</clientIP>
+    <clientComputerName>est</clientComputerName>
+  </clientInfo>
+  <serverInfo>
+    <serverHostname>http://doesnotmatter.example.com</serverHostname>
+    <encodingPreset>MP4 with Smart Player (480p)</encodingPreset>
+    <timeToEncode>110</timeToEncode>
+    <timeInQueue>967</timeInQueue>
+  </serverInfo>
+  <sourceRecording>
+    <resolution>1152x720</resolution>
+    <fileList>
+      <file clientPath="culpa" serverPath="rem" size="11478" sequence="0" resolution="0x0" duration="0"/>
+      <file clientPath="dolores" serverPath="perferendis" size="30959" sequence="0" resolution="0x0" duration="0"/>
+      <file clientPath="sit" serverPath="labore" size="18667" sequence="0" resolution="0x0" duration="0"/>
+    </fileList>
+  </sourceRecording>
+  <encodeFiles>
+    <fileList>
+      <file clientPath="qui" serverPath="ut" size="48261" sequence="0" resolution="0x0" duration="0"/>
+    </fileList>
+  </encodeFiles>
+  <outputFiles>
+    <fileList>
+      <file clientPath="et" serverPath="vitae" size="38367" sequence="0" resolution="0x0" duration="0"/>
+    </fileList>
+  </outputFiles>
+</presentation>

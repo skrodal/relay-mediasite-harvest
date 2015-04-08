@@ -8,10 +8,7 @@ class TblFileTableSeeder implements Seeder{
 	{
 		$db = new \Uninett\Database\EcampusSQLConnection2();
 
-
-
-		foreach (range(1, 6) as $filePresentation_presId) {
-
+		foreach (range(1, 2) as $filePresentation_presId) {
 			$files = [];
 
 			$presentationName = substr(md5(rand()), 0, 7);
@@ -33,12 +30,10 @@ class TblFileTableSeeder implements Seeder{
 				];
 
 				$files[] = $file;
+
 				$db->insert((new TblFile)->withAttributes($file));
 			}
-
 			(new XmlPresentation)->create($files);
-
 		}
-
 	}
 }

@@ -14,12 +14,13 @@
   "require-dev": {
     "robmorgan/phinx": "0.4.*",
     "fzaninotto/faker": "1.5.*@dev",
-    "phpunit/phpunit": "4.7.*@dev"
+    "phpunit/phpunit": "4.6.*"
   },
   "autoload": {
       "classmap": [
         "database/seeds/",
-        "database/seeds/ecampus/"
+        "database/seeds/ecampus/",
+        "tests/"
       ],
     "psr-4": {
       "Uninett\\": "App"

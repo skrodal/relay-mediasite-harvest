@@ -2,7 +2,6 @@
 use Uninett\Core\Seeders\Seeder;
 
 class DatabaseSeeder {
-
 	protected $seeders = array(
 		'TblUserTableSeeder',
 		'TblFileTableSeeder'
@@ -33,7 +32,6 @@ class DatabaseSeeder {
 		{
 			$seed = new $seeder();
 			$seed->run();
-
 		}
 	}
 }

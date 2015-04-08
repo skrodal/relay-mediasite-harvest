@@ -44,6 +44,24 @@ class XmlPresentation {
 			$this->createPresentation($file);
 	}
 
+	private function generateUsername($length = 7)
+	{
+		return substr(md5(rand()), 0, $length);
+	}
+
+
+	private function generateOrganisation() {
+		$organisations = array(
+			'example.com',
+			'example.org',
+			'example.net'
+		);
+		return array_rand($organisations);
+	}
+	private function generatePresentationTitle($length = 10){
+		return substr(md5(rand()), 0, $length);
+	}
+
 	/**
 	 * $files contain the same as the database, mainly the path and createdOn is used here
 	 *
@@ -53,9 +71,11 @@ class XmlPresentation {
 	private function createPresentation($files) {
 
 		$destinationUrl = 'http://example.com/relay/ansatt/';
-		$username = substr(md5(rand()), 0, 7);
-		$email = $username . '@example.com';
-		$presentationTitle = md5(rand());
+
+		$username = $this->generateUsername();
+		$email = $username . $this->generateOrganisation();
+		$presentationTitle = $this->generatePresentationTitle();
+
 		$totalDuration  = $this->faker->numberBetween(1,25000);
 
 		$clientIp = $this->faker->ipv4;
@@ -150,19 +170,27 @@ class XmlPresentation {
 
 			$xmlDocument = $this->preserveWhitespace($presentation);
 
-			$savePath = $this->setupDirectory($file['filePath']);
+		/*	$savePath = $this->setupDirectory($file['filePath']);*/
+			/*$savePath = $this->directory->setupDirectory(dirname($file['filePath']) . '/');*/
+			$savePath = $this->directory->setupDirectory($file['filePath']);
 
 			$this->save($savePath. $fileName, $xmlDocument);
 		}
 		return true;
 	}
 
-	private function setupDirectory($path){
+	private function setupDirectory($path)
+	{
+		return $this->directory->setupDirectory(dirname($path) . '/');
 
- 		return $this->directory->setupDirectory(dirname($path) . '/');
+	/*	$a = rtrim(dirname($path)) . '/';  //$this->directory->setupDirectory($path, false);
+
+			echo $a . PHP_EOL;
+ 		return $a;*/
 	}
 
-	private function save($fullPath, $xmlDocument) {
+	private function save($fullPath, $xmlDocument)
+	{
 		file_put_contents($fullPath, $xmlDocument);
 	}
 
