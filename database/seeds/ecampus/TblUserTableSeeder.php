@@ -1,17 +1,35 @@
 <?php
 use Uninett\Core\Seeders\Seeder;
+use Uninett\Database\DatabaseConnection;
 
+/**
+ * Class TblUserTableSeeder
+ */
 class TblUserTableSeeder implements Seeder{
+
+	/**
+	 * @var DatabaseConnection
+	 */
+	private $db;
+
+	/**
+	 * @param $db
+	 */
+	function __construct(DatabaseConnection $db)
+	{
+		$this->db = $db;
+	}
+
+
+	/**
+	 * Run the seed
+	 */
 	public function run()
 	{
 		$faker = Faker\Factory::create();
 
-		$db = new \Uninett\Database\EcampusSQLConnection2();
-
 		foreach (range(1, 5) as $index)
 		{
-			$userName = $faker->userName . $index;
-
 			$email =  $faker->safeEmail;
 
 			$emailArray = explode('@', $email);
@@ -24,7 +42,7 @@ class TblUserTableSeeder implements Seeder{
 				'createdOn'       => \Carbon\Carbon::now(),
 			]);
 
-			$db->insert($user);
+			$this->db->insert($user);
 		}
 	}
 }

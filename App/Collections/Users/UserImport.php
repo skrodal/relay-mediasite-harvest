@@ -1,118 +1,127 @@
 <?php namespace Uninett\Collections\Users;
 // Prerequisites: None. This class manages user finding from a source database and inserting to mongodb
+
 use Uninett\Collections\Collection;
 use Uninett\Collections\LastUpdates\LastUpdates;
-use Uninett\Database\EcampusSQLConnection;
+use Uninett\Database\DatabaseConnection;
 use Uninett\Database\MongoConnection;
-use Uninett\Models\UserModel;
+use Uninett\Models\Ecampussql\TblUser;
+use Uninett\Models\UserModel2;
 use Uninett\Schemas\UserMediasiteSchema;
 use Uninett\Schemas\UsersSchema;
 
 class UserImport extends Collection
 {
-    private $latestUserId =  0;
-    private $mongo;
-    private $insert;
+	private $latestUserId =  0;
+	private $mongo;
 
-    private $usersInserted = 0;
+	private $usersInserted = 0;
 
-    public function __construct()
-    {
-        parent::__construct(UsersSchema::COLLECTION_NAME);
+	public function __construct()
+	{
+		parent::__construct(UsersSchema::COLLECTION_NAME);
 
-        $this->mongo = new MongoConnection(UsersSchema::COLLECTION_NAME);
+		$this->mongo = new MongoConnection(UsersSchema::COLLECTION_NAME);
+	}
 
-        $this->insert = new UserInsert(new MongoConnection(UsersSchema::COLLECTION_NAME));
-    }
+	public function update()
+	{
+		$this->latestUserId = $this->lastInsertedUserIdInMongoDb();
 
-    public function update()
-    {
-        $this->latestUserId = $this->lastInsertedUserIdInMongoDb();
+		$connection = new DatabaseConnection('ecampussql');
 
-        $newUsersInDatabase = new UserFind($this->latestUserId, new EcampusSQLConnection);
+		$query = $connection->connection->from('tblUser')->where('userId > ?', $this->latestUserId)->select('userName, userEmail, userDisplayName, createdOn')->fetchAll();
 
-        $query = $newUsersInDatabase->findNewUsersInDatabase();
+		if ($this->queryContainsNewUsers($query)) {
+			foreach ($query as $row) {
+				$criteria = array(UsersSchema::USERNAME => $row[UserMediasiteSchema::USERNAME]);
 
-        $this->LogInfo("Found " . mssql_num_rows($query) . " new users");
+				if ($this->foundNewUser($criteria)) {
+					$this->LogInfo("Found new user {$row[UserMediasiteSchema::USERNAME]}");
 
-        if ($this->queryContainsNewUsers($query))
-        {
-            while ($result = mssql_fetch_assoc($query))
-            {
-                $criteria = array(UsersSchema::USERNAME => $result[UserMediasiteSchema::USERNAME]);
+					//See if the recieved results with potential user data is valid according to its rules
+					if($this->validate($row, TblUser::$rules))
+					{
+						$user = $this->createNewUser($row);
+						$this->insertUserToDb($user, $row[UserMediasiteSchema::USER_ID]);
+					}
+				} else
+					$this->LogInfo("Tried to insert user {$row[UserMediasiteSchema::USERNAME]}, but user is already in database");
+			}
+		}
 
-                if ($this->foundNewUser($criteria))
-                {
-                    $this->LogInfo("Found new user " . $result[UserMediasiteSchema::USERNAME]);
+		if($this->usersInserted > 0)
+		{
+			$this->updateLargestInsertedUserIdInMongoDb();
 
-                    $user = (new UserCreate)->create($result);
+			$this->LogInfo("Inserted {$this->usersInserted} new users");
+		}
+		else
+			$this->LogInfo("Did not find new users! :(");
+	}
 
-                    if (is_null($user))
-                    {
-                        $this->LogError("Could not create the user with username:"
-                            . $result[UserMediasiteSchema::USERNAME]);
-                        continue;
-                    }
+	private function createNewUser($data)
+	{
+		return (new UserModel2)->withAttributes($data)->andMerge(['status' => 1, 'affiliation' => 'notSetYet']);
+	}
 
-                    $this->insertUserToDb($user, $result[UserMediasiteSchema::USER_ID]);
+	private function validate($data, $model)
+	{
+		$validation_result = \SimpleValidator\Validator::validate($data, $model);
 
-                } else
-                    $this->LogInfo("Tried to insert user: " .
-                $result[UserMediasiteSchema::USERNAME] . ", but user is already in database");
-            }
-        }
+		if ($validation_result->isSuccess() == true) {
+			return true;
 
-        if($this->usersInserted > 0)
-        {
-	        $this->updateLargestInsertedUserIdInMongoDb();
+		} else {
+			//TODO: Throw exception?
+			var_dump($validation_result->getErrors());
+			return false;
+		}
+	}
 
-	        $this->LogInfo("Inserted " . $this->usersInserted . " new users");
-        }
-    }
+	private function queryContainsNewUsers($query)
+	{
+		if($query == false)
+			return false;
 
-    private function queryContainsNewUsers($query)
-    {
-        if($query == false)
-            return false;
+		return count($query) > 0;
+	}
 
-        return (mssql_num_rows($query) > 0) ? true : false;
-    }
+	private function foundNewUser($criteria)
+	{
+		$cursor = $this->mongo->findOne($criteria);
 
-    private function foundNewUser($criteria)
-    {
-        $cursor = $this->mongo->findOne($criteria);
+		return empty($cursor) ? true : false;
+	}
 
-        return empty($cursor) ? true : false;
-    }
+	private function insertUserToDb(UserModel2 $user, $userId)
+	{
+		$success = $this->mongo->save($user->attributes);
 
-    private function insertUserToDb(UserModel $user, $userId)
-    {
-        $success = $this->insert->insertUserToMongoDb($user);
+		if ($success) {
+			$this->keepLargestUserId($userId);
+			$this->usersInserted = $this->usersInserted + 1;
+		} else
+			$this->LogError("Something went wrong when inserting new user: " . $user->getUsername());
+	}
 
-        if ($success) {
-            $this->keepLargestUserId($userId);
-	        $this->usersInserted = $this->usersInserted + 1;
-        } else
-            $this->LogError("Something went wrong when inserting new user: " . $user->getUsername());
-    }
+	private function keepLargestUserId($newUserId)
+	{
+		if($newUserId > $this->latestUserId)
+			$this->latestUserId = $newUserId;
+	}
 
-    private function keepLargestUserId($newUserId)
-    {
-        if($newUserId > $this->latestUserId)
-            $this->latestUserId = $newUserId;
-    }
+	private function lastInsertedUserIdInMongoDb()
+	{
+		$lastUpdates = new LastUpdates;
+		return $lastUpdates->findUserId();
+	}
 
-    private function lastInsertedUserIdInMongoDb()
-    {
-	    $lastUpdates = new LastUpdates;
-	    return $lastUpdates->findUserId();
-    }
-
-    private function updateLargestInsertedUserIdInMongoDb()
-    {
-        $last = new LastUpdates();
-        $last->updateUserId($this->latestUserId);
-    }
+	private function updateLargestInsertedUserIdInMongoDb()
+	{
+		$last = new LastUpdates();
+		$last->updateUserId($this->latestUserId);
+	}
 }
 
 

@@ -1,13 +1,32 @@
 <?php
 use Uninett\Core\Seeders\Seeder;
 use Uninett\Core\XmlPresentation;
+use Uninett\Database\DatabaseConnection;
 use Uninett\Models\Ecampussql\TblFile;
 
+/**
+ * Class TblFileTableSeeder
+ */
 class TblFileTableSeeder implements Seeder{
+
+	/**
+	 * @var DatabaseConnection
+	 */
+	private $db;
+
+	/**
+	 * @param $db
+	 */
+	function __construct(DatabaseConnection $db)
+	{
+		$this->db = $db;
+	}
+
+	/**
+	 * Run the seed
+	 */
 	public function run()
 	{
-		$db = new \Uninett\Database\EcampusSQLConnection2();
-
 		foreach (range(1, 2) as $filePresentation_presId) {
 			$files = [];
 
@@ -31,7 +50,8 @@ class TblFileTableSeeder implements Seeder{
 
 				$files[] = $file;
 
-				$db->insert((new TblFile)->withAttributes($file));
+				$this->db->insert((new TblFile)->withAttributes($file));
+
 			}
 			(new XmlPresentation)->create($files);
 		}

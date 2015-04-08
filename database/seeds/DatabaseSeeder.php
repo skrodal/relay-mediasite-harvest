@@ -14,7 +14,7 @@ class DatabaseSeeder {
 
 	public function truncate()
 	{
-		$db = new \Uninett\Database\EcampusSQLConnection2();
+		$db = new \Uninett\Database\DatabaseConnection('ecampussql');
 
 		$db->disableForeignkeyChecks();
 
@@ -30,8 +30,12 @@ class DatabaseSeeder {
 		/* @var $seed Seeder */
 		foreach($this->seeders as $seeder)
 		{
-			$seed = new $seeder();
-			$seed->run();
+			$r = (new ReflectionClass($seeder))->newInstance(new \Uninett\Database\DatabaseConnection('ecampussql'));
+			$r->run();
+
+
+		/*	$seed = new $seeder();
+			$seed->run();*/
 		}
 	}
 }

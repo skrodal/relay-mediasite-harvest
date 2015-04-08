@@ -103,7 +103,7 @@ $a->seed();
 
 
 
-$import = new \Uninett\Collections\Users\UserImport2();
+$import = new \Uninett\Collections\Users\UserImport();
 $import->update();
 
 
