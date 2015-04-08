@@ -12,11 +12,15 @@ class TblUserTableSeeder implements Seeder{
 		{
 			$userName = $faker->userName . $index;
 
+			$email =  $faker->safeEmail;
+
+			$emailArray = explode('@', $email);
+
 			$user = (new \Uninett\Models\Ecampussql\TblUser())->withAttributes([
 				'userId'          => $index,
-				'userName'        => $userName,
-				'userEmail'       => $userName . $faker->safeEmail(),
-				'userDisplayName' => $userName,
+				'userName'        => $email,
+				'userEmail'       => $email,
+				'userDisplayName' => $emailArray[0],
 				'createdOn'       => \Carbon\Carbon::now(),
 			]);
 

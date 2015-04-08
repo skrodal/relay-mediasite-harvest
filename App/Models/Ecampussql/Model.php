@@ -7,5 +7,4 @@ abstract class Model {
 		$this->attributes = $attributes;
 		return $this;
 	}
-
 }

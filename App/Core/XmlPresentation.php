@@ -58,12 +58,13 @@ class XmlPresentation {
 		);
 		return array_rand($organisations);
 	}
+
 	private function generatePresentationTitle($length = 10){
 		return substr(md5(rand()), 0, $length);
 	}
 
 	/**
-	 * $files contain the same as the database, mainly the path and createdOn is used here
+	 * $files contains the same data as found in the database, but mainly the path and createdOn is used here
 	 *
 	 * @param $files
 	 * @return bool
@@ -170,8 +171,6 @@ class XmlPresentation {
 
 			$xmlDocument = $this->preserveWhitespace($presentation);
 
-		/*	$savePath = $this->setupDirectory($file['filePath']);*/
-			/*$savePath = $this->directory->setupDirectory(dirname($file['filePath']) . '/');*/
 			$savePath = $this->directory->setupDirectory($file['filePath']);
 
 			$this->save($savePath. $fileName, $xmlDocument);
@@ -179,22 +178,12 @@ class XmlPresentation {
 		return true;
 	}
 
-	private function setupDirectory($path)
-	{
-		return $this->directory->setupDirectory(dirname($path) . '/');
-
-	/*	$a = rtrim(dirname($path)) . '/';  //$this->directory->setupDirectory($path, false);
-
-			echo $a . PHP_EOL;
- 		return $a;*/
-	}
-
 	private function save($fullPath, $xmlDocument)
 	{
 		file_put_contents($fullPath, $xmlDocument);
 	}
 
-	private function preserveWhitespace(SimpleXMLElement $xml){
+	private function preserveWhitespace(SimpleXMLElement $xml) {
 		$dom = new DOMDocument('1.0');
 		$dom->preserveWhiteSpace = false;
 		$dom->formatOutput = true;

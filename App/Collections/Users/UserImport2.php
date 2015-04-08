@@ -1,14 +1,16 @@
 <?php namespace Uninett\Collections\Users;
 // Prerequisites: None. This class manages user finding from a source database and inserting to mongodb
+
 use Uninett\Collections\Collection;
 use Uninett\Collections\LastUpdates\LastUpdates;
-use Uninett\Database\EcampusSQLConnection;
+use Uninett\Database\EcampusSQLConnection2;
 use Uninett\Database\MongoConnection;
-use Uninett\Models\UserModel;
+use Uninett\Models\Ecampussql\TblUser;
+use Uninett\Models\UserModel2;
 use Uninett\Schemas\UserMediasiteSchema;
 use Uninett\Schemas\UsersSchema;
 
-class UserImport extends Collection
+class UserImport2 extends Collection
 {
     private $latestUserId =  0;
     private $mongo;
@@ -29,53 +31,62 @@ class UserImport extends Collection
     {
         $this->latestUserId = $this->lastInsertedUserIdInMongoDb();
 
-        $newUsersInDatabase = new UserFind($this->latestUserId, new EcampusSQLConnection);
+	    $connection = new EcampusSQLConnection2();
 
-        $query = $newUsersInDatabase->findNewUsersInDatabase();
+        $query = $connection->connection->from('tblUser')->where('userId > ?', $this->latestUserId)->select('userName, userEmail, userDisplayName, createdOn')->execute()->fetchAll();
 
-        $this->LogInfo("Found " . mssql_num_rows($query) . " new users");
+        if ($this->queryContainsNewUsers($query)) {
+	        foreach ($query as $row) {
+		        $criteria = array(UsersSchema::USERNAME => $row[UserMediasiteSchema::USERNAME]);
 
-        if ($this->queryContainsNewUsers($query))
-        {
-            while ($result = mssql_fetch_assoc($query))
-            {
-                $criteria = array(UsersSchema::USERNAME => $result[UserMediasiteSchema::USERNAME]);
-
-                if ($this->foundNewUser($criteria))
-                {
-                    $this->LogInfo("Found new user " . $result[UserMediasiteSchema::USERNAME]);
-
-                    $user = (new UserCreate)->create($result);
-
-                    if (is_null($user))
-                    {
-                        $this->LogError("Could not create the user with username:"
-                            . $result[UserMediasiteSchema::USERNAME]);
-                        continue;
-                    }
-
-                    $this->insertUserToDb($user, $result[UserMediasiteSchema::USER_ID]);
-
-                } else
-                    $this->LogInfo("Tried to insert user: " .
-                $result[UserMediasiteSchema::USERNAME] . ", but user is already in database");
+		        if ($this->foundNewUser($criteria)) {
+			        $this->LogInfo("Found new user " . $row[UserMediasiteSchema::USERNAME]);
+			        //See if the recieved results with potential user data is valid according to its rules
+			        if($this->validate($row, TblUser::$rules))
+			        {
+				        $user = $this->createNewUser($row);
+				        $this->insertUserToDb($user, $row[UserMediasiteSchema::USER_ID]);
+			        }
+		        } else
+			        $this->LogInfo("Tried to insert user {$row[UserMediasiteSchema::USERNAME]}, but user is already in database");
             }
         }
 
-        if($this->usersInserted > 0)
+       if($this->usersInserted > 0)
         {
 	        $this->updateLargestInsertedUserIdInMongoDb();
 
 	        $this->LogInfo("Inserted " . $this->usersInserted . " new users");
         }
+	    else
+		    $this->LogInfo("Did not find new users! :(");
     }
+
+	private function createNewUser($data)
+	{
+		return (new UserModel2)->withAttributes($data)->andMerge(['status' => 1, 'affiliation' => 'notSetYet']);
+	}
+
+	private function validate($data, $model)
+	{
+		$validation_result = \SimpleValidator\Validator::validate($data, $model);
+
+		if ($validation_result->isSuccess() == true) {
+			return true;
+
+		} else {
+			//TODO: Throw exception?
+			var_dump($validation_result->getErrors());
+			return false;
+		}
+	}
 
     private function queryContainsNewUsers($query)
     {
         if($query == false)
             return false;
 
-        return (mssql_num_rows($query) > 0) ? true : false;
+        return count($query) > 0;
     }
 
     private function foundNewUser($criteria)
@@ -85,9 +96,9 @@ class UserImport extends Collection
         return empty($cursor) ? true : false;
     }
 
-    private function insertUserToDb(UserModel $user, $userId)
+    private function insertUserToDb(UserModel2 $user, $userId)
     {
-        $success = $this->insert->insertUserToMongoDb($user);
+	    $success = $this->mongo->save($user->attributes);
 
         if ($success) {
             $this->keepLargestUserId($userId);

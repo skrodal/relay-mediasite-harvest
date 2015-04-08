@@ -27,10 +27,4 @@ class DirectoryTest extends UninettTestCase {
 		$this->assertEquals('/a/b/c/d', $directoyPath);
 	}
 
-	/** @test */
-	public function it_can_blabla()
-	{
-
-	}
-
 }

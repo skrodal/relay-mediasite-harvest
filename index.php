@@ -2,6 +2,7 @@
 
 echo __DIR__;
 use Uninett\Collections\UpdateInterface;
+
 use Uninett\Run\RunMediasite;
 use Uninett\Run\RunRelayAll;
 use Uninett\Run\RunRelayDaily;
@@ -102,21 +103,9 @@ $a->seed();
 
 
 
-
-/*$xml = new SimpleXMLElement('<xml/>');
-
-for ($i = 1; $i <= 8; ++$i) {
-	$track = $xml->addChild('track');
-	$track->addChild('path', "song$i.mp3");
-	$track->addChild('title', "Track $i - Track Title");
-}
+$import = new \Uninett\Collections\Users\UserImport2();
+$import->update();
 
 
-$dom = new DOMDocument('1.0');
-$dom->preserveWhiteSpace = false;
-$dom->formatOutput = true;
-$dom->loadXML( $xml->asXML());
-echo $dom->saveXML();*/
 
-/*file_put_contents(getenv('APP_PATH') . '/storage/xml/' . 'Test.xml', $dom->saveXML());*/
 
