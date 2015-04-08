@@ -97,7 +97,6 @@ class UserImport extends Collection
 	private function insertUserToDb(UserModel2 $user, $userId)
 	{
 		$success = $this->mongo->save($user->attributes);
-
 		if ($success) {
 			$this->keepLargestUserId($userId);
 			$this->usersInserted = $this->usersInserted + 1;

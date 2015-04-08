@@ -1,5 +1,6 @@
 <?php
 use Uninett\Core\Seeders\Seeder;
+use Uninett\Database\DatabaseConnection;
 
 class DatabaseSeeder {
 	protected $seeders = array(
@@ -14,7 +15,7 @@ class DatabaseSeeder {
 
 	public function truncate()
 	{
-		$db = new \Uninett\Database\DatabaseConnection('ecampussql');
+		$db = new DatabaseConnection('ecampussql');
 
 		$db->disableForeignkeyChecks();
 
@@ -30,12 +31,9 @@ class DatabaseSeeder {
 		/* @var $seed Seeder */
 		foreach($this->seeders as $seeder)
 		{
-			$r = (new ReflectionClass($seeder))->newInstance(new \Uninett\Database\DatabaseConnection('ecampussql'));
-			$r->run();
-
-
-		/*	$seed = new $seeder();
-			$seed->run();*/
+			$seed = (new ReflectionClass($seeder))
+				->newInstance(new DatabaseConnection('ecampussql'));
+			$seed->run();
 		}
 	}
 }
