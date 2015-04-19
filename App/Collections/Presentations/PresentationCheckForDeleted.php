@@ -26,10 +26,6 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface
 
 	    $cursor = $this->mongo->find($criteria);
 
-	    $presentations = $cursor->count();
-
-	    $this->LogInfo("Found {$presentations} presentations");
-
 	    foreach ($cursor as $document) {
 		    $id = $document[PresentationSchema::PRESENTATION_ID];
 
@@ -43,18 +39,11 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface
 
 			    if($this->onePresentationFileDoesNotExist($pathOnDisk)) {
 
-				    //IF one out of four files are deleted, the whole presentation is marked as deleted
+				    //If one out of four files are deleted, the whole presentation is marked as deleted
 				    $this->changeDeletedAttribute(array(
 					    PresentationSchema::PRESENTATION_ID => $id,
 					    PresentationSchema::DELETED => 0
 				    ), $pathOnDisk);
-
-
-				    //Change criteria to be the path
-				    /*$this->changeDeletedAttribute($criteria, $pathOnDisk);*/
-
-
-				    $this->LogInfo("{$pathOnDisk} with id {$id} is marked as deleted");
 			    }
 		    }
 	    }
