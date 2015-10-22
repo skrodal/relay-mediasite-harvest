@@ -1,12 +1,12 @@
 <?php namespace Uninett\Collections\Presentations;
 //This class is used to find presentations in source database
-use Uninett\Database\EcampusSQLConnection;
+use Uninett\Database\RelaySQLConnection;
 
 class PresentationFind
 {
 	private $connection;
 
-    function __construct(EcampusSQLConnection $connection)
+    function __construct(RelaySQLConnection $connection)
     {
         $this->connection = $connection;
     }

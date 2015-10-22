@@ -17,12 +17,12 @@ Uninett\Config::add(
 		'debug' => false,
 		'startDateToImportIISLogs' =>  '2013-05-22',
 		'lastupdates_doc_key' => '1',
-		'relaymedia' => '/var/www/mnt/relaymedia',
-		'root' => '/var/www/services/relay-mediasite-harvest'
+		'relaymedia' => '/home/uninett/relaymedia',
+		'root' => '/home/kim/ecampus-new'
 	],
 	'folders_to_scan_for_files' => [
-		'ansatt' => '/var/www/mnt/relaymedia/ansatt',
-		'student' => '/var/www/mnt/relaymedia/student'
+		'ansatt' => '/home/uninett/relaymedia/ansatt',
+		'student' => '/home/uninett/relaymedia/student'
 	],
 	'userStatus' => [
 		-1  => 'not set',
@@ -36,7 +36,7 @@ Uninett\Config::add(
 	],
 	'mediasite' => [
 		'directories' => [
-			"/var/www/mnt/mediasite/"
+			"/home/uninett/mediasite/"
 		]
 	]
 ]);

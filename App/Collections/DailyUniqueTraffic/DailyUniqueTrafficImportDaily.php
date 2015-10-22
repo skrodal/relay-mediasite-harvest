@@ -5,7 +5,7 @@ use DateTime;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Collections\StatisticDateImporter;
 use Uninett\Collections\UpdateInterface;
-use Uninett\Database\PictorConnection;
+use Uninett\Database\ScreencastSQLConnection;
 use Uninett\Helpers\StatisticDate;
 use Uninett\Schemas\DailyUniqueTrafficSchema;
 
@@ -35,7 +35,7 @@ class DailyUniqueTrafficImportDaily extends StatisticDateImporter implements Upd
 			$this->import(
 				$dt,
 				new DailyUniqueTrafficCreate,
-				new DailyUniqueTrafficFind(new PictorConnection)
+				new DailyUniqueTrafficFind(new ScreencastSQLConnection)
 			);
 		}
 
@@ -52,7 +52,7 @@ class DailyUniqueTrafficImportDaily extends StatisticDateImporter implements Upd
 			$this->import(
 				$dt,
 				new DailyUniqueTrafficCreate,
-				new DailyUniqueTrafficFind(new PictorConnection)
+				new DailyUniqueTrafficFind(new ScreencastSQLConnection)
 			);
 
 		$this->LogInfo("Found {$this->numberFound} results");

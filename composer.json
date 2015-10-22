@@ -20,13 +20,18 @@
     }
   },
   "support" : {
-    "email" : "kim.syversen@gmail.com"
+    "email" : "simon.skrodal@uninett.no"
   },
   "authors": [
     {
       "name": "Kim Syversen",
       "email": "kim.syversen@gmail.com",
       "role": "Developer"
+    },
+    {
+      "name": "Simon Skrødal",
+      "email": "simon.skrodal@uninett.no",
+      "role": "Supervisor, maintainer"
     }
   ]
 }

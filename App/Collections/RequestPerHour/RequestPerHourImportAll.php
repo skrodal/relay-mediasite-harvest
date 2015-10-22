@@ -9,7 +9,7 @@ use Uninett\Collections\StatisticDateImporter;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Database\MongoConnection;
-use Uninett\Database\PictorConnection;
+use Uninett\Database\ScreencastSQLConnection;
 use Uninett\Helpers\StatisticDate;
 use Uninett\Schemas\RequestsPerHourSchema;
 
@@ -37,7 +37,7 @@ class RequestPerHourImportAll extends StatisticDateImporter implements UpdateInt
 			$this->import(
 				$dt,
 				new RequestPerHourCreate,
-				new RequestPerHourFind(new PictorConnection)
+				new RequestPerHourFind(new ScreencastSQLConnection)
 			);
 		}
 

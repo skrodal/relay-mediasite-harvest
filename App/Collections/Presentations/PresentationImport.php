@@ -4,7 +4,7 @@
 use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\DailyVideos\DailyVideoImport;
-use Uninett\Database\EcampusSQLConnection;
+use Uninett\Database\RelaySQLConnection;
 use Uninett\Helpers\ConvertHelper;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Schemas\PresentationSchema;
@@ -54,7 +54,7 @@ class PresentationImport extends Collection implements UpdateInterface
 
     private function findAndInsertNewVideos()
     {
-        $this->find = new PresentationFind(new EcampusSQLConnection);
+        $this->find = new PresentationFind(new RelaySQLConnection);
 
         $convertedPath = new ConvertHelper();
 
@@ -106,7 +106,7 @@ class PresentationImport extends Collection implements UpdateInterface
 
     private function findLargestPresentationIdFromSource()
     {
-        $find = new PresentationFind(new EcampusSQLConnection);
+        $find = new PresentationFind(new RelaySQLConnection);
         $max = $find->findHighestPresentationsId();
 
         $maxRes = mssql_fetch_assoc($max);

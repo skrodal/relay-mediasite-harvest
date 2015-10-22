@@ -1,12 +1,12 @@
 <?php namespace Uninett\Collections\DailyUniqueTraffic;
-use Uninett\Database\PictorConnection;
+use Uninett\Database\ScreencastSQLConnection;
 use Uninett\Schemas\DailyUniqueTrafficSchema;
 
 class DailyUniqueTrafficFind {
 
 	protected $database;
 
-	function __construct(PictorConnection $database)
+	function __construct(ScreencastSQLConnection $database)
 	{
 		$this->database = $database;
 	}

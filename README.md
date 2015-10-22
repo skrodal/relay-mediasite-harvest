@@ -1,27 +1,25 @@
 # README
 
-This is documentation for ecampus statistics v2
+This is documentation for UNINETT eCampus Relay/Mediasite content/data harvester v2.
 
-#TODO
+The service was originally created by Kim Syversen, UNINETT. Updated and maintained by Simon Skrødal, UNINETT.
+
+# TODO
 * Show a typical import, both all and daily
 * Update installed mongo packages (if new version works. yum list installed | grep mongo)
 
+# Prerequisities
 
-
-#Prerequisities
-
-##FreeTDS and unixODBC
-FreeTDS + unixODBC must be installed and configured. Next comes examples of my files on baham.
+## FreeTDS and unixODBC
+FreeTDS + unixODBC must be installed and configured, e.g.:
 
 /etc/odbc.ini
 
 ```
-[ECAMPUSSQL]
-Driver = FreeTDS
-Address = ecampussql.bibsys.no
-Port = 1433
-TDS_Version = 8.0
-Database = Relay441
+[UNINETTSQL]
+host = ...
+port = 1433
+tds version = 8.0
 
 ```
 
@@ -29,68 +27,32 @@ Database = Relay441
 /etc/odbcinst.ini 
 
 ```
-[PostgreSQL]
-Description		= ODBC for PostgreSQL
-Driver		= /usr/lib/psqlodbc.so
-Setup		= /usr/lib/libodbcpsqlS.so
-Driver64		= /usr/lib64/psqlodbc.so
-Setup64		= /usr/lib64/libodbcpsqlS.so
-FileUsage		= 1
-
-[MySQL]
-Description		= ODBC for MySQL
-Driver		= /usr/lib/libmyodbc5.so
-Setup		= /usr/lib/libodbcmyS.so
-Driver64		= /usr/lib64/libmyodbc5.so
-Setup64		= /usr/lib64/libodbcmyS.so
-FileUsage		= 1
 
 [FreeTDS]
-UsageCount		= 1
-Driver = 	/usr/lib64/libtdsodbc.so.0
+UsageCount	= 1
+Driver 		= 	/usr/lib64/libtdsodbc.so.0
 
 ```
 
 /etc/freetds.conf 
 
-
 ```
-[kim@baham ~]$ cat /etc/freetds.conf 
-[global]
-	text size = 64512
-	client charset = UTF-8
-	tds version = 8.0
-# A typical Sybase server
-[egServer50]
-	host = symachine.domain.com
-	port = 5000
-	tds version = 5.0
 
-# A typical Microsoft server
-[egServer70]
-	host = ntmachine.domain.com
-	port = 1433
-	tds version = 7.0
- [PERSEUS]
-     	host = perseus.bibsys.no
-     	port = 1433
-	tds version = 8.0
-	client charset = UTF-8
-[ECAMPUSSQL]
-	host = ecampussql.bibsys.no
+[UNINETTSQL]
+	host = ...
 	port = 1433
 	tds version = 8.0
- [PICTOR]
-        host = pictor.bibsys.no
+ [SCREENCASTSQL]
+        host = ...
         port = 1433
         tds version = 8.0
         client charset = UTF-8
 ```
-###Testing
+### Testing
 If configured right, you should try and see
 
 ```
-(screen) [kim@baham ~]$ isql -v -s ECAMPUSSQL username password
+$ isql -v -s UNINETTSQL username password
 +---------------------------------------+
 | Connected!                            |
 |                                       |
@@ -105,19 +67,21 @@ SQL>
 
 
 ```
-(screen) [kim@baham ~]$ tsql -S ECAMPUSSQL -U username  -P password
+$ tsql -S UNINETTSQL -U username  -P password
 locale is "en_US.UTF-8"
 locale charset is "UTF-8"
 using default charset "UTF-8"
 1> 
+
 ```
 
-##Packages
-Installed packages are:
+## Packages
+Installed packages:
 
-###PHP
+### PHP
 ```
-[kim@baham ~]$ yum list installed | grep php
+$ yum list installed | grep php
+
 php55w.x86_64                         5.5.21-1.w6                      @webtatic
 php55w-cli.x86_64                     5.5.21-1.w6                      @webtatic
 php55w-common.x86_64                  5.5.21-1.w6                      @webtatic
@@ -131,46 +95,34 @@ php55w-pecl-geoip.x86_64              1.0.8-1.w6                       @webtatic
 
 ```
 
-###Mongo
+### Mongo
 
 ```
-[kim@baham ~]$ yum list installed | grep mongo
+$ yum list installed | grep mongo
+
 libmongodb.x86_64                     2.4.12-2.el6                     @epel    
 mongodb-org.x86_64                    2.6.6-1                          @10gen   
 mongodb-org-mongos.x86_64             2.6.6-1                          @10gen   
 mongodb-org-server.x86_64             2.6.6-1                          @10gen   
 mongodb-org-shell.x86_64              2.6.6-1                          @10gen   
 mongodb-org-tools.x86_64              2.6.6-1                          @10gen   
+
 ```
 
 
 # Installation
 
-##Mongodb
-This is written of what I remember, something here may be wrong.
+## Mongodb
 
-To upgrade
+Install and create users as follows:
 
-```
-sudo yum install mongodb-org
-
-```
-
-EXAMPLE: How to create admin user https://gist.github.com/tamoyal/10441108
-
-Make sure that auth=true is commented out in /etc/mongod.conf, then:
-
-```
-sudo service mongod restart
-```
-
-Enter mongo shell
+1. Enter mongo shell
 
 ```
 mongo
 ```
 
-Create users
+2. Create users
 
 ```
 db.createUser({user:"admin",pwd:"PASSWORD", roles:[{role:"root",db:"admin"}]})
@@ -178,24 +130,12 @@ db.createUser({user:"apiUser",pwd:"PASSWORD", roles:[{role:"read",db:"ecampus"}]
 db.createUser({user:"ecampususer",pwd:"PASSWORD", roles:[{role:"readWrite",db:"ecampus"}]})
 ```
 	
-
-
-In /etc/mongd.conf, make sure that: auth=true. After that 
-
-```
-sudo service mongod restart
-```
-
-
 ##The project
 
 First, clone the repository
 
-```
-git clone https://kimatuninett@bitbucket.org/kimatuninett/ecampus-new.git
-```
-
 Install dependencies (make sure you are in project root)
+
 ```
 composer install
 ```
@@ -203,8 +143,8 @@ composer install
 Copy and rename .env.example to .env and fill out all fields.
 
 * MONGO refers to the local mongo database
-* ESQL  is where users are found. organisations are also derived from them.
-* PICTOR is where statistics for requestPerHour, dailyUserAgents and dailyUniqueTraffic are collected
+* RELAY_SQL  is where users are found. organisations are also derived from them.
+* SCREENCAST_SQ is where statistics for requestPerHour, dailyUserAgents and dailyUniqueTraffic are collected
 
 ```
 MONGO_HOST=
@@ -212,15 +152,15 @@ MONGO_USERNAME=
 MONGO_PASSWORD=
 MONGO_DATABASE=
 
-ESQL_HOST=ECAMPUSSQL
-ESQL_USERNAME=
-ESQL_PASSWORD=
-ESQL_DATABASE=
+RELAY_SQL_HOST=
+RELAY_SQL_USERNAME=
+RELAY_SQL_PASSWORD=
+RELAY_SQL_DATABASE=
 
-PICTOR_HOST=
-PICTOR_USERNAME=
-PICTOR_PASSWORD=
-PICTOR_DATABASE=
+SCREENCAST_SQL_HOST=
+SCREENCAST_SQL_USERNAME=
+SCREENCAST_SQL_PASSWORD=
+SCREENCAST_SQL_DATABASE=
 ```
 
 Update crontab to run jobs. If PHP is configured to have a standard timezone of UTC, make sure this job runs after 01 and with some margin (I used to run it 02:00). If not, some imports (requestsPerHour, daily*) will import the wrong date.
@@ -234,11 +174,11 @@ Update crontab to run jobs. If PHP is configured to have a standard timezone of 
 # |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
 # |  |  |  |  |
 # *  *  *  *  * user-name command to be executed
-  0  2  *  *  * kim php /home/kim/ecampus/EcampusStatistics/index.php daily
-  0  2  *  *  * kim php /home/kim/ecampus/EcampusStatistics/index.php mediasite
+  0  2  *  *  * simon php /path/to/relay-mediasite-harvest/index.php daily
+  0  2  *  *  * simon php /path/to/relay-mediasite-harvest/index.php mediasite
 ```
-##Configuring the project config file
-Make sure all directories are correct. Example of my file comes next.
+## Configuring the project config file
+Make sure all directories are correct. Example of config file comes next.
 
 ```
 /**
@@ -260,12 +200,12 @@ Uninett\Config::add(
 		'debug' => false,
 		'startDateToImportIISLogs' =>  '2013-05-22',
 		'lastupdates_doc_key' => '1',
-		'relaymedia' => '/home/uninett/relaymedia',
-		'root' => '/home/kim/ecampus-new'
+		'relaymedia' => '/path/to/relaymedia',
+		'root' => '/path/to/relay-mediasite-harvest/'
 	],
 	'folders_to_scan_for_files' => [
-		'ansatt' => '/home/uninett/relaymedia/ansatt',
-		'student' => '/home/uninett/relaymedia/student'
+		'ansatt' => '/path/to/relaymedia/ansatt',
+		'student' => '/path/to/relaymedia/student'
 	],
 	'userStatus' => [
 		-1  => 'not set',
@@ -279,14 +219,14 @@ Uninett\Config::add(
 	],
 	'mediasite' => [
 		'directories' => [
-			"/home/uninett/mediasite/"
+			"/path/to/mediasite/"
 		]
 	]
 ]);
 ```
 
-##Configuring /etc/php.ini
-I have added this in the top of the configuration file. Make sure the log file exists.
+## Configuring /etc/php.ini
+Add to the top of the configuration file - make sure the log file exists.
 
 ```
 [PHP]
@@ -302,11 +242,12 @@ log_errors = On
 ```
 
 
-#About
-##Organisation
+# About
+
+## Organisation
 
 ```
-ecampus-new/
+/path/to/relay-mediasite-harvest/
 ├── App
 │   ├── Collections
 │   │   ├── DailyUniqueTraffic
@@ -336,34 +277,25 @@ ecampus-new/
 * App/Database contains database files
 * Helpers contains various helper classes
 * Models contains model files related to the collections. 
-* Run contains wrapper classes for daily, full import, and mediasite
+* Run contains wrapper classes for daily, full import, and Mediasite
 * Since mongodb has no "schema", the name of the fields are defined where. One schema mostly relates to one collection. They are used through the code, so it is possible to change the name of one attribute one place, and it will be reflected through the code
 * Tests contains files with tests (if any).
 
 
-#Maintenance
+# Maintenance
 
-##If a new version of the relay database is released
+## If a new version of the relay database is released
 
-Update Database in /etc/odbc.ini 
-
-```
-[ECAMPUSSQL]
-Driver = FreeTDS
-Address = ecampussql.bibsys.no
-Port = 1433
-TDS_Version = 8.0
-Database = Relay441
-
-```
-
-Update .env file in project root
+- Update Database in /etc/odbc.ini 
+- Update .env file in project root
 
 #FAQ
-Something here?
+
+TODO
 
 
-#My own notes etc
+# Other
+
 See Aggregering.txt in the project folder for examples of doing various tasks in mongodb
 
 

@@ -2,7 +2,7 @@
 // Prerequisites: None. This class manages user finding from a source database and inserting to mongodb
 use Uninett\Collections\Collection;
 use Uninett\Collections\LastUpdates\LastUpdates;
-use Uninett\Database\EcampusSQLConnection;
+use Uninett\Database\RelaySQLConnection;
 use Uninett\Database\MongoConnection;
 use Uninett\Models\UserModel;
 use Uninett\Models\UserModel2;
@@ -31,7 +31,7 @@ class UserImport extends Collection
     {
         $this->latestUserId = $this->lastInsertedUserIdInMongoDb();
 
-        $newUsersInDatabase = new UserFind($this->latestUserId, new EcampusSQLConnection);
+        $newUsersInDatabase = new UserFind($this->latestUserId, new RelaySQLConnection);
 
         $query = $newUsersInDatabase->findNewUsersInDatabase();
 

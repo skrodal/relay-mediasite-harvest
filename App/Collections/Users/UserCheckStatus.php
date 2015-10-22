@@ -20,12 +20,12 @@ use Uninett\Schemas\UsersSchema;
  *
  */
 
-//Prerequisites: Users collection in mongodb is updated, access to tblUser on ecampussql
+//Prerequisites: Users collection in mongodb is updated, access to tblUser on relaySQL
 //This class compares the updated existence of users in tblUser, disk and reflect changes in mongodb
 class UserCheckStatus extends Collection implements UpdateInterface
 {
     private $mongo;
-    private $ecampussql;
+    private $relaySQL;
 
     private $numberOfStatusChanges = 0;
 
@@ -34,7 +34,7 @@ class UserCheckStatus extends Collection implements UpdateInterface
         parent::__construct(UsersSchema::COLLECTION_NAME);
 
         $this->mongo = new MongoConnection(UsersSchema::COLLECTION_NAME);
-        $this->ecampussql = new \Uninett\Database\EcampusSQLConnection;
+        $this->relaySQL = new \Uninett\Database\RelaySQLConnection;
     }
 
     public function update()
@@ -61,7 +61,7 @@ class UserCheckStatus extends Collection implements UpdateInterface
 
 	         $query = "SELECT userName FROM tblUser WHERE userName LIKE '" . $feideUsername . "'";
 
-	         $userExistsInRelayDb = $this->ecampussql->query($query);
+	         $userExistsInRelayDb = $this->relaySQL->query($query);
 
              $criteria = array(UsersSchema::USERNAME => $feideUsername);
 

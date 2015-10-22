@@ -1,12 +1,12 @@
 <?php namespace Uninett\Collections\RequestPerHour;
-use Uninett\Database\PictorConnection;
+use Uninett\Database\ScreencastSQLConnection;
 use Uninett\Schemas\RequestsPerHourSchema;
 
 class RequestPerHourFind
 {
 	protected $database;
 
-	function __construct(PictorConnection $database)
+	function __construct(ScreencastSQLConnection $database)
 	{
 		$this->database = $database;
 	}

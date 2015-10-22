@@ -5,7 +5,7 @@ use DateTime;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Collections\StatisticDateImporter;
 use Uninett\Collections\UpdateInterface;
-use Uninett\Database\PictorConnection;
+use Uninett\Database\ScreencastSQLConnection;
 use Uninett\Helpers\StatisticDate;
 use Uninett\Schemas\DailyUserAgentsSchema;
 
@@ -32,7 +32,7 @@ class DailyUserAgentImportAll extends StatisticDateImporter implements UpdateInt
 			$this->import(
 				$dt,
 				new DailyUserAgentCreate,
-				new DailyUserAgentFind(new PictorConnection)
+				new DailyUserAgentFind(new ScreencastSQLConnection)
 			);
 
 		$this->LogInfo("Found {$this->numberFound} results");
