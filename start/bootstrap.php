@@ -8,12 +8,12 @@
 	error_reporting(-1);
 
 
-//http://stackoverflow.com/questions/6511913/php-sql-error-message-changed-database-context
+	//http://stackoverflow.com/questions/6511913/php-sql-error-message-changed-database-context
 	/*sqlsrv_configure ( "WarningsReturnAsErrors" , 0 ); //OFF
 	sqlsrv_configure ( "LogSeverity" , 1 ); //SQLSRV_LOG_SEVERITY_ERROR*/
 
 
-//http://forum.symfony-project.org/viewtopic.php?t=9958&p=40272
+	//http://forum.symfony-project.org/viewtopic.php?t=9958&p=40272
 
 	/**
 	 * MSSQL-queries may sometimes fail and mssql_last_error() returns "Changed database context to Relay441"
@@ -23,7 +23,7 @@
 	 * Source http://forum.symfony-project.org/viewtopic.php?t=9958&p=40272
 	 */
 	mssql_min_error_severity(16);
-//TODO: Experimental!
+	// TODO: Experimental!
 	ini_set('memory_limit', '1536M');
 	ini_set('mssql.timeout', 60 * 10);
 

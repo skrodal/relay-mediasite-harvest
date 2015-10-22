@@ -5,8 +5,9 @@ This is documentation for UNINETT eCampus Relay/Mediasite content/data harvester
 The service was originally created by Kim Syversen, UNINETT. Updated and maintained by Simon Skrødal, UNINETT.
 
 # TODO
+
+* When ScreencastSQL Connection is in place, enable `RunRelay*`- pertaining to Screencast data    
 * Show a typical import, both all and daily
-* Update installed mongo packages (if new version works. yum list installed | grep mongo)
 
 # Prerequisities
 

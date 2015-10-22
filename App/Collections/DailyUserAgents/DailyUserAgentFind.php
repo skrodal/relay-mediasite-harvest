@@ -15,7 +15,7 @@ class DailyUserAgentFind
     public function findData($date)
     {
         $queryString =
-            "SELECT * FROM " . DailyUserAgentsSchema::PICTOR_TABLE_NAME .
+            "SELECT * FROM " . DailyUserAgentsSchema::SCREENCAST_TABLE_NAME .
             " WHERE Dates = '" . $date->format('Y-m-d') . "' ORDER BY Dates DESC" ;
 
         return $this->connection->query($queryString);

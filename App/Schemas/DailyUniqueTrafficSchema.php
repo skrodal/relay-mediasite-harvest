@@ -1,7 +1,7 @@
 <?php namespace Uninett\Schemas; 
 class DailyUniqueTrafficSchema {
 	const COLLECTION_NAME = "dailyUniqueTraffic";
-	const PICTOR_TABLE_NAME = self::COLLECTION_NAME;
+	const SCREENCAST_TABLE_NAME = self::COLLECTION_NAME;
 	const IP = "ip";
 	const URI = "uri";
 	const DATE = "date";
