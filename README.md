@@ -225,23 +225,6 @@ Uninett\Config::add(
 ]);
 ```
 
-## Configuring /etc/php.ini
-Add to the top of the configuration file - make sure the log file exists.
-
-```
-[PHP]
-date.timezone = "UTC"
-
-error_log = /var/log/php-errors.log
-display_errors = On
-display_startup_errors = On
-error_reporting = -1
-log_errors = On
-
-
-```
-
-
 # About
 
 ## Organisation
