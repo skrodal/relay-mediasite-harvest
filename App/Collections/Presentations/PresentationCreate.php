@@ -91,7 +91,7 @@ class PresentationCreate extends Collection
 
                         $resSplit = explode("x", $res);
 
-	                    if(!isset($resSplit[0]) || !isset($resSplit[0]))
+	                    if(!isset($resSplit[0]) || !isset($resSplit[1]))
 	                    {
 		                    $presentation_id = $newPresentation->getpresentationId();
 		                    $presentation_path = $newPresentation->getPath();
