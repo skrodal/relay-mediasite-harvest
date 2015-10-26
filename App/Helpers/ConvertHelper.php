@@ -16,12 +16,12 @@ class ConvertHelper
 		// Path in XML file can either be '\\kastra.bibsys....' (OLD) or 'https://screen...' (NEW)
 		$isScreencast = strpos($path, "https://screencast");
 		// Length of path up to 'ansatt|student' varies depending on which $path (OLD|NEW) is passed to function
-		// NEW destinationPath
-		$pathLen = 3;
+		// NEW destinationPath (screencast) - Safe to hardcode since publish schema is unlikely to change...
+		$pathDepth = 3;
 		if($isScreencast === false){
 			$array = explode($delimiterKastra, $path);
-			// OLD destinationPath
-			$pathLen = 2;
+			// OLD destinationPath - Safe to hardcode since publish schema for old files will never change
+			$pathDepth = 2;
 		} else {
 			$array = explode($delimiterScreencast, $path);
 		}
@@ -30,12 +30,12 @@ class ConvertHelper
 		$cPath = "";
 
 		foreach ($array as $pieces) {
-			if($index > $pathLen)
+			if($index > $pathDepth)
 				$cPath .= DIRECTORY_SEPARATOR . $pieces;
 			$index++;
 		}
 
-		$file = '/var/www/mnt/relaymedia' . $cPath;
+		$file = Config::get('settings')['relaymedia'] . $cPath;
 
 		return $file;
 	}
@@ -51,14 +51,16 @@ class ConvertHelper
 		$fileWithoutMediaPath = "";
 		// Length of path up to 'ansatt|student' varies pending on linux-path vs. URL
 		// Local absolute path
-		$pathLen = 5;
+		$pathDepth = Config::get('folders_to_scan_for_files')['depth'];
 		// Full URL
 		if(strpos($file, "https://screencast") !== false){
-			$pathLen = 4;
+			// Depth to ansatt|student is not the same as absolute linux-path.
+			// Safe to hardcode since URL schema is unlikely to change.
+			$pathDepth = 4;
 		}
 
-		for ($i = $pathLen; $i < count($f); $i++) {
-			if($i == $pathLen)
+		for ($i = $pathDepth; $i < count($f); $i++) {
+			if($i == $pathDepth)
 				$fileWithoutMediaPath.=$f[$i];
 			else
 				$fileWithoutMediaPath.=DIRECTORY_SEPARATOR.$f[$i];

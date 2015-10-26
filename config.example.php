@@ -7,6 +7,7 @@
  * relaymedia: Root path to relaymedia
  * root : Root path to project
  * folders_to_scan_for_files : folders to scan for presentations
+ *  depth: count depth up to and including ansatt|student folder (used by ConvertHelper and PresentationCreate->destUrlToRootPath
  * userStatus : What the different statuses mean
  * numberOfDecimals : Used to control how many decimalas that shall be used in calculations and stored in mongdb
  * mediasite : Which directories that contains mediasite data
@@ -22,7 +23,8 @@ Uninett\Config::add(
 	],
 	'folders_to_scan_for_files' => [
 		'ansatt' => '/home/uninett/relaymedia/ansatt',
-		'student' => '/home/uninett/relaymedia/student'
+		'student' => '/home/uninett/relaymedia/student',
+	    'depth' => 4
 	],
 	'userStatus' => [
 		-1  => 'not set',
