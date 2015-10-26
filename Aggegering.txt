@@ -9,17 +9,17 @@ db.presentations.aggregate({$group : {_id : "$username", presentations : {$sum :
 db.presentations.aggregate({$match : {created : {$gte : new Date("2013-07-05")} }},{$group : {_id : "$username", presentations : {$sum : 1}}})
 
 #Finne diskbruk for en spesifikk dato (Må ha med alt i new Date, ellers funker det dårlig.
-db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "henrikkg@hiof.no"}, {"storage.date" : {$gte : new Date("2014-07-28T00:00:00.000ZZ")}}, {"storage.date" : {$lte : new Date("2014-07-28T00:00:00.000Z")}}    ]}}).pretty()
+db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "simon@uninett.no"}, {"storage.date" : {$gte : new Date("2014-07-28T00:00:00.000ZZ")}}, {"storage.date" : {$lte : new Date("2014-07-28T00:00:00.000Z")}}    ]}}).pretty()
 
 ##Kan evt trikse med dato
-db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "henrikkg@hiof.no"}, {"storage.date" : {$gte : new Date("2014-07-28")}}, {"storage.date" : {$lt : new Date("2014-07-29")}}    ]}}).pretty()
+db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "simon@uninett.no"}, {"storage.date" : {$gte : new Date("2014-07-28")}}, {"storage.date" : {$lt : new Date("2014-07-29")}}    ]}}).pretty()
 
 ##Sortere stigende/synkende på dato
-db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "henrikkg@hiof.no"}, {"storage.date" : {$gte : new Date("2014-07-29T00:00:00.000ZZ")}}, {"storage.date" : {$lte : new Date("2014-07-29T00:00:00.000Z")}} ]}}, {$sort : {"storage.date" : -1 }} ).pretty()
+db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "simon@uninett.no"}, {"storage.date" : {$gte : new Date("2014-07-29T00:00:00.000ZZ")}}, {"storage.date" : {$lte : new Date("2014-07-29T00:00:00.000Z")}} ]}}, {$sort : {"storage.date" : -1 }} ).pretty()
 
 ###Siste (nyeste) dokument
 
-db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "henrikkg@hiof.no"}, {"storage.date" : {$gte : new Date("2014-07-29T00:00:00.000ZZ")}}, {"storage.date" : {$lte : new Date("2014-07-29T00:00:00.000Z")}} ]}}, {$sort : {"storage.date" : 1 }}, {$limit : 1} ).pretty()
+db.userDiskUsage.aggregate({$unwind : "$storage"}, {$match : {$and : [{"username" : "simon@uninett.no"}, {"storage.date" : {$gte : new Date("2014-07-29T00:00:00.000ZZ")}}, {"storage.date" : {$lte : new Date("2014-07-29T00:00:00.000Z")}} ]}}, {$sort : {"storage.date" : 1 }}, {$limit : 1} ).pretty()
 
 
 
