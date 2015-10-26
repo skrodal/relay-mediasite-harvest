@@ -127,10 +127,14 @@ mongo
 
 ```
 db.createUser({user:"admin",pwd:"PASSWORD", roles:[{role:"root",db:"admin"}]})
-db.createUser({user:"apiUser",pwd:"PASSWORD", roles:[{role:"read",db:"ecampus"}]})
-db.createUser({user:"ecampususer",pwd:"PASSWORD", roles:[{role:"readWrite",db:"ecampus"}]})
+db.createUser({user:"apiUser",pwd:"PASSWORD", roles:[{role:"read",db:"RelayMediasiteHarvestDB"}]})
+db.createUser({user:"systemUser",pwd:"PASSWORD", roles:[{role:"readWrite",db:"RelayMediasiteHarvestDB"}]})
 ```
-	
+
+Enter created user with role `readWrite` ((e.g. `systemUser`)) to `MONGO`-section of `.env`-file.
+  
+User with role `read` (e.g. `apiUser`) is suitable for use by API responsible for extracting harvested data. 
+
 ##The project
 
 First, clone the repository
@@ -190,6 +194,7 @@ Make sure all directories are correct. Example of config file comes next.
  * relaymedia: Root path to relaymedia
  * root : Root path to project
  * folders_to_scan_for_files : folders to scan for presentations
+ *		depth: no. of folders down to (and including) ansatt|student path 
  * userStatus : What the different statuses mean
  * numberOfDecimals : Used to control how many decimalas that shall be used in calculations and stored in mongdb
  * mediasite : Which directories that contains mediasite data
@@ -206,7 +211,8 @@ Uninett\Config::add(
 	],
 	'folders_to_scan_for_files' => [
 		'ansatt' => '/path/to/relaymedia/ansatt',
-		'student' => '/path/to/relaymedia/student'
+		'student' => '/path/to/relaymedia/student',
+		'depth' => 4
 	],
 	'userStatus' => [
 		-1  => 'not set',
