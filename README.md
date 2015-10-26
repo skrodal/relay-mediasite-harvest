@@ -11,9 +11,9 @@ The service was originally created by Kim Syversen, UNINETT. Updated and maintai
 
 # Prerequisities
 
-## FreeTDS and unixODBC
-FreeTDS + unixODBC must be installed and configured, e.g.:
-
+## FreeTDS <strike>and unixODBC</strike>
+FreeTDS <strike>+ unixODBC </strike>must be installed and configured, e.g.:
+<strike>
 /etc/odbc.ini
 
 ```
@@ -34,7 +34,7 @@ UsageCount	= 1
 Driver 		= 	/usr/lib64/libtdsodbc.so.0
 
 ```
-
+</strike>
 /etc/freetds.conf 
 
 ```
