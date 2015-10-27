@@ -8,7 +8,7 @@ class ConvertHelper
 	 * New as of 26.10.2015. See replaced function below with comments.
 	 *
 	 * SimonS
-	 */
+	 *
 	public function convertExternalToLocalPath($path) {
 		$array = null;
 		$delimiterKastra = "\\";
@@ -38,13 +38,13 @@ class ConvertHelper
 		$file = Config::get('settings')['relaymedia'] . $cPath;
 
 		return $file;
-	}
+	}*/
 
 	/*
 	 * New as of 26.10.2015. See replaced function below with comments.
 	 *
 	 * SimonS
-	 */
+	 *
 	public function getFilePathWithoutMediaPath($file)
 	{
 		$f = explode(DIRECTORY_SEPARATOR, $file);
@@ -66,13 +66,13 @@ class ConvertHelper
 				$fileWithoutMediaPath.=DIRECTORY_SEPARATOR.$f[$i];
 		}
 		return $fileWithoutMediaPath;
-	}
+	}*/
 
 	/* REPLACED 26.10.2015.
 	 *
 	 * This function does not work on new setup. Nor does it seem to have functioned in a consistent was earlier.
 	 * Folder depth is using a static number - which does not correspond when alternating old/new destinationURL
-
+	 */
 	public function convertExternalToLocalPath($path)
 	{
 		//Note: destinationPath from xml file:
@@ -111,11 +111,11 @@ class ConvertHelper
 		$file = Config::get('settings')['relaymedia'] . $cPath;
 
 		return $file;
-	}*/
+	}
 
 	/* REPLACED 26.10.2015.
 	 *
-	 * This function does not work on new setup (to work out server path, a static number is used to count folder depth.)
+	 * This function does not work on new setup (to work out server path, a static number is used to count folder depth.)*/
 	public function getFilePathWithoutMediaPath($file)
 	{
 		//Input https://screencast.uninett.no/relay/ansatt/olew@hig.no/2013/12.04/256933/hamartest5_-_Mobil_-_20130412_01.13.32PM.mp4
@@ -134,7 +134,7 @@ class ConvertHelper
 				$fileWithoutMediaPath.=DIRECTORY_SEPARATOR.$f[$i];
 		}
 		return $fileWithoutMediaPath;
-	}*/
+	}
 
 	/**
 	 * Convert milliseconds to seconds

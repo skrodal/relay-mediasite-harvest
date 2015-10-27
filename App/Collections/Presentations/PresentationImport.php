@@ -54,6 +54,8 @@ class PresentationImport extends Collection implements UpdateInterface
 
     private function findAndInsertNewVideos()
     {
+        $this->LogInfo("Commencing presentation import");
+
         $this->find = new PresentationFind(new RelaySQLConnection);
 
         $convertedPath = new ConvertHelper();

@@ -1,4 +1,5 @@
 <?php namespace Uninett\Collections\UserDiskusage;
+
 // Find disk usage for users from disk and insert to collection in mongodb
 use MongoDate;
 use Uninett\Collections\Collection;
@@ -13,166 +14,161 @@ use Uninett\Schemas\OrgSchema;
 use Uninett\Schemas\UserDiskUsageSchema;
 use Uninett\Schemas\UsersSchema;
 
-class UserDiskUsageImport extends Collection implements UpdateInterface
-{
-    private $userDiskUsageCollection;
-    private $userCollection;
+class UserDiskUsageImport extends Collection implements UpdateInterface {
+	private $userDiskUsageCollection;
+	private $userCollection;
 
 	private $numberInserted = 0;
 
-    public function __construct()
-    {
-	    parent::__construct(UserDiskUsageSchema::COLLECTION_NAME);
+	public function __construct() {
+		parent::__construct(UserDiskUsageSchema::COLLECTION_NAME);
 
-        $this->userDiskUsageCollection = new MongoConnection(UserDiskUsageSchema::COLLECTION_NAME);
+		$this->userDiskUsageCollection = new MongoConnection(UserDiskUsageSchema::COLLECTION_NAME);
 
-        $this->userCollection = new MongoConnection(UsersSchema::COLLECTION_NAME);
-    }
+		$this->userCollection = new MongoConnection(UsersSchema::COLLECTION_NAME);
+	}
 
-    public function update()
-    {
-        $math = new Arithmetic();
+	public function update() {
+		$math = new Arithmetic();
 
-        $aggregatedSize = 0.0;
-        $u = new UserHelper;
+		$aggregatedSize = 0.0;
+		$u              = new UserHelper;
 
-	    $directories = Config::get('folders_to_scan_for_files');
+		$directories = Config::get('folders_to_scan_for_files');
 
-        foreach ($directories as $directory) {
+		foreach($directories as $directory) {
 
-            if (is_dir($directory)) {
+			if(is_dir($directory)) {
 
-                $users = $u->findUsersInDatabaseInDirectoryOnDisk($directory);
+				$users = $u->findUsersInDatabaseInDirectoryOnDisk($directory);
 
-                foreach($users as $feideUsername => $arrayOfPossibleUsernamesForAUser)  {
+				foreach($users as $feideUsername => $arrayOfPossibleUsernamesForAUser) {
 
-                    $criteria = array(UserDiskUsageSchema::USERNAME => $feideUsername);
+					$criteria = array(UserDiskUsageSchema::USERNAME => $feideUsername);
 
-                    $userDiskusageDocument = $this->userDiskUsageCollection->findOne($criteria);
+					$userDiskusageDocument = $this->userDiskUsageCollection->findOne($criteria);
 
-                    $diskSize = 0.0;
+					$diskSize = 0.0;
 
-                    foreach($arrayOfPossibleUsernamesForAUser as $usernameAndDir)
-                        if(is_dir($usernameAndDir))
-                            $diskSize = $math->add($diskSize, $this->_calculateSize($usernameAndDir));
+					foreach($arrayOfPossibleUsernamesForAUser as $usernameAndDir) {
+						if(is_dir($usernameAndDir)) {
+							$diskSize = $math->add($diskSize, $this->_calculateSize($usernameAndDir));
+						}
+					}
 
-                    $dbSize = $this->_producedMoreSinceLastSave($feideUsername);
+					$dbSize = $this->_producedMoreSinceLastSave($feideUsername);
 
-                    if ($this->_userExistsInCollection($userDiskusageDocument)) {
+					if($this->_userExistsInCollection($userDiskusageDocument)) {
 
-                        if(!$math->consideredToBeEqual($dbSize, $diskSize)) {
+						if(!$math->consideredToBeEqual($dbSize, $diskSize)) {
 
-                            $storage = array(
-                                UserDiskUsageSchema::DATE => new Mongodate(),
-                                UserDiskUsageSchema::SIZE => $diskSize
-                            );
+							$storage = array(
+								UserDiskUsageSchema::DATE => new Mongodate(),
+								UserDiskUsageSchema::SIZE => $diskSize
+							);
 
-                            $operationOK = $this->_updateDocumentInCollection($criteria, $storage);
-                        } else
-                            continue;
+							$operationOK = $this->_updateDocumentInCollection($criteria, $storage);
+						} else {
+							continue;
+						}
 
-                    } else {
+					} else {
 
-                        $userDocument = $this->userCollection->findOne($criteria);
+						$userDocument = $this->userCollection->findOne($criteria);
 
-                        $org = $userDocument[UsersSchema::ORG];
+						$org = $userDocument[UsersSchema::ORG];
 
-                        $newUser = $this->_createUser($feideUsername, $diskSize, $org);
+						$newUser = $this->_createUser($feideUsername, $diskSize, $org);
 
-                        $operationOK = $this->_insertDocumentToMongoDatabase($newUser);
-                    }
+						$operationOK = $this->_insertDocumentToMongoDatabase($newUser);
+					}
 
-                    if ($operationOK) {
+					if($operationOK) {
 
-                        $this->LogInfo("Aggregated " . $feideUsername." (". $math->subtract($diskSize, $dbSize) . "MiB diff). Last size was " . $dbSize . "MiB");
+						$this->LogInfo("Aggregated " . $feideUsername . " (" . $math->subtract($diskSize, $dbSize) . "MiB diff). Last size was " . $dbSize . "MiB");
 
-                        $this->numberInserted = $this->numberInserted + 1;
+						$this->numberInserted = $this->numberInserted + 1;
 
-                        $aggregatedSize = $math->add($aggregatedSize, $diskSize);
-                    } else
-                        $this->LogError("Could not update " . $feideUsername  . var_dump($criteria));
+						$aggregatedSize = $math->add($aggregatedSize, $diskSize);
+					} else {
+						$this->LogError("Could not update " . $feideUsername . var_dump($criteria));
+					}
 
-                }
-            }
-        }
-        $this->LogInfo("Aggregated " . $aggregatedSize ."MiB for {$this->numberInserted} users ");
-    }
-
-
-
-    private function _producedMoreSinceLastSave($username)
-    {
-        $unwind = array('$unwind' => '$storage');
-
-        $match = array
-        (
-            '$match' => array
-            (
-                '$and' => array
-                (
-                    [
-                        UserDiskUsageSchema::USERNAME => $username,
-                    ]
-                )
-            )
-        );
-
-        $sort = array
-        (
-            '$sort' => array
-            (
-                'storage.date' => -1
-            )
-        );
-
-        $limit = array('$limit' => 1);
-
-        $size = $this->userDiskUsageCollection->collection->aggregate($unwind, $match, $sort, $limit);
-
-        if(isset($size['result']['0'][OrgSchema::STORAGE][OrgSchema::SIZE]))
-            return (double) $size['result']['0'][OrgSchema::STORAGE][OrgSchema::SIZE];
-        else
-            return 0.0;
-    }
+				}
+			}
+		}
+		$this->LogInfo("Aggregated " . $aggregatedSize . "MiB for {$this->numberInserted} users ");
+	}
 
 
-    private function _calculateSize($a)
-    {
-        $lop = new LinuxOperationsHelper();
-        $sizeByte = $lop->getSpaceUsedInDirectory($a);
+	private function _producedMoreSinceLastSave($username) {
+		$unwind = array('$unwind' => '$storage');
 
-        $convert = new ConvertHelper();
+		$match = array
+		(
+			'$match' => array
+			(
+				'$and' => array
+				(
+					[
+						UserDiskUsageSchema::USERNAME => $username,
+					]
+				)
+			)
+		);
 
-        return $convert->bytesToMegabytes($sizeByte);
-    }
+		$sort = array
+		(
+			'$sort' => array
+			(
+				'storage.date' => -1
+			)
+		);
 
-    private function _userExistsInCollection($result)
-    {
-        return !empty($result);
-    }
+		$limit = array('$limit' => 1);
 
-    private function _createUser($username, $size, $org)
-    {
-        $newUser = new UserDiskUsage;
+		$size = $this->userDiskUsageCollection->collection->aggregate($unwind, $match, $sort, $limit);
 
-        $newUser->setUsername($username);
+		if(isset($size['result']['0'][OrgSchema::STORAGE][OrgSchema::SIZE])) {
+			return (double)$size['result']['0'][OrgSchema::STORAGE][OrgSchema::SIZE];
+		} else {
+			return 0.0;
+		}
+	}
 
-        $newUser->setSize((double)$size);
 
-        $newUser->setDate(new Mongodate);
+	private function _calculateSize($a) {
+		$lop      = new LinuxOperationsHelper();
+		$sizeByte = $lop->getSpaceUsedInDirectory($a);
 
-        $newUser->setOrg($org);
+		$convert = new ConvertHelper();
 
-        return $newUser;
-    }
+		return $convert->bytesToMegabytes($sizeByte);
+	}
 
-    private function _updateDocumentInCollection($criteria, $storage)
-    {
-        return $this->userDiskUsageCollection->update($criteria, '$push', 'storage', $storage, 0);
-    }
+	private function _userExistsInCollection($result) {
+		return !empty($result);
+	}
 
-    private function _insertDocumentToMongoDatabase(UserDiskUsage $document)
-    {
-        return $this->userDiskUsageCollection->insert($document->jsonSerialize());
-    }
+	private function _createUser($username, $size, $org) {
+		$newUser = new UserDiskUsage;
+
+		$newUser->setUsername($username);
+
+		$newUser->setSize((double)$size);
+
+		$newUser->setDate(new Mongodate);
+
+		$newUser->setOrg($org);
+
+		return $newUser;
+	}
+
+	private function _updateDocumentInCollection($criteria, $storage) {
+		return $this->userDiskUsageCollection->update($criteria, '$push', 'storage', $storage, 0);
+	}
+
+	private function _insertDocumentToMongoDatabase(UserDiskUsage $document) {
+		return $this->userDiskUsageCollection->insert($document->jsonSerialize());
+	}
 }

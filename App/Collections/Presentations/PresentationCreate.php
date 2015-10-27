@@ -133,6 +133,7 @@ class PresentationCreate extends Collection {
 				$newFile->setPath($strippedPath);
 
 				$newPresentation->addFileToFilesArray($newFile);
+
 			} else {
 				$this->LogError("Tried to create a presentation but one of the xml documents root element did not
                 match, therefore presentation will not be created. Rootelement was: " . $xml->getName());
@@ -149,6 +150,7 @@ class PresentationCreate extends Collection {
 	 *
 	 * SimonS
 	 */
+	/*
 	private function destUrlToRootPath($path) {
 		//Input: /var/www/mnt/relaymedia/ansatt/simonuninett.no/2015/14.09/89400/TechSmith_Relay_innfring_p_130_-_20150914_085355_36.mp4
 		//Output: ansatt/simonuninett.no/2015/14.09/89400/
@@ -166,9 +168,10 @@ class PresentationCreate extends Collection {
 				$baseUrl .= $pa[$i] . DIRECTORY_SEPARATOR;
 			}
 		}
+
 		return $baseUrl;
 	}
-	/*
+	*/
 	private function destUrlToRootPath($path)
 	{
 		//Input: /home/uninett/relaymedia/ansatt/simon@uninett.no/2013/07.12/135393/HK_Julebord_-_20131207_030839_11.mp4
@@ -185,5 +188,5 @@ class PresentationCreate extends Collection {
 		}
 
 		return $baseUrl;
-	}*/
+	}
 }
