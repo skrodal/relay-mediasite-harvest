@@ -4,7 +4,7 @@
 use Uninett\Collections\Collection;
 use Uninett\Models\UserModel2;
 use Uninett\Models\UserModel;
-use Uninett\Schemas\UserMediasiteSchema;
+use Uninett\Schemas\UserRelaySchema;
 use Uninett\Schemas\UsersSchema;
 
 class UserCreate extends Collection
@@ -25,27 +25,27 @@ class UserCreate extends Collection
     {
         $user = new UserModel;
 
-        $usernameWasAnEmail = $user->setUsername($res[UserMediasiteSchema::USERNAME]);
+        $usernameWasAnEmail = $user->setUsername($res[UserRelaySchema::USERNAME]);
 
         if ($usernameWasAnEmail) {
-            $user->setCreatedDate($res[UserMediasiteSchema::CREATED_ON]);
+            $user->setCreatedDate($res[UserRelaySchema::CREATED_ON]);
 
-            $user->setName($res[UserMediasiteSchema::USERDISPLAYNAME]);
+            $user->setName($res[UserRelaySchema::USERDISPLAYNAME]);
 
-            $emailValid = $user->setEmail($res[UserMediasiteSchema::USER_EMAIL]);
+            $emailValid = $user->setEmail($res[UserRelaySchema::USER_EMAIL]);
 
             if (!$emailValid) {
                 $this->LogError("Could not add " .
-                    $res[UserMediasiteSchema::USERNAME] . ". because userEmail did not look like an email. Ignored");
+                    $res[UserRelaySchema::USERNAME] . ". because userEmail did not look like an email. Ignored");
 
                 return null;
             }
 
-            $userNameOnDisk = str_replace('@', '', $res[UserMediasiteSchema::USERNAME]);
+            $userNameOnDisk = str_replace('@', '', $res[UserRelaySchema::USERNAME]);
 
             $user->setUsernameOnDisk($userNameOnDisk);
 
-            $org = explode('@', $res[UserMediasiteSchema::USERNAME]);
+            $org = explode('@', $res[UserRelaySchema::USERNAME]);
 
             if(isset($org[1]))
                 $user->setOrg($org[1]);
@@ -54,7 +54,7 @@ class UserCreate extends Collection
 
             $user->setAffiliation("willBeSetIfFolderExistsAndUserSetAffiliationHaveDoneItsThing");
         } else {
-            $this->LogError("Found user: " . $res[UserMediasiteSchema::USERNAME]  . ", but could not create it" . ". Ignored");
+            $this->LogError("Found user: " . $res[UserRelaySchema::USERNAME]  . ", but could not create it" . ". Ignored");
 
             return null;
         }

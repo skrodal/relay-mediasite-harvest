@@ -1,5 +1,5 @@
 <?php namespace Uninett\Schemas;
-class UserMediasiteSchema
+class UserRelaySchema
 {
     const USERNAME = "userName";
     const CREATED_ON = "createdOn";
