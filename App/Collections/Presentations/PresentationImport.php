@@ -76,31 +76,36 @@ class PresentationImport extends Collection implements UpdateInterface {
 			// All XML file entries for a single presentation (filePresentation_presId, fileId, filePath, createdOn)
 			// Typically returns 4 rows; one per XML-file
 			$query = $this->find->findXMLsForPresentationWithId($this->currentPresentationId);
-			// Paths to XML metadata files pertaining to a SINGLE presentation (typically 4 paths, one per encoding format)
+			// Will hold the paths to XML metadata files pertaining to a SINGLE presentation (typically 4 paths, one per encoding format)
 			$arrayWithPathToXMLFilesForPresentation = array();
-			// If there was a hit on our queried presentation ID from Relay SQL
+			// If we got a hit on our queried presentation ID from Relay SQL
 			if($this->presentationIdContainsPresentation($query)) {
 				// Counter
 				$this->numberFound = $this->numberFound + 1;
 				// Unused?
 				$presentationIdFromResult = NULL;
-				// Loop all XML files for single presentation
+				// Loop all XML files (typically 4) for a single presentation
 				while($presentation = mssql_fetch_assoc($query)) {
-					//
+					// Convert FROM filePath in XML (can be kastra, screencast, samba, whatever) TO exact path to XML file
+					// on current system (e.g. /.../.../.../relaymedia/ansatt/simonuninett.no/2015/14.09/89400/filename.xml
 					$path = $convertedPath->convertExternalToLocalPath($presentation['filePath']);
-
+					// If an XML file is not found, break out and assume presentation is deleted
 					if($this->presentationDoesNotExistOnDisk($path)) {
 						$this->LogError("Presentation path " . $path . ' not found on disk.');
 						break;
 					} else {
+						// Add path to this XML-file to array)
 						$arr = array('path' => $path, 'id' => $presentation['filePresentation_presId']);
 						array_push($arrayWithPathToXMLFilesForPresentation, $arr);
 					}
 				}
-
+				// If we have the path to one or more XML files for this presentation,
+				// pass them on to the presentation creator for processing
 				if(count($arrayWithPathToXMLFilesForPresentation) > 0) {
+					// PresentationCreate will use XML metadata to create a presentation JSON object that can be
+					// entered into the collection
 					$newPresentation = $objectCreator->createPresentationFromArrayResult($arrayWithPathToXMLFilesForPresentation);
-
+					// As long as the XML files we sent to the creator are OK, we won't have any problems here.
 					if(!is_null($newPresentation)) {
 						$this->insertPresentationToMongoDb($newPresentation);
 					}
@@ -108,7 +113,7 @@ class PresentationImport extends Collection implements UpdateInterface {
 			} else {
 				$presentationsNotFound = $presentationsNotFound + 1;
 			}
-
+			// Go to next presentationID and start new loop.
 			$this->currentPresentationId = $this->currentPresentationId + 1;
 		}
 	}
