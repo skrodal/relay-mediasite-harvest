@@ -141,7 +141,7 @@ class PresentationImport extends Collection implements UpdateInterface {
 	}
 
 	private function presentationDoesNotExistOnDisk($path) {
-		return !file_exists($path);
+		return !file_exists($path) || !is_file($path);
 	}
 
 	private function insertPresentationToMongoDb($newFile) {
