@@ -53,36 +53,40 @@ class PresentationImport extends Collection implements UpdateInterface {
 	}
 
 	private function findAndInsertNewVideos() {
+		//
 		$this->find = new PresentationFind(new RelaySQLConnection);
-
+		//
 		$convertedPath = new ConvertHelper();
-
+		//
 		$objectCreator = new PresentationCreate();
-
+		//
 		$presentationsNotFound = 0;
-
+		// Last presentation entry in Relay SQL DB
 		$largestPresentationIdFromSource = $this->findLargestPresentationIdFromSource();
-
+		// If Relay SQL returned no data
 		if($largestPresentationIdFromSource === false) {
 			$this->LogError("Could not retrieve largest presentationId from database");
 			return;
 		}
-		// Inexact number, but will do ok as a guide.
+		// Inexact number, but will do ok as an indication of how many presentations will be checked.
 		$this->LogInfo("Checking " . ($largestPresentationIdFromSource - $this->currentPresentationId) . " new presentations");
 
+		// Scan Relay SQL for each and every new presentation since last run
 		while($largestPresentationIdFromSource != $this->currentPresentationId) {
-
-			$query = $this->find->findPresentationWithId($this->currentPresentationId);
-
+			// All XML file entries for a single presentation (filePresentation_presId, fileId, filePath, createdOn)
+			// Typically returns 4 rows; one per XML-file
+			$query = $this->find->findXMLsForPresentationWithId($this->currentPresentationId);
+			// Paths to XML metadata files pertaining to a SINGLE presentation (typically 4 paths, one per encoding format)
 			$arrayWithPathToXMLFilesForPresentation = array();
-
+			// If there was a hit on our queried presentation ID from Relay SQL
 			if($this->presentationIdContainsPresentation($query)) {
-
+				// Counter
 				$this->numberFound = $this->numberFound + 1;
-
+				// Unused?
 				$presentationIdFromResult = NULL;
-
+				// Loop all XML files for single presentation
 				while($presentation = mssql_fetch_assoc($query)) {
+					//
 					$path = $convertedPath->convertExternalToLocalPath($presentation['filePath']);
 
 					if($this->presentationDoesNotExistOnDisk($path)) {
@@ -93,6 +97,7 @@ class PresentationImport extends Collection implements UpdateInterface {
 						array_push($arrayWithPathToXMLFilesForPresentation, $arr);
 					}
 				}
+
 				if(count($arrayWithPathToXMLFilesForPresentation) > 0) {
 					$newPresentation = $objectCreator->createPresentationFromArrayResult($arrayWithPathToXMLFilesForPresentation);
 
