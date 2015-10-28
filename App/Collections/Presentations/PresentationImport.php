@@ -9,146 +9,145 @@ use Uninett\Helpers\ConvertHelper;
 use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Schemas\PresentationSchema;
 
-class PresentationImport extends Collection implements UpdateInterface
-{
-    private $insert;
-    private $find;
+class PresentationImport extends Collection implements UpdateInterface {
+	private $insert;
+	private $find;
 
 	private $currentPresentationId;
-    private $shouldUpdateDailyVideosCollection;
+	private $shouldUpdateDailyVideosCollection;
 
 	private $numberInserted = 0;
 	private $numberFound = 0;
 
-    public function __construct($shouldUpdateDailyVideosCollection = false)
-    {
-	    parent::__construct(PresentationSchema::COLLECTION_NAME);
+	public function __construct($shouldUpdateDailyVideosCollection = false) {
+		parent::__construct(PresentationSchema::COLLECTION_NAME);
 
-        $this->currentPresentationId = $this->getLargestInsertedFileId();
+		$this->currentPresentationId = $this->getLargestInsertedFileId();
 
-        $this->insert = new PresentationInsert();
+		$this->insert = new PresentationInsert();
 
-        $this->shouldUpdateDailyVideosCollection = $shouldUpdateDailyVideosCollection;
+		$this->shouldUpdateDailyVideosCollection = $shouldUpdateDailyVideosCollection;
 
-    }
+	}
 
-    private function getLargestInsertedFileId()
-    {
-        $largestInsertedFileId = new LastUpdates();
+	private function getLargestInsertedFileId() {
+		$largestInsertedFileId = new LastUpdates();
 
-        return $largestInsertedFileId->findLargestPresentationId();
-    }
+		return $largestInsertedFileId->findLargestPresentationId();
+	}
 
-    public function update()
-    {
-        $this->findAndInsertNewVideos();
+	public function update() {
+		$this->LogInfo("Commencing presentation import");
 
-	    $this->LogInfo("Finished importing {$this->numberInserted} presentations");
+		$this->findAndInsertNewVideos();
 
-        if($this->numberInserted > 0)
-            $this->updateLargestPresentationIdInMongoDb();
+		$this->LogInfo("Finished importing {$this->numberInserted} presentations");
 
-        if($this->shouldUpdateDailyVideosCollection)
-            $this->updateDailyVideosCollection();
-    }
+		if($this->numberInserted > 0) {
+			$this->updateLargestPresentationIdInMongoDb();
+		}
 
-    private function findAndInsertNewVideos()
-    {
-        $this->LogInfo("Commencing presentation import");
+		if($this->shouldUpdateDailyVideosCollection) {
+			$this->updateDailyVideosCollection();
+		}
+	}
 
-        $this->find = new PresentationFind(new RelaySQLConnection);
+	private function findAndInsertNewVideos() {
+		$this->find = new PresentationFind(new RelaySQLConnection);
 
-        $convertedPath = new ConvertHelper();
+		$convertedPath = new ConvertHelper();
 
-        $objectCreator = new PresentationCreate();
+		$objectCreator = new PresentationCreate();
 
-        $presentationsNotFound = 0;
+		$presentationsNotFound = 0;
 
-        $largestPresentationIdFromSource = $this->findLargestPresentationIdFromSource();
+		$largestPresentationIdFromSource = $this->findLargestPresentationIdFromSource();
 
-        if($largestPresentationIdFromSource === false)
-        {
-            $this->LogError("Could not retrieve largest presentationId from database");
-            return;
-        }
-        while($largestPresentationIdFromSource != $this->currentPresentationId) {
+		if($largestPresentationIdFromSource === false) {
+			$this->LogError("Could not retrieve largest presentationId from database");
+			return;
+		}
+		// Inexact number, but will do ok as a guide.
+		$this->LogInfo("Checking " . ($largestPresentationIdFromSource - $this->currentPresentationId) . " new presentations");
 
-            $query = $this->find->findPresentationWithId($this->currentPresentationId);
+		while($largestPresentationIdFromSource != $this->currentPresentationId) {
 
-            $arrayWithPathToXMLFilesForPresentation = array();
+			$query = $this->find->findPresentationWithId($this->currentPresentationId);
 
-            if($this->presentationIdContainsPresentation($query)) {
+			$arrayWithPathToXMLFilesForPresentation = array();
 
-                $this->numberFound = $this->numberFound + 1;
+			if($this->presentationIdContainsPresentation($query)) {
 
-                $presentationIdFromResult = null;
+				$this->numberFound = $this->numberFound + 1;
 
-                while ($presentation = mssql_fetch_assoc($query)) {
-                    $path = $convertedPath->convertExternalToLocalPath($presentation['filePath']);
+				$presentationIdFromResult = NULL;
 
-                    if ($this->presentationDoesNotExistOnDisk($path))
-                        break;
-                    else {
-                        $arr = array('path' => $path, 'id' => $presentation['filePresentation_presId']);
-                        array_push($arrayWithPathToXMLFilesForPresentation, $arr);
-                    }
-                }
-                  if(count($arrayWithPathToXMLFilesForPresentation) > 0) {
-                    $newPresentation = $objectCreator->createPresentationFromArrayResult($arrayWithPathToXMLFilesForPresentation);
+				while($presentation = mssql_fetch_assoc($query)) {
+					$path = $convertedPath->convertExternalToLocalPath($presentation['filePath']);
 
-                    if(!is_null($newPresentation))
-                        $this->insertPresentationToMongoDb($newPresentation);
-                }
-            } else
-                $presentationsNotFound = $presentationsNotFound + 1;
+					if($this->presentationDoesNotExistOnDisk($path)) {
+						$this->LogError("Presentation path " . $path . ' not found on disk.');
+						break;
+					} else {
+						$arr = array('path' => $path, 'id' => $presentation['filePresentation_presId']);
+						array_push($arrayWithPathToXMLFilesForPresentation, $arr);
+					}
+				}
+				if(count($arrayWithPathToXMLFilesForPresentation) > 0) {
+					$newPresentation = $objectCreator->createPresentationFromArrayResult($arrayWithPathToXMLFilesForPresentation);
 
-            $this->currentPresentationId = $this->currentPresentationId + 1;
-        }
-    }
+					if(!is_null($newPresentation)) {
+						$this->insertPresentationToMongoDb($newPresentation);
+					}
+				}
+			} else {
+				$presentationsNotFound = $presentationsNotFound + 1;
+			}
 
-    private function findLargestPresentationIdFromSource()
-    {
-        $find = new PresentationFind(new RelaySQLConnection);
-        $max = $find->findHighestPresentationsId();
+			$this->currentPresentationId = $this->currentPresentationId + 1;
+		}
+	}
 
-        $maxRes = mssql_fetch_assoc($max);
+	private function findLargestPresentationIdFromSource() {
+		$find = new PresentationFind(new RelaySQLConnection);
+		$max  = $find->findHighestPresentationsId();
 
-        if($maxRes == false)
-            return false;
+		$maxRes = mssql_fetch_assoc($max);
 
-        return (int)$maxRes['computed'];
-    }
+		if($maxRes == false) {
+			return false;
+		}
 
-    private function presentationIdContainsPresentation($query)
-    {
-        if($query == false)
-            return false;
+		return (int)$maxRes['computed'];
+	}
 
-        return true;
-    }
+	private function presentationIdContainsPresentation($query) {
+		if($query == false) {
+			return false;
+		}
 
-    private function presentationDoesNotExistOnDisk($path)
-    {
-        return !file_exists($path);
-    }
+		return true;
+	}
 
-    private function insertPresentationToMongoDb($newFile)
-    {
-        $inserted = $this->insert->insertNewVideoToMongoDb($newFile);
+	private function presentationDoesNotExistOnDisk($path) {
+		return !file_exists($path);
+	}
 
-        if ($inserted)
-            $this->numberInserted = $this->numberInserted + 1;
-    }
+	private function insertPresentationToMongoDb($newFile) {
+		$inserted = $this->insert->insertNewVideoToMongoDb($newFile);
 
-    private function updateLargestPresentationIdInMongoDb()
-    {
-        $largestIdInMongoDb = new LastUpdates();
-        $largestIdInMongoDb->updatePresentationId($this->currentPresentationId);
-    }
+		if($inserted) {
+			$this->numberInserted = $this->numberInserted + 1;
+		}
+	}
 
-    private function updateDailyVideosCollection()
-    {
-        $dv = new DailyVideoImport();
-        $dv->insert($this->numberInserted);
-    }
+	private function updateLargestPresentationIdInMongoDb() {
+		$largestIdInMongoDb = new LastUpdates();
+		$largestIdInMongoDb->updatePresentationId($this->currentPresentationId);
+	}
+
+	private function updateDailyVideosCollection() {
+		$dv = new DailyVideoImport();
+		$dv->insert($this->numberInserted);
+	}
 }

@@ -40,15 +40,13 @@ class UserImport extends Collection {
 				$criteria = array(UsersSchema::USERNAME => $result[UserRelaySchema::USERNAME]);
 
 				if($this->foundNewUser($criteria)) {
-					$this->LogInfo("Found new user " . $result[UserRelaySchema::USERNAME]);
-
+					// $this->LogInfo("Found new user " . $result[UserRelaySchema::USERNAME]);
 					$user = (new UserCreate)->create($result);
 
 					if(is_null($user)) {
 						$this->LogError("Could not create the user with username: " . $result[UserRelaySchema::USERNAME]);
 						continue;
 					}
-
 					$this->insertUserToDb($user, $result[UserRelaySchema::USER_ID]);
 
 				} else {
@@ -85,7 +83,7 @@ class UserImport extends Collection {
 		if($success) {
 			$this->keepLargestUserId($userId);
 			$this->usersInserted = $this->usersInserted + 1;
-			$this->LogInfo("New user: " . $user->getUsername() . " inserted in collection " . UsersSchema::COLLECTION_NAME);
+			$this->LogInfo("New user (" . $user->getUsername() . ") inserted into collection " . UsersSchema::COLLECTION_NAME);
 		} else {
 			$this->LogError("Something went wrong when inserting new user: " . $user->getUsername());
 		}

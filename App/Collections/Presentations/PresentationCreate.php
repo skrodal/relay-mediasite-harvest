@@ -145,6 +145,18 @@ class PresentationCreate extends Collection {
 		return $newPresentation;
 	}
 
+	/** NEW 27.10.2015 - NOT YET TESTED */
+	private function destUrlToRootPath($path) {
+		//Input: /var/www/mnt/relaymedia/ansatt/simonuninett.no/2015/14.09/89400/TechSmith_Relay_innfring_p_130_-_20150914_085355_36.mp4
+		//Output: ansatt/simonuninett.no/2015/14.09/89400/
+
+		// 1. Remove '/var/www/mnt/relaymedia' + '/' from path...
+		$baseURL = str_replace(Config::get('settings')['relaymedia'] . DIRECTORY_SEPARATOR, '', $path);
+		// 2. Remove filename from path ('ansatt/simonuninett.no/2015/14.09/89400/TechSmith_Relay_innfring_p_130_-_20150914_085355_36.mp4')
+		$baseURL = pathinfo($baseURL)['dirname'] . DIRECTORY_SEPARATOR;
+		return $baseURL;
+	}
+
 	/*
 	 * New as of 26.10.2015. See replaced function below with comments.
 	 *
@@ -172,6 +184,10 @@ class PresentationCreate extends Collection {
 		return $baseUrl;
 	}
 	*/
+
+
+
+	/* ORIGINAL
 	private function destUrlToRootPath($path)
 	{
 		//Input: /home/uninett/relaymedia/ansatt/simon@uninett.no/2013/07.12/135393/HK_Julebord_-_20131207_030839_11.mp4
@@ -189,4 +205,5 @@ class PresentationCreate extends Collection {
 
 		return $baseUrl;
 	}
+	*/
 }
