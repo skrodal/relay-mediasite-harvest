@@ -21,6 +21,7 @@ class PresentationCreate extends Collection {
 	}
 
 	public function createPresentationFromArrayResult($presentationXmlFiles) {
+		$this->LogError(json_encode($presentationXmlFiles));
 		$haveFilledInGeneralInfo = false;
 
 		$convert = new ConvertHelper();
