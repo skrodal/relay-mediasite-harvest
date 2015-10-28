@@ -5,79 +5,34 @@ use Uninett\Config;
 class ConvertHelper
 {
 	/*
-	 * New as of 26.10.2015. See replaced function below with comments.
+	 * New as of 28.10.2015. See replaced function below with comments.
 	 *
 	 * SimonS
-	 *
+	 */
 	public function convertExternalToLocalPath($path) {
-		$array = null;
-		$delimiterKastra = "\\";
-		$delimiterScreencast = "/";
-		// Path in XML file can either be '\\kastra.bibsys....' (OLD) or 'https://screen...' (NEW)
-		$isScreencast = strpos($path, "https://screencast");
-		// Length of path up to 'ansatt|student' varies depending on which $path (OLD|NEW) is passed to function
-		// NEW destinationPath (screencast) - Safe to hardcode since publish schema is unlikely to change...
-		$pathDepth = 3;
-		if($isScreencast === false){
-			$array = explode($delimiterKastra, $path);
-			// OLD destinationPath - Safe to hardcode since publish schema for old files will never change
-			$pathDepth = 2;
-		} else {
-			$array = explode($delimiterScreencast, $path);
-		}
+		// In case it's the old kastra-style path with backslashes, replace these first
+		$path = str_replace("\\", "/", $path);
 
-		$index = 0;
-		$cPath = "";
-
-		foreach ($array as $pieces) {
-			if($index > $pathDepth)
-				$cPath .= DIRECTORY_SEPARATOR . $pieces;
-			$index++;
-		}
-
-		$file = Config::get('settings')['relaymedia'] . $cPath;
-
-		return $file;
-	}*/
-
-	/*
-	 * New as of 26.10.2015. See replaced function below with comments.
-	 *
-	 * SimonS
-	 *
-	public function getFilePathWithoutMediaPath($file)
-	{
-		$f = explode(DIRECTORY_SEPARATOR, $file);
-		$fileWithoutMediaPath = "";
-		// Length of path up to 'ansatt|student' varies pending on linux-path vs. URL
-		// Local absolute path
-		$pathDepth = Config::get('folders_to_scan_for_files')['depth'];
-		// Full URL
-		if(strpos($file, "https://screencast") !== false){
-			// Depth to ansatt|student is not the same as absolute linux-path.
-			// Safe to hardcode since URL schema is unlikely to change.
-			$pathDepth = 4;
-		}
-
-		for ($i = $pathDepth; $i < count($f); $i++) {
-			if($i == $pathDepth)
-				$fileWithoutMediaPath.=$f[$i];
-			else
-				$fileWithoutMediaPath.=DIRECTORY_SEPARATOR.$f[$i];
-		}
-		return $fileWithoutMediaPath;
-	}*/
-
-	/* REPLACED 26.10.2015.
+		// Get substring starting with [student | ansatt] onwards (NOTE: requires that student or ansatt is in path!)
+		// From: https://screencast.uninett.no/relay/ansatt/simonuninett.no/2015/14.09/89400/TechSmith_Relay_innfring_p_130_-_20150914_085355_36.html
+		// To:                                       ansatt/simonuninett.no/2015/14.09/89400/TechSmith_Relay_innfring_p_130_-_20150914_085355_36.html
+		$cPath = strstr($path, 'student') ? strstr($path, 'student') : strstr($path, 'ansatt');
+		// From:                                     ansatt/simonuninett.no/2015/14.09/89400/TechSmith_Relay_innfring_p_130_-_20150914_085355_36.html
+		// To:               /var/www/mnt/relaymedia/ansatt/simonuninett.no/2015/14.09/89400/TechSmith_Relay_innfring_p_130_-_20150914_085355_36.html
+		return Config::get('settings')['relaymedia'] . DIRECTORY_SEPARATOR . $cPath;
+	}
+	/* REPLACED 28.10.2015.
 	 *
 	 * This function does not work on new setup. Nor does it seem to have functioned in a consistent was earlier.
 	 * Folder depth is using a static number - which does not correspond when alternating old/new destinationURL
-	 */
+	 *
 	public function convertExternalToLocalPath($path)
 	{
-		//Note: destinationPath from xml file:
+		// Sample destinationPaths from xml file (old and new versions):
 		// \\kastra.bibsys.no\relay\ansatt\erlendbr@uio.no\2013\26.09\2626733\Kant_-_praktisk_filosofi_time_2_-_PC_(Flash)_-_20131017_03.03.06PM\media\video.mp4
+		// https://screencast.uninett.no/relay/ansatt/simonuninett.no/2015/12.10/7800/Simons_test_Profile_Test_-_20151012_084917_39.html
 
+		// Expected:
 		//Input https://screencast.uninett.no/relay/ansatt/erlendbr@uio.no/2013/26.09/2626733/Kant_-_praktisk_filosofi_time_2_-_Lyd_(MP3)_-_20131017_03.03.06PM.xml
 		//Output /home/uninett/relaymedia/ansatt/erlendbr@uio.no/2013/26.09/2626733/Kant_-_praktisk_filosofi_time_2_-_Lyd_(MP3)_-_20131017_03.03.06PM.xml
 
@@ -111,11 +66,22 @@ class ConvertHelper
 		$file = Config::get('settings')['relaymedia'] . $cPath;
 
 		return $file;
+	}*/
+
+	/*
+	 * New as of 28.10.2015. See replaced function below with comments.
+	 *
+	 * SimonS
+	 */
+	public function getFilePathWithoutMediaPath($file)
+	{
+		$file = str_replace("\\", "/", $file);
+		return strstr($file, 'student') ? strstr($file, 'student') : strstr($file, 'ansatt');
 	}
 
-	/* REPLACED 26.10.2015.
+	/* REPLACED 28.10.2015.
 	 *
-	 * This function does not work on new setup (to work out server path, a static number is used to count folder depth.)*/
+	 * This function does not work on new setup (to work out server path, a static number is used to count folder depth.)
 	public function getFilePathWithoutMediaPath($file)
 	{
 		//Input https://screencast.uninett.no/relay/ansatt/olew@hig.no/2013/12.04/256933/hamartest5_-_Mobil_-_20130412_01.13.32PM.mp4
@@ -134,7 +100,7 @@ class ConvertHelper
 				$fileWithoutMediaPath.=DIRECTORY_SEPARATOR.$f[$i];
 		}
 		return $fileWithoutMediaPath;
-	}
+	}*/
 
 	/**
 	 * Convert milliseconds to seconds

@@ -54,9 +54,10 @@ class PresentationCreate extends Collection {
 					$newPresentation->setTrimmedDuration($convert->millisecondsToSeconds($xml->trimmedDuration));
 
 					$newPresentation->setHits((int)0);
-
+					// Format varies depending on Relay version (\\kastra.binsys... or https://screencast...)
+					// Convert the path/url to the absolute path on the fileserver
 					$dUrl = $convert->convertExternalToLocalPath((string)$xml->destinationUrl);
-
+					// Convert absolute path to relative path (which is stored in the document in the presentation collection)
 					$newPresentation->setPath($this->destUrlToRootPath($dUrl));
 
 					$org = explode('@', $xml->presenter->userName);
@@ -86,7 +87,11 @@ class PresentationCreate extends Collection {
 				foreach($xml->outputFiles->fileList as $fileList) {
 					foreach($fileList as $file) {
 						$fileOutputSize = $file['size'];
-						$destinationPath .= $file['destinationPath'];
+						// $destinationPath .= $file['destinationPath'];
+						$destinationPath = $file['destinationPath'];
+
+						// TODO: REMOVE
+						$this->LogInfo('DestinationPath for file: ' . $destinationPath);
 
 						$res = (string)$file['resolution'];
 
@@ -120,7 +125,7 @@ class PresentationCreate extends Collection {
 
 				$newPresentation->setSize($this->math->add($newPresentation->getSize(), $size));
 
-				/* At this point, destinationPath is to a a xml file for some mp3 or mp4 file
+				/* At this point, destinationPath is to an xml file for some mp3 or mp4 file
 				 * To make it easy to check if a file exists and calculate hits later,
 				 * is the destinationPath converted to a local path on the computer
 				 * this script is running on and xml is swapped with mp3 or mp4.
@@ -145,47 +150,18 @@ class PresentationCreate extends Collection {
 		return $newPresentation;
 	}
 
-	/** NEW 27.10.2015 - NOT YET TESTED */
+	/** NEW 27.10.2015: A rewrite to make it mote future-proof... */
 	private function destUrlToRootPath($path) {
-		//Input: /var/www/mnt/relaymedia/ansatt/simonuninett.no/2015/14.09/89400/TechSmith_Relay_innfring_p_130_-_20150914_085355_36.mp4
-		//Output: ansatt/simonuninett.no/2015/14.09/89400/
+		//Input, complete path on disk, e.g.:
+		//      /var/www/mnt/relaymedia/ansatt/simonuninett.no/2015/14.09/89400/TechSmith_Relay_innfring_p_130_-_20150914_085355_36.mp4
+		//Output, stripped to part that is used in URL, e.g.:
+		//      ansatt/simonuninett.no/2015/14.09/89400/
 
-		// 1. Remove '/var/www/mnt/relaymedia' + '/' from path...
+		// 1. Remove relaymedia-path as defined in config (e.g. '/var/www/mnt/relaymedia' + '/') from complete path...
 		$baseURL = str_replace(Config::get('settings')['relaymedia'] . DIRECTORY_SEPARATOR, '', $path);
 		// 2. Remove filename from path ('ansatt/simonuninett.no/2015/14.09/89400/TechSmith_Relay_innfring_p_130_-_20150914_085355_36.mp4')
-		$baseURL = pathinfo($baseURL)['dirname'] . DIRECTORY_SEPARATOR;
-		return $baseURL;
+		return pathinfo($baseURL)['dirname'] . DIRECTORY_SEPARATOR;
 	}
-
-	/*
-	 * New as of 26.10.2015. See replaced function below with comments.
-	 *
-	 * SimonS
-	 */
-	/*
-	private function destUrlToRootPath($path) {
-		//Input: /var/www/mnt/relaymedia/ansatt/simonuninett.no/2015/14.09/89400/TechSmith_Relay_innfring_p_130_-_20150914_085355_36.mp4
-		//Output: ansatt/simonuninett.no/2015/14.09/89400/
-
-		// MUST be updated if depth to 'ansatt|student' folder changes on disk (path)
-		$pathDepth = Config::get('folders_to_scan_for_files')['depth'];
-		$baseUrl   = "";
-		$pa        = explode(DIRECTORY_SEPARATOR, $path);
-
-
-		for($i = $pathDepth; $i < sizeof($pa); $i++) {
-			if($i == (sizeof($pa) - 1)) {
-				break;
-			} else {
-				$baseUrl .= $pa[$i] . DIRECTORY_SEPARATOR;
-			}
-		}
-
-		return $baseUrl;
-	}
-	*/
-
-
 
 	/* ORIGINAL
 	private function destUrlToRootPath($path)
