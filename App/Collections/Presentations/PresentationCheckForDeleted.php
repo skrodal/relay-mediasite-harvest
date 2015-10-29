@@ -30,24 +30,32 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 			foreach($cursor as $document) {
 				$id = $document[PresentationSchema::PRESENTATION_ID];
 
+				// Simon @ 29.10.2015:
+				// This routine with $subDocument does not make much sense.
+				// It is just as easy to get the path straight from $document.
+				// Commenting out original code...
 
-				$subDocument = $this->getFirstSubdocumentOfPresentation($id);
+				// $subDocument = $this->getFirstSubdocumentOfPresentation($id);
+				// if($subDocument !== false) {
+				// $shortPath = $subDocument[PresentationSchema::FILES][PresentationSchema::PATH];
 
-				if($subDocument !== false) {
+				// Simon @ 29.10.2015:
+				// Get the path for a single file in the presentation record, if this file does not
+				// exist on disk, it's safe to say that the entire presentation has been deleted.
+				if(isset($document['files'][0]['path'])) {
+					// Get the full path to the file
+					$pathOnDisk = $this->convertToLocalPath($document['files'][0]['path']);
+					/*
+										$this->LogInfo('PresID #' . $id);
+										$this->LogInfo('DOCUMENT: ' . json_encode($document));
+										$this->LogInfo(json_encode('SUBDOCUMENT: ' . json_encode($subDocument)));
+										$this->LogInfo('Shortpath ORIG: ' . $shortPath);
+										$this->LogInfo('Shortpath NEW: ' . $document['files'][0]['path']);
+					*/
 
-					$shortPath = $subDocument[PresentationSchema::FILES][PresentationSchema::PATH];
+					$this->LogInfo('PresID #' . $id . ' (path: ' . $pathOnDisk . ')');
 
-					$pathOnDisk = $this->convertToLocalPath($shortPath);
-
-					$this->LogInfo('PresID #' . $id);
-					$this->LogInfo('DOCUMENT: ' . json_encode($document));
-					$this->LogInfo(json_encode('SUBDOCUMENT: ' . json_encode($subDocument)));
-					$this->LogInfo('Shortpath ORIG: ' . $shortPath);
-					$this->LogInfo('Shortpath NEW: ' . $document['files'][0]['path']);
-
-
-
-					if($this->onePresentationFileDoesNotExist($pathOnDisk)) {
+					if(!file_exists($pathOnDisk)) {
 						$this->LogInfo('PresID #' . $id . ' DOES NOT EXIST!!!!');
 
 						//IF one out of four files are deleted, the whole presentation is marked as deleted
@@ -68,9 +76,10 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 		$this->LogInfo("Finished checking for deleted presentations");
 	}
 
+	/** UNNECESSARY
 	private function onePresentationFileDoesNotExist($path) {
 		return !file_exists($path);
-	}
+	}*/
 
 	/**
 	 *
