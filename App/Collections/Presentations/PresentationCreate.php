@@ -90,11 +90,7 @@ class PresentationCreate extends Collection {
 						// $destinationPath .= $file['destinationPath'];
 						$destinationPath = $file['destinationPath'];
 
-						// TODO: REMOVE
-						$this->LogInfo('DestinationPath for file: ' . $destinationPath);
-
 						$res = (string)$file['resolution'];
-
 						$resSplit = explode("x", $res);
 
 						if(!isset($resSplit[0]) || !isset($resSplit[1])) {

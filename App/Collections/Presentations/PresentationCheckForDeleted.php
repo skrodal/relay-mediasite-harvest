@@ -23,11 +23,12 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 		$criteria = array(PresentationSchema::DELETED => 0);
 
 		try {
+
+
 			$cursor = $this->mongo->find($criteria);
 
 			foreach($cursor as $document) {
 				$id = $document[PresentationSchema::PRESENTATION_ID];
-				$this->LogInfo('PresentationCheckForDeleted: Checking presentation ID ' . $id);
 
 				$subDocument = $this->getFirstSubdocumentOfPresentation($id);
 
@@ -36,6 +37,8 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 					$shortPath = $subDocument[PresentationSchema::FILES][PresentationSchema::PATH];
 
 					$pathOnDisk = $this->convertToLocalPath($shortPath);
+
+					$this->LogInfo('Checking presentation #' . $id . ' (path: ' . $pathOnDisk . ')');
 
 					if($this->onePresentationFileDoesNotExist($pathOnDisk)) {
 
@@ -51,6 +54,9 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 			$this->LogError("MongoCursorException! Message: " . $e->getMessage());
 			$this->LogError("MongoCursorException! Code: " . $e->getCode());
 		}
+		//
+
+		$cursor->reset();
 		$this->LogInfo("Finished checking for deleted presentations");
 	}
 
