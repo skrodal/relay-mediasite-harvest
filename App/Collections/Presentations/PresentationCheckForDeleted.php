@@ -81,7 +81,7 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 		$subDocument = $this->mongo->collection->aggregate($unwind, $match, $limit);
 
 		if(isset($subDocument['result']['0'])) {
-			$this->LogInfo($subDocument['result']['0']);
+			$this->LogInfo(json_encode($subDocument['result']['0']));
 			return $subDocument['result']['0'];
 		}
 
