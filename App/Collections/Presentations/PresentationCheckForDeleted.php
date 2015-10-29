@@ -41,7 +41,7 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 
 					$this->LogInfo('PresID #' . $id);
 					$this->LogInfo('DOCUMENT: ' . json_encode($document));
-					$this->LogInfo(json_encode('SUBDOCUMENT: ' . $subDocument));
+					$this->LogInfo(json_encode('SUBDOCUMENT: ' . json_encode($subDocument)));
 					$this->LogInfo('Shortpath ORIG: ' . $shortPath);
 					$this->LogInfo('Shortpath NEW: ' . $document['files'][0]['path']);
 
