@@ -18,13 +18,13 @@ class PresentationTest extends PHPUnit_Framework_TestCase
 
 	public function test_setting_wrong_recorder_name()
 	{
-		$equals = $this->presentation->setRecorderName(1);
+		$equals = $this->presentation->setRecordedBy(1);
 		$this->assertEquals(false, $equals);
 	}
 
 	public function test_setting_correct_recorder_name()
 	{
-		$equals = $this->presentation->setRecorderName('Karl');
+		$equals = $this->presentation->setRecordedBy('Karl');
 		$this->assertEquals(true, $equals);
 	}
 

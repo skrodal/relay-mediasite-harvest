@@ -6,14 +6,23 @@
 class PresentationSchema
 {
     const COLLECTION_NAME = "presentations";
+
     const PRESENTATION_ID = "presId";
     const USERNAME = "username";
     const ORG = "org";
+    const RECORDED_BY = "recorded_by";
+
+    const TITLE = "title";
+    const DESCRIPTION = "description";
+
     const CREATED = "created_date";
     const DELETED = "is_deleted";
+
     Const X = "x";
     Const Y = "y";
+
     const PATH = "path";
+
     const ENCODING = "encoding";
     const RESOLUTION = "resolution";
     const SIZE = "size_mib";
@@ -21,10 +30,8 @@ class PresentationSchema
     const QUEUETIME = "queuetime_s";
     const DURATION = "duration_s";
     const TRIMMED = "trimmed_s";
-	const RECORDER_NAME = "recorder_name";
 
     const FILES = "files";
     const HITS = "hits";
-    const TITLE = "title";
-    const DESCRIPTION = "description";
+
 }

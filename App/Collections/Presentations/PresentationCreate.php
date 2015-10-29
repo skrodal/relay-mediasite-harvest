@@ -45,7 +45,7 @@ class PresentationCreate extends Collection {
 
 					$newPresentation->setDeleted((int)0);
 
-					$newPresentation->setRecorderName((string)$xml->recordedBy->displayName);
+					$newPresentation->setRecordedBy((string)$xml->recordedBy->displayName);
 
 					$newPresentation->setUsername((string)$xml->presenter->userName);
 

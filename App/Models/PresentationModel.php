@@ -70,25 +70,25 @@ class PresentationModel implements JsonSerializable
 	/**
 	 * @var
 	 */
-	private $recorderName;
+	private $recordedBy;
 
 	/**
 	 * @return mixed
 	 */
-	public function getRecorderName()
+	public function getRecordedBy()
 	{
-		return $this->recorderName;
+		return $this->recordedBy;
 	}
 
 	/**
-	 * @param mixed $recorderName
+	 * @param mixed $recordedBy
 	 */
-	public function setRecorderName($recorderName)
+	public function setRecordedBy($recordedBy)
 	{
-		if(!is_string($recorderName))
+		if(!is_string($recordedBy))
 			return false;
 
-		$this->recorderName = $recorderName;
+		$this->recordedBy = $recordedBy;
 
 		 return true;
 	}
@@ -414,7 +414,7 @@ class PresentationModel implements JsonSerializable
             PresentationSchema::PRESENTATION_ID => $this->getPresentationId(),
             PresentationSchema::TITLE => $this->getTitle(),
             PresentationSchema::DESCRIPTION => $this->getDescription(),
-	        PresentationSchema::RECORDER_NAME => $this->getRecorderName(),
+	        PresentationSchema::RECORDED_BY => $this->getRecordedBy(),
             PresentationSchema::PATH => $this->getPath(),
             PresentationSchema::USERNAME => $this->getUserName(),
             PresentationSchema::ORG => $this->getOrg(),
