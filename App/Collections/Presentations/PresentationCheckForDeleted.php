@@ -30,6 +30,7 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 			foreach($cursor as $document) {
 				$id = $document[PresentationSchema::PRESENTATION_ID];
 
+
 				$subDocument = $this->getFirstSubdocumentOfPresentation($id);
 
 				if($subDocument !== false) {
@@ -39,6 +40,10 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 					$pathOnDisk = $this->convertToLocalPath($shortPath);
 
 					$this->LogInfo('PresID #' . $id);
+					$this->LogInfo('DOCUMENT: ' . json_encode($document));
+					$this->LogInfo(json_encode('SUBDOCUMENT: ' . $subDocument['result']['0']));
+
+					
 
 					if($this->onePresentationFileDoesNotExist($pathOnDisk)) {
 						$this->LogInfo('PresID #' . $id . ' DOES NOT EXIST!!!!');
@@ -65,6 +70,9 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 		return !file_exists($path);
 	}
 
+	/**
+	 *
+	 */
 	private function getFirstSubdocumentOfPresentation($id) {
 		$unwind = array('$unwind' => '$' . PresentationSchema::FILES);
 
@@ -81,7 +89,6 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 		$subDocument = $this->mongo->collection->aggregate($unwind, $match, $limit);
 
 		if(isset($subDocument['result']['0'])) {
-			$this->LogInfo(json_encode($subDocument['result']['0']));
 			return $subDocument['result']['0'];
 		}
 
