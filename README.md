@@ -2,10 +2,29 @@
 
 This is documentation for UNINETT eCampus Relay/Mediasite content/data harvester v2.
 
+The system collects and consolidates data from the Relay DB (users, presentations), Screencast DB (IIS logs) and
+XML metadata-files pertaining to each and every presentation.
+
+Consolidated information is stored in MongoDB collections for easy retrieval by an API (different service). Significant data includes:
+ 
+ - User 
+ 	- username, name, email, affiliation (employee/student), status (has_content, is_deleted,...)
+ 	- presentation
+ - Presentation
+ 	- descriptive metadata
+ 	- technical metadata
+ 	- is_deleted
+ 	- paths and URLs to encoded files
+  
+ 
+The system is tailor-made for the specific TechSmith Relay installation used at UNINETT (profiles, publication paths/URLS, metadata, etc), 
+but parts of it may nonetheless be useful, with some effort, for anyone wanting to do something similar.
+
 The service was originally created by Kim Syversen, UNINETT. Updated and maintained by Simon Skrødal, UNINETT.
 
 # TODO
 
+* When (end-user)service for presentation deletion is in place, re-enable the PresentationCheckForDeleted routine 
 * When ScreencastSQL Connection is in place, enable `RunRelay*`- pertaining to Screencast data    
 * Show a typical import, both all and daily
 
