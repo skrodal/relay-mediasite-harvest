@@ -21,7 +21,6 @@ class PresentationCreate extends Collection {
 	}
 
 	public function createPresentationFromArrayResult($presentationXmlFiles) {
-		$this->LogError(json_encode($presentationXmlFiles));
 		$haveFilledInGeneralInfo = false;
 
 		$convert = new ConvertHelper();
@@ -55,7 +54,7 @@ class PresentationCreate extends Collection {
 					$newPresentation->setTrimmedDuration($convert->millisecondsToSeconds($xml->trimmedDuration));
 
 					$newPresentation->setHits((int)0);
-					// Format varies depending on Relay version (\\kastra.binsys... or https://screencast...)
+					// Format varies depending on Relay version (\\\\kastra.binsys... or \\\\samba ... or https://screencast...)
 					// Convert the path/url to the absolute path on the fileserver
 					$dUrl = $convert->convertExternalToLocalPath((string)$xml->destinationUrl);
 					// Convert absolute path to relative path (which is stored in the document in the presentation collection)

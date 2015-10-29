@@ -88,7 +88,6 @@ class PresentationImport extends Collection implements UpdateInterface {
 				while($presentation = mssql_fetch_assoc($query)) {
 					// Convert FROM filePath in XML (can be kastra, screencast, samba, whatever) TO exact path to XML file
 					// on current system (e.g. /.../.../.../relaymedia/ansatt/simonuninett.no/2015/14.09/89400/filename.xml
-					$this->LogInfo('Coverting path: ' . $presentation['filePath']);
 					$path = $convertedPath->convertExternalToLocalPath($presentation['filePath']);
 					// If an XML file is not found, break out and assume presentation is deleted
 					if($this->presentationDoesNotExistOnDisk($path)) {
