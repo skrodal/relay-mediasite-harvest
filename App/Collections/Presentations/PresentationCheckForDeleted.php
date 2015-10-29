@@ -53,10 +53,10 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 										$this->LogInfo('Shortpath NEW: ' . $document['files'][0]['path']);
 					*/
 
-					$this->LogInfo('PresID #' . $id . ' (path: ' . $pathOnDisk . ')');
+					// $this->LogInfo('PresID #' . $id . ' (path: ' . $pathOnDisk . ')');
 
 					if(!file_exists($pathOnDisk)) {
-						$this->LogInfo('PresID #' . $id . ' DOES NOT EXIST!!!!');
+						$this->LogInfo('PresID #' . $id . ' DOES NOT EXIST! (path: ' . $pathOnDisk . ')');
 
 						//IF one out of four files are deleted, the whole presentation is marked as deleted
 						$this->changeDeletedAttribute(array(
