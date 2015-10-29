@@ -23,8 +23,7 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 		$criteria = array(PresentationSchema::DELETED => 0);
 
 		try {
-
-
+			
 			$cursor = $this->mongo->find($criteria);
 
 			foreach($cursor as $document) {
