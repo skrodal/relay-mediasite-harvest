@@ -1,9 +1,8 @@
-<?php namespace  Uninett\Helpers;
+<?php namespace Uninett\Helpers;
 
 use Uninett\Config;
 
-class ConvertHelper
-{
+class ConvertHelper {
 	/*
 	 * New as of 28.10.2015. See replaced function below with comments.
 	 *
@@ -73,9 +72,9 @@ class ConvertHelper
 	 *
 	 * SimonS
 	 */
-	public function getFilePathWithoutMediaPath($file)
-	{
+	public function getFilePathWithoutMediaPath($file) {
 		$file = str_replace("\\", "/", $file);
+
 		return strstr($file, 'student') ? strstr($file, 'student') : strstr($file, 'ansatt');
 	}
 
@@ -106,35 +105,58 @@ class ConvertHelper
 	 * Convert milliseconds to seconds
 	 *
 	 * @param $ms
+	 *
 	 * @return int
 	 */
-	public function millisecondsToSeconds($ms)
-	{
+	public function millisecondsToSeconds($ms) {
 		//Round up
-		return (int) ceil($ms / pow(10, 3));
+		return (int)ceil($ms / pow(10, 3));
 	}
 
 	/**
 	 * @param $bytes
+	 *
 	 * @return double
 	 */
-	public function bytesToMegabytes($bytes)
-	{
-		return (double) round(($bytes / pow(1024, 2)), Config::get('arithmetic')['numberOfDecimals'], PHP_ROUND_HALF_UP);
+	public function bytesToMegabytes($bytes) {
+		return (double)round(($bytes / pow(1024, 2)), Config::get('arithmetic')['numberOfDecimals'], PHP_ROUND_HALF_UP);
 	}
 
-
-
 	/**
-	 * $directory is built from PATH_TO_MEDIA plus [ansatt|student]
+	 * Simon @ 29.10.2015: Rewritten old function that broke when moving the service.
+	 *
+	 * We only have two affiliations: student | ansatt. Check for these words in the path instead...
+	 *
 	 * @param $directory
+	 *
 	 * @return mixed
 	 */
+	public function getAffiliationFromPath($directory) {
+		// case insensitive
+		if(stripos($directory, 'ansatt') !== false) {
+			return 'ansatt';
+		}
+		if(stripos($directory, 'student') !== false) {
+			return 'student';
+		}
+
+		return 'n/a';
+	}
+	/**
+	 * $directory is built from PATH_TO_MEDIA plus [ansatt|student]
+	 *
+	 * @param $directory
+	 *
+	 * @return mixed
+	 */
+	/*
+	!! Simon @ 29.10.2015: This is not future-proof and, as most other functions reading paths,
+	!! it depends on a static folder-depth to find data. Replaced with new function, see above.
 	public function getAffiliationFromPath($directory)
 	{
 		$affiliatonFromDirectory = explode(DIRECTORY_SEPARATOR, $directory);
 
 		return $affiliatonFromDirectory[4];
-	}
+	}*/
 
 }
