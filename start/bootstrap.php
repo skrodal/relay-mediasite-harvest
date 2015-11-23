@@ -1,6 +1,6 @@
 <?php
 
-	date_default_timezone_set('UTC');
+	date_default_timezone_set('Europe/Oslo');
 	ini_set('log_errors', 1);
 	ini_set('error_log', '/var/log/php-errors.log');
 	ini_set('display_errors', 1);
