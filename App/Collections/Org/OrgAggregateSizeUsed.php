@@ -23,6 +23,8 @@ class OrgAggregateSizeUsed extends Collection implements UpdateInterface
 
     public function update()
     {
+        $this->LogInfo("Now running " . get_class() . '...');
+
         $math = new Arithmetic();
 
         $u = new UserHelper;

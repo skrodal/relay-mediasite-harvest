@@ -19,7 +19,7 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 	}
 
 	public function update() {
-		$this->LogInfo('PresentationCheckForDeleted: INIT');
+		$this->LogInfo("Now running " . get_class() . '...');
 		$criteria = array(PresentationSchema::DELETED => 0);
 
 		try {

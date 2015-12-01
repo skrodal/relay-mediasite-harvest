@@ -37,7 +37,7 @@ class PresentationImport extends Collection implements UpdateInterface {
 	}
 
 	public function update() {
-		$this->LogInfo("Commencing presentation import");
+		$this->LogInfo("Now running " . get_class() . '...');
 
 		$this->findAndInsertNewVideos();
 

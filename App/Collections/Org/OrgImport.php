@@ -26,6 +26,8 @@ class OrgImport extends  Collection implements UpdateInterface
 
     public function update()
     {
+        $this->LogInfo("Now running " . get_class() . '...');
+
         $distinctOrgs = $this->_usersCollection->distinct(OrgSchema::ORG);
 
         $this->lookForNewOrganisations($distinctOrgs);

@@ -27,6 +27,7 @@ class UserImport extends Collection {
 	}
 
 	public function update() {
+		$this->LogInfo("Now running " . get_class() . '...');
 		$this->latestUserId = $this->lastInsertedUserIdInMongoDb();
 
 		$newUsersInDatabase = new UserFind($this->latestUserId, new RelaySQLConnection);

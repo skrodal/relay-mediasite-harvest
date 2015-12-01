@@ -18,6 +18,8 @@ class DailyUniqueTrafficImportAll extends StatisticDateImporter implements Updat
 
 	public function update()
 	{
+		$this->LogInfo("Now running " . get_class() . '...');
+
 		$lastImportedDateInDb = $this->findLastInsertedDate();
 
 		$date = (new StatisticDate)

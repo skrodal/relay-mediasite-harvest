@@ -22,6 +22,8 @@ class PresentationHitsImportAll extends PresentationHitsImport implements Update
 
 	public function update()
 	{
+		$this->LogInfo("Now running " . get_class() . '...');
+
 		$lastImportedDateInDb = $this->findLastInsertedDate();
 
 		$date = (new StatisticDate)

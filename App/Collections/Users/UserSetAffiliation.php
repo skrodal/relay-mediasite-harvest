@@ -24,6 +24,7 @@ class UserSetAffiliation extends Collection implements UpdateInterface
 
     public function update()
     {
+        $this->LogInfo("Now running " . get_class() . '...');
         $u = new UserHelper();
 
         $directories = Config::get('folders_to_scan_for_files');

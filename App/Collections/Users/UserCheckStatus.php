@@ -39,6 +39,8 @@ class UserCheckStatus extends Collection implements UpdateInterface
 
     public function update()
     {
+        $this->LogInfo("Now running " . get_class() . '...');
+        
         if(!$this->foundUsersInMongoDatabase())
             return 0;
 

@@ -22,6 +22,8 @@ class RequestPerHourImportAll extends StatisticDateImporter implements UpdateInt
 
 	public function update()
 	{
+		$this->LogInfo("Now running " . get_class() . '...');
+
 		$lastImportedDateInDb = $this->findLastInsertedDate();
 
 		$date = (new StatisticDate)
