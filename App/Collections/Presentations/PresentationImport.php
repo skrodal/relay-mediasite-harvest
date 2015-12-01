@@ -2,11 +2,11 @@
 
 //Queries Perseus DB for new files based on largest fileId in MongoDB and inserts to MongoDB
 use Uninett\Collections\Collection;
-use Uninett\Collections\UpdateInterface;
 use Uninett\Collections\DailyVideos\DailyVideoImport;
+use Uninett\Collections\LastUpdates\LastUpdates;
+use Uninett\Collections\UpdateInterface;
 use Uninett\Database\RelaySQLConnection;
 use Uninett\Helpers\ConvertHelper;
-use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Schemas\PresentationSchema;
 
 class PresentationImport extends Collection implements UpdateInterface {
@@ -37,7 +37,7 @@ class PresentationImport extends Collection implements UpdateInterface {
 	}
 
 	public function update() {
-		$this->LogInfo("Now running " . get_class() . '...');
+		$this->LogInfo("Start");
 
 		$this->findAndInsertNewVideos();
 
@@ -66,6 +66,7 @@ class PresentationImport extends Collection implements UpdateInterface {
 		// If Relay SQL returned no data
 		if($largestPresentationIdFromSource === false) {
 			$this->LogError("Could not retrieve largest presentationId from database");
+
 			return;
 		}
 		// Inexact number, but will do ok as an indication of how many presentations will be checked.

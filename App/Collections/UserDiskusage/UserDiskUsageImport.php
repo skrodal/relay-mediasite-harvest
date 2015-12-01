@@ -29,7 +29,7 @@ class UserDiskUsageImport extends Collection implements UpdateInterface {
 	}
 
 	public function update() {
-		$this->LogInfo("Now running " . get_class() . '...');
+		$this->LogInfo("Start");
 
 		$math = new Arithmetic();
 
@@ -102,6 +102,14 @@ class UserDiskUsageImport extends Collection implements UpdateInterface {
 		$this->LogInfo("Aggregated " . $aggregatedSize . "MiB for {$this->numberInserted} users ");
 	}
 
+	private function _calculateSize($a) {
+		$lop      = new LinuxOperationsHelper();
+		$sizeByte = $lop->getSpaceUsedInDirectory($a);
+
+		$convert = new ConvertHelper();
+
+		return $convert->bytesToMegabytes($sizeByte);
+	}
 
 	private function _producedMoreSinceLastSave($username) {
 		$unwind = array('$unwind' => '$storage');
@@ -138,18 +146,12 @@ class UserDiskUsageImport extends Collection implements UpdateInterface {
 		}
 	}
 
-
-	private function _calculateSize($a) {
-		$lop      = new LinuxOperationsHelper();
-		$sizeByte = $lop->getSpaceUsedInDirectory($a);
-
-		$convert = new ConvertHelper();
-
-		return $convert->bytesToMegabytes($sizeByte);
-	}
-
 	private function _userExistsInCollection($result) {
 		return !empty($result);
+	}
+
+	private function _updateDocumentInCollection($criteria, $storage) {
+		return $this->userDiskUsageCollection->update($criteria, '$push', 'storage', $storage, 0);
 	}
 
 	private function _createUser($username, $size, $org) {
@@ -164,10 +166,6 @@ class UserDiskUsageImport extends Collection implements UpdateInterface {
 		$newUser->setOrg($org);
 
 		return $newUser;
-	}
-
-	private function _updateDocumentInCollection($criteria, $storage) {
-		return $this->userDiskUsageCollection->update($criteria, '$push', 'storage', $storage, 0);
 	}
 
 	private function _insertDocumentToMongoDatabase(UserDiskUsage $document) {

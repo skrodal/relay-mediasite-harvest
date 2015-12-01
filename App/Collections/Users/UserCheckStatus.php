@@ -2,14 +2,13 @@
 
 use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
-
-
-use Uninett\Helpers\UserHelper;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
+use Uninett\Helpers\UserHelper;
 use Uninett\Schemas\UsersSchema;
 
-    /**
+
+/**
  *  A user may have different statuses
  *
  * -1. Not set yet. This is the default value a user will have when it is just imported from relay to mongodb
@@ -22,107 +21,108 @@ use Uninett\Schemas\UsersSchema;
 
 //Prerequisites: Users collection in mongodb is updated, access to tblUser on relaySQL
 //This class compares the updated existence of users in tblUser, disk and reflect changes in mongodb
-class UserCheckStatus extends Collection implements UpdateInterface
-{
-    private $mongo;
-    private $relaySQL;
+class UserCheckStatus extends Collection implements UpdateInterface {
+	private $mongo;
+	private $relaySQL;
 
-    private $numberOfStatusChanges = 0;
+	private $numberOfStatusChanges = 0;
 
-    public function __construct()
-    {
-        parent::__construct(UsersSchema::COLLECTION_NAME);
+	public function __construct() {
+		parent::__construct(UsersSchema::COLLECTION_NAME);
 
-        $this->mongo = new MongoConnection(UsersSchema::COLLECTION_NAME);
-        $this->relaySQL = new \Uninett\Database\RelaySQLConnection;
-    }
+		$this->mongo    = new MongoConnection(UsersSchema::COLLECTION_NAME);
+		$this->relaySQL = new \Uninett\Database\RelaySQLConnection;
+	}
 
-    public function update()
-    {
-        $this->LogInfo("Now running " . get_class() . '...');
-        
-        if(!$this->foundUsersInMongoDatabase())
-            return 0;
+	public function update() {
+		$this->LogInfo("Start");
 
-        $this->updateStatusForUsers();
+		if(!$this->foundUsersInMongoDatabase()) {
+			return 0;
+		}
 
-        $this->LogInfo("Changed status for " . $this->numberOfStatusChanges . " users");
-    }
+		$this->updateStatusForUsers();
 
-    private function updateStatusForUsers()
-    {
-        $userStatus = Config::get('userStatus');
+		$this->LogInfo("Changed status for " . $this->numberOfStatusChanges . " users");
+	}
 
-        $user = new UserHelper();
+	private function foundUsersInMongoDatabase() {
+		$numberOfusersFound = $this->mongo->find()->count();
 
-        $users = $user->findUsersInDatabase();
+		if($numberOfusersFound == 0) {
+			$this->LogInfo("No users found in database");
 
-        foreach($users as $feideUsername => $arrayOfPossibleUsernamesForAUser)  {
+			return false;
+		}
 
-             $userHasFolderOnDisk = $user->hasFolderOnDisk($arrayOfPossibleUsernamesForAUser);
+		return true;
+	}
 
-	         $query = "SELECT userName FROM tblUser WHERE userName LIKE '" . $feideUsername . "'";
+	private function updateStatusForUsers() {
+		$userStatus = Config::get('userStatus');
 
-	         $userExistsInRelayDb = $this->relaySQL->query($query);
+		$user = new UserHelper();
 
-             $criteria = array(UsersSchema::USERNAME => $feideUsername);
+		$users = $user->findUsersInDatabase();
 
-             $userDocument = $this->mongo->findOne($criteria);
+		foreach($users as $feideUsername => $arrayOfPossibleUsernamesForAUser) {
 
-             $statusFrom = $userDocument[UsersSchema::STATUS];
+			$userHasFolderOnDisk = $user->hasFolderOnDisk($arrayOfPossibleUsernamesForAUser);
 
-             if ($userExistsInRelayDb && !$userHasFolderOnDisk) {
-                 if($userDocument[UsersSchema::STATUS] == 1)
-                     continue;
-                 else
-                     $statusTo = 1;
+			$query = "SELECT userName FROM tblUser WHERE userName LIKE '" . $feideUsername . "'";
 
-             } elseif ($userExistsInRelayDb && $userHasFolderOnDisk) {
-                 if($userDocument[UsersSchema::STATUS] == 2)
-                     continue;
-                 else
-                     $statusTo = 2;
+			$userExistsInRelayDb = $this->relaySQL->query($query);
 
-             } elseif (!$userExistsInRelayDb && $userHasFolderOnDisk) {
-                 if($userDocument[UsersSchema::STATUS] == 3)
-                     continue;
-                 else
-                     $statusTo = 3;
+			$criteria = array(UsersSchema::USERNAME => $feideUsername);
 
-             } elseif (!$userExistsInRelayDb && !$userHasFolderOnDisk) {
-                 if($userDocument[UsersSchema::STATUS] == 4)
-                     continue;
-                 else
-                     $statusTo = 4;
+			$userDocument = $this->mongo->findOne($criteria);
 
-             } else {
-                 $this->LogError("None matched when checking statuses. This should never happen.");
-                 continue;
-             }
+			$statusFrom = $userDocument[UsersSchema::STATUS];
 
-             $success = $this->mongo->update($criteria, '$set', UsersSchema::STATUS, $statusTo, 0);
+			if($userExistsInRelayDb && !$userHasFolderOnDisk) {
+				if($userDocument[UsersSchema::STATUS] == 1) {
+					continue;
+				} else {
+					$statusTo = 1;
+				}
 
-             if ($success) {
+			} elseif($userExistsInRelayDb && $userHasFolderOnDisk) {
+				if($userDocument[UsersSchema::STATUS] == 2) {
+					continue;
+				} else {
+					$statusTo = 2;
+				}
 
-                 $this->LogInfo("Changed status for " .
-                     $userDocument[UsersSchema::USERNAME] . " from: " .
-                     $userStatus[$statusFrom] . " to: " .
-                     $userStatus[$statusTo]);
+			} elseif(!$userExistsInRelayDb && $userHasFolderOnDisk) {
+				if($userDocument[UsersSchema::STATUS] == 3) {
+					continue;
+				} else {
+					$statusTo = 3;
+				}
 
-                 $this->numberOfStatusChanges = $this->numberOfStatusChanges + 1;
-             }
-        }
-     }
+			} elseif(!$userExistsInRelayDb && !$userHasFolderOnDisk) {
+				if($userDocument[UsersSchema::STATUS] == 4) {
+					continue;
+				} else {
+					$statusTo = 4;
+				}
 
+			} else {
+				$this->LogError("None matched when checking statuses. This should never happen.");
+				continue;
+			}
 
-    private function foundUsersInMongoDatabase()
-    {
-        $numberOfusersFound = $this->mongo->find()->count();
+			$success = $this->mongo->update($criteria, '$set', UsersSchema::STATUS, $statusTo, 0);
 
-        if ($numberOfusersFound == 0) {
-            $this->LogInfo("No users found in database");
-            return false;
-        }
-        return true;
-    }
+			if($success) {
+
+				$this->LogInfo("Changed status for " .
+					$userDocument[UsersSchema::USERNAME] . " from: " .
+					$userStatus[$statusFrom] . " to: " .
+					$userStatus[$statusTo]);
+
+				$this->numberOfStatusChanges = $this->numberOfStatusChanges + 1;
+			}
+		}
+	}
 }

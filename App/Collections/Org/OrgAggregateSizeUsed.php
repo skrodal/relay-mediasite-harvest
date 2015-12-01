@@ -1,4 +1,5 @@
 <?php namespace Uninett\Collections\Org;
+
 //Prerequisites: orgs collection is up to date, access to directory on disk
 use MongoDate;
 use Uninett\Collections\Collection;
@@ -10,124 +11,123 @@ use Uninett\Helpers\LinuxOperationsHelper;
 use Uninett\Helpers\UserHelper;
 use Uninett\Schemas\OrgSchema;
 
-class OrgAggregateSizeUsed extends Collection implements UpdateInterface
-{
-    private $mongo;
+class OrgAggregateSizeUsed extends Collection implements UpdateInterface {
+	private $mongo;
 	private $numberFound;
-    public function __construct()
-    {
-	    parent::__construct(OrgSchema::COLLECTION_NAME);
 
-        $this->mongo = new MongoConnection(OrgSchema::COLLECTION_NAME);
-    }
+	public function __construct() {
+		parent::__construct(OrgSchema::COLLECTION_NAME);
 
-    public function update()
-    {
-        $this->LogInfo("Now running " . get_class() . '...');
+		$this->mongo = new MongoConnection(OrgSchema::COLLECTION_NAME);
+	}
 
-        $math = new Arithmetic();
+	public function update() {
+		$this->LogInfo("Start");
 
-        $u = new UserHelper;
+		$math = new Arithmetic();
 
-        $allOrgsInIOrgsCollection = $u->findUsersInOrganisationsInDatabase();
+		$u = new UserHelper;
 
-        if(count($allOrgsInIOrgsCollection) == 0)
-            $this->LogError("Did not find any organisations to aggregate size used for");
+		$allOrgsInIOrgsCollection = $u->findUsersInOrganisationsInDatabase();
 
-        $aggregatedSize = 0.0;
+		if(count($allOrgsInIOrgsCollection) == 0) {
+			$this->LogError("Did not find any organisations to aggregate size used for");
+		}
 
-        foreach($allOrgsInIOrgsCollection as $orgName => $arrayOfUsersInOrg) {
-            $diskSize = 0.0;
-            $dbSize = 0.0;
+		$aggregatedSize = 0.0;
 
-            foreach($arrayOfUsersInOrg as $userPath)
-                $diskSize = $math->add($diskSize, $this->calculateSize($userPath));
+		foreach($allOrgsInIOrgsCollection as $orgName => $arrayOfUsersInOrg) {
+			$diskSize = 0.0;
+			$dbSize   = 0.0;
 
-            $criteria = array(OrgSchema::ORG =>  $orgName);
+			foreach($arrayOfUsersInOrg as $userPath) {
+				$diskSize = $math->add($diskSize, $this->calculateSize($userPath));
+			}
 
-            $orgToUpdate = $this->mongo->findOne($criteria);
+			$criteria = array(OrgSchema::ORG => $orgName);
 
-            if ($this->organisationExists($orgToUpdate)) {
+			$orgToUpdate = $this->mongo->findOne($criteria);
 
-                $dbSize = $this->hasProducedMoreSinceLastSave($orgName);
+			if($this->organisationExists($orgToUpdate)) {
 
-                if($math->consideredToBeEqual($diskSize, $dbSize)) {
-                    $this->LogInfo("No change in size used by " . $orgName);
-                    continue;
-                } else {
-                    $storage = array
-                    (
-                        OrgSchema::DATE => new MongoDate(),
-                        OrgSchema::SIZE => $diskSize,
-                    );
+				$dbSize = $this->hasProducedMoreSinceLastSave($orgName);
 
-                    $newArrayWasPushedToCollection = $this->mongo->update($criteria, '$push', OrgSchema::STORAGE, $storage, 0);
+				if($math->consideredToBeEqual($diskSize, $dbSize)) {
+					$this->LogInfo("No change in size used by " . $orgName);
+					continue;
+				} else {
+					$storage = array
+					(
+						OrgSchema::DATE => new MongoDate(),
+						OrgSchema::SIZE => $diskSize,
+					);
 
-                    if ($newArrayWasPushedToCollection) {
+					$newArrayWasPushedToCollection = $this->mongo->update($criteria, '$push', OrgSchema::STORAGE, $storage, 0);
 
-	                    $this->numberFound = $this->numberFound + 1;
-                        $aggregatedSize = $math->add($aggregatedSize, $diskSize);
-                    }
-                }
+					if($newArrayWasPushedToCollection) {
 
-                $this->LogInfo("Aggregated " . $orgName." (". $math->subtract($diskSize, $dbSize) . "MiB diff). Last size was " . $dbSize . "MiB");
-            } else
-                $this->LogError("Did not find " . $orgName . " in db");
+						$this->numberFound = $this->numberFound + 1;
+						$aggregatedSize    = $math->add($aggregatedSize, $diskSize);
+					}
+				}
 
-        }
+				$this->LogInfo("Aggregated " . $orgName . " (" . $math->subtract($diskSize, $dbSize) . "MiB diff). Last size was " . $dbSize . "MiB");
+			} else {
+				$this->LogError("Did not find " . $orgName . " in db");
+			}
 
-        $this->numberFound = (int)ceil($this->numberFound);
+		}
 
-        $this->LogInfo("Aggregated daily disk usage; " . $aggregatedSize ."MiB" . " for {$this->numberFound} users");
-    }
+		$this->numberFound = (int)ceil($this->numberFound);
 
-    private function calculateSize($path)
-    {
-        $lop = new LinuxOperationsHelper;
-        $sizeByte = $lop->getSpaceUsedInDirectory($path);
+		$this->LogInfo("Aggregated daily disk usage; " . $aggregatedSize . "MiB" . " for {$this->numberFound} users");
+	}
 
-        $convert = new ConvertHelper();
+	private function calculateSize($path) {
+		$lop      = new LinuxOperationsHelper;
+		$sizeByte = $lop->getSpaceUsedInDirectory($path);
 
-        return $convert->bytesToMegabytes($sizeByte);
-    }
+		$convert = new ConvertHelper();
 
-    private function organisationExists($org)
-    {
-        return !empty($org);
-    }
+		return $convert->bytesToMegabytes($sizeByte);
+	}
 
-    private function hasProducedMoreSinceLastSave($org)
-    {
-        $unwind = array('$unwind' => '$storage');
+	private function organisationExists($org) {
+		return !empty($org);
+	}
 
-        $match = array
-        (
-            '$match' => array
-            (
-                '$and' => array
-                (
-                    [
-                        OrgSchema::ORG => $org,
-                    ]
-                )
-            )
-        );
+	private function hasProducedMoreSinceLastSave($org) {
+		$unwind = array('$unwind' => '$storage');
 
-        $sort = array
-        (
-            '$sort' => array
-            (
-                'storage.date' => -1
-            )
-        );
+		$match = array
+		(
+			'$match' => array
+			(
+				'$and' => array
+				(
+					[
+						OrgSchema::ORG => $org,
+					]
+				)
+			)
+		);
 
-        $limit = array('$limit' => 1);
+		$sort = array
+		(
+			'$sort' => array
+			(
+				'storage.date' => -1
+			)
+		);
 
-        $size = $this->mongo->collection->aggregate($unwind, $match, $sort, $limit);
+		$limit = array('$limit' => 1);
 
-        if(isset($size['result']['0'][OrgSchema::STORAGE][OrgSchema::SIZE]))
-            return (double) $size['result']['0'][OrgSchema::STORAGE][OrgSchema::SIZE];
-        else
-            return 0.0;
-    }
+		$size = $this->mongo->collection->aggregate($unwind, $match, $sort, $limit);
+
+		if(isset($size['result']['0'][OrgSchema::STORAGE][OrgSchema::SIZE])) {
+			return (double)$size['result']['0'][OrgSchema::STORAGE][OrgSchema::SIZE];
+		} else {
+			return 0.0;
+		}
+	}
 }

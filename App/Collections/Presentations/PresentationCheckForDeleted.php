@@ -1,13 +1,12 @@
 <?php namespace Uninett\Collections\Presentations;
 
 // Checks if a presentation exists on disk, if not, it changes deleted attribute in mongo db from 0 (not deleted) to 1 (deleted)
+use MongoCursorException;
 use Uninett\Collections\Collection;
 use Uninett\Collections\UpdateInterface;
-use Uninett\Collections\LastUpdates\LastUpdates;
 use Uninett\Config;
 use Uninett\Database\MongoConnection;
 use Uninett\Schemas\PresentationSchema;
-use MongoCursorException;
 
 class PresentationCheckForDeleted extends Collection implements UpdateInterface {
 	private $mongo;
@@ -19,11 +18,11 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 	}
 
 	public function update() {
-		$this->LogInfo("Now running " . get_class() . '...');
+		$this->LogInfo("Start");
 		$criteria = array(PresentationSchema::DELETED => 0);
 
 		try {
-			
+
 			$cursor = $this->mongo->find($criteria);
 
 			foreach($cursor as $document) {
@@ -76,9 +75,23 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 	}
 
 	/** UNNECESSARY
-	private function onePresentationFileDoesNotExist($path) {
-		return !file_exists($path);
-	}*/
+	 * private function onePresentationFileDoesNotExist($path) {
+	 * return !file_exists($path);
+	 * }*/
+
+	private function convertToLocalPath($presentation) {
+		return Config::get('settings')['relaymedia'] . DIRECTORY_SEPARATOR . $presentation;
+	}
+
+	private function changeDeletedAttribute($criteria, $path) {
+		$operationSucceeded = $this->mongo->update($criteria, '$set', PresentationSchema::DELETED, 1, 0);
+
+		if($operationSucceeded) {
+			$this->LogInfo("Did not find {$path}. Marked as deleted");
+		} else {
+			$this->LogError("Could not mark {$path} as deleted");
+		}
+	}
 
 	/**
 	 *
@@ -103,19 +116,5 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 		}
 
 		return false;
-	}
-
-	private function convertToLocalPath($presentation) {
-		return Config::get('settings')['relaymedia'] . DIRECTORY_SEPARATOR . $presentation;
-	}
-
-	private function changeDeletedAttribute($criteria, $path) {
-		$operationSucceeded = $this->mongo->update($criteria, '$set', PresentationSchema::DELETED, 1, 0);
-
-		if($operationSucceeded) {
-			$this->LogInfo("Did not find {$path}. Marked as deleted");
-		} else {
-			$this->LogError("Could not mark {$path} as deleted");
-		}
 	}
 }
