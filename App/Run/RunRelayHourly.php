@@ -18,7 +18,7 @@ class RunRelayHourly implements RunnableInterface
 			new \Uninett\Collections\Users\UserSetAffiliation,
 			new \Uninett\Collections\Users\UserCheckStatus,
 
-			new \Uninett\Collections\Presentations\PresentationImport(true), //(false)
+			new \Uninett\Collections\Presentations\PresentationImport(false), //(true)
 			new \Uninett\Collections\Org\OrgImport
 
 

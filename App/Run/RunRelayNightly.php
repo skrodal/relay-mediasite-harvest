@@ -15,8 +15,8 @@ class RunRelayNightly implements RunnableInterface {
 		$collections = [
 			// Slow jobs pertaining to disk usage. Run at night.
 			new \Uninett\Collections\UserDiskusage\UserDiskUsageImport,
-			new \Uninett\Collections\Org\OrgAggregateSizeUsed
-
+			new \Uninett\Collections\Org\OrgAggregateSizeUsed,
+			new \Uninett\Collections\Presentations\PresentationImport(true)     // With true only once a day
 			// new \Uninett\Collections\Users\UserImport,                       // Hourly
 			// new \Uninett\Collections\Users\UserSetAffiliation,               // Hourly
 			// new \Uninett\Collections\Users\UserCheckStatus,                  // Hourly
