@@ -16,12 +16,11 @@ class RunRelayNightly implements RunnableInterface {
 			// Slow jobs pertaining to disk usage. Run at night.
 			new \Uninett\Collections\UserDiskusage\UserDiskUsageImport,
 			new \Uninett\Collections\Org\OrgAggregateSizeUsed,
-			new \Uninett\Collections\Presentations\PresentationImport(true)     // With true only once a day
-			// new \Uninett\Collections\Users\UserImport,                       // Hourly
-			// new \Uninett\Collections\Users\UserSetAffiliation,               // Hourly
-			// new \Uninett\Collections\Users\UserCheckStatus,                  // Hourly
-			// new \Uninett\Collections\Presentations\PresentationImport(true), // Hourly
-			// new \Uninett\Collections\Org\OrgImport                           // Hourly
+//			new \Uninett\Collections\Presentations\PresentationImport(false), // Run Hourly
+//			new \Uninett\Collections\Users\UserImport,                        // Run Hourly
+//			new \Uninett\Collections\Users\UserSetAffiliation,                // Run Hourly
+//			new \Uninett\Collections\Users\UserCheckStatus,                   // Run Hourly
+//			new \Uninett\Collections\Org\OrgImport                            // Run Hourly
 
 
 			// new \Uninett\Collections\Presentations\PresentationCheckForDeleted,     // Determine speed when deleting is an option

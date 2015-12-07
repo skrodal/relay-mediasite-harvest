@@ -19,6 +19,16 @@ class PresentationImport extends Collection implements UpdateInterface {
 	private $numberInserted = 0;
 	private $numberFound = 0;
 
+	/**
+	 * NOTE: $shouldUpdateDailyVideosCollection will only work if we run harvest once
+	 * per 24 hours.... As it is set up now, we run PresentationImport hourly, hence catching
+	 * any new presentations almost as they arrive. When the nightly job runs, with $shouldUpdateDailyVideosCollection
+	 * set to true, it's too late; presentations have already been added throughout the day.
+	 *
+	 * Advise never to use $shouldUpdateDailyVideosCollection. We can use Mongo-queries to search by date instead...
+	 *
+	 * @param bool|false $shouldUpdateDailyVideosCollection
+	 */
 	public function __construct($shouldUpdateDailyVideosCollection = false) {
 		parent::__construct(PresentationSchema::COLLECTION_NAME);
 
