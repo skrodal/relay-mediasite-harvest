@@ -24,9 +24,13 @@ The service was originally created by Kim Syversen, UNINETT. Updated and maintai
 
 # TODO
 
-* When (end-user)service for presentation deletion is in place, re-enable the PresentationCheckForDeleted routine 
 * When ScreencastSQL Connection is in place, enable `RunRelay*`- pertaining to Screencast data    
 * Show a typical import, both all and daily
+* <strike>When (end-user)service for presentation deletion is in place, re-enable the PresentationCheckForDeleted routine</strike>
+	
+	No - We now have a separate service for tracking movable/moved/deleted/restored content, which is also implemented in the Relay API. 
+	The RelayAdmin client currently fetches all content from the harvester, as well as content from the delete-service. It then cross-checks 
+	the two to determine what/how of the former content to present.
 
 # Prerequisities
 
