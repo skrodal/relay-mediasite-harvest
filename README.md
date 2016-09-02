@@ -2,6 +2,8 @@
 
 This is documentation for UNINETT eCampus Relay/Mediasite content/data harvester v2.
 
+**NOTE** The Mediasite features of this service is no longer used, nor needed. Ignore any references to Mediasite.
+
 The system collects and consolidates data from the Relay DB (users, presentations), Screencast DB (IIS logs) and
 XML metadata-files pertaining to each and every presentation.
 
@@ -193,18 +195,26 @@ SCREENCAST_SQL_DATABASE=
 
 Update crontab to run jobs. If PHP is configured to have a standard timezone of UTC, make sure this job runs after 01 and with some margin (I used to run it 02:00). If not, some imports (requestsPerHour, daily*) will import the wrong date.
 
+
 ```
-# Example of job definition:
-# .---------------- minute (0 - 59)
-# |  .------------- hour (0 - 23)
-# |  |  .---------- day of month (1 - 31)
-# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
-# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
-# |  |  |  |  |
-# *  *  *  *  * user-name command to be executed
-  0  2  *  *  * simon php /path/to/relay-mediasite-harvest/index.php daily
-  0  2  *  *  * simon php /path/to/relay-mediasite-harvest/index.php mediasite
+# Example of Relay Harvest job definition:
+
+MAILTO=whoever_wants_nightly_reports@uninett.no
+
+#
+#     .---------------- minute (0 - 59)
+#     |      .------------- hour (0 - 23)
+#     |      |              .---------- day of month (1 - 31)
+#     |      |              |      .------- month (1 - 12) OR jan,feb,mar,apr ...
+#     |      |              |      |      .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+#     |      |              |      |      |
+# 	  *  	 *  			*  	   *      * 	 user-name command to be executed
+      0      0-1,5-23       *      *      *      simon php /path/to/relay-mediasite-harvest/index.php relayHourly
+      20     1              *      *      *      simon php /path/to/relay-mediasite-harvest/index.php relayNightly
 ```
+
+
+
 ## Configuring the project config file
 Make sure all directories are correct. Example of config file comes next.
 
@@ -299,8 +309,7 @@ Uninett\Config::add(
 
 ## If a new version of the relay database is released
 
-- Update Database in /etc/odbc.ini 
-- Update .env file in project root
+- Update .env file in project root to point to the new DB (e.g. `Relay507`)
 
 #FAQ
 
