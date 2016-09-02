@@ -17,8 +17,23 @@ class PresentationCheckForDeleted extends Collection implements UpdateInterface 
 		$this->mongo = new MongoConnection(PresentationSchema::COLLECTION_NAME);
 	}
 
+	/**
+	 * TODO: Simon@08.07.2016: Need to implement an undelete `update` here as well
+	 *       (for presentations that are moved back to user folder on request).
+	 *
+	 * UPDATE: Simon@02.09.2016: https://github.com/skrodal/techsmith-relay-presentation-delete
+	 *         is in place and provides a service for marking/tracking content for deletion. The
+	 *         service is implemented in the techsmith-relay-api, which provides a route to fetch
+	 *         content marked for movable/moved/deleted. The RelayAdmin client currently uses this
+	 *         list to filter out presentations that have status as movable/moved/deleted. This class
+	 *         was developed at a time (at Bibsys) when we had no other tracking of deleted content, but
+	 *         now we do (MySQL table that records movable/moved/deleted AND restored content).
+	 *         Suggest we leave this class (and harvesting) unused.
+	 */
 	public function update() {
 		$this->LogInfo("Start");
+		// TODO: For undelete, run a similar update on DELETED => 1 and check if path is still missing.
+		// ....OR just continue to NOT use this class and rely on the new techsmith-relay-presentation-delete service.
 		$criteria = array(PresentationSchema::DELETED => 0);
 
 		try {

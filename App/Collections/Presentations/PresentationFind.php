@@ -25,7 +25,7 @@ class PresentationFind
      */
     public function findXMLsForPresentationWithId($presentationId)
     {
-       $queryString = "SELECT filePresentation_presId, fileId, filePath, createdOn from dbo.tblFile
+       $queryString = "SELECT filePresentation_presId, fileId, filePath, createdOn from tblFile
         /* WHERE (filePath LIKE '\\\kastra%.xml' OR filePath LIKE 'https://screencast%.xml' OR filePath LIKE '\\\\samba0%.xml') */
         WHERE filePath LIKE '%.xml'
         AND filePath NOT LIKE 'C:\\%'
