@@ -83,7 +83,9 @@ class PresentationImport extends Collection implements UpdateInterface {
 		$this->LogInfo("Checking " . ($largestPresentationIdFromSource - $this->currentPresentationId) . " new presentations");
 
 		// Scan Relay SQL for each and every new presentation since last run
-		while($largestPresentationIdFromSource != $this->currentPresentationId) {
+		// Updated by Simon@01.11.2016: This loop never used to include the last presentation ID in the table...
+		while($largestPresentationIdFromSource >= $this->currentPresentationId) {
+		//while($largestPresentationIdFromSource != $this->currentPresentationId) {
 			// All XML file entries for a single presentation (filePresentation_presId, fileId, filePath, createdOn)
 			// Typically returns 4 rows; one per XML-file
 			$query = $this->find->findXMLsForPresentationWithId($this->currentPresentationId);
